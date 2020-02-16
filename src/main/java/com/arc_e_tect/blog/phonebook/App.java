@@ -5,7 +5,7 @@ package com.arc_e_tect.blog.phonebook;
 
 public class App {
     public String getGreeting() {
-        return "Hello world.";
+        return "Hello Arc-E-Tect.";
     }
 
     public static void main(String[] args) {

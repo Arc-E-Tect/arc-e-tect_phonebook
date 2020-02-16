@@ -7,8 +7,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
+    @Test
+    void appHasAGreeting() {
         App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+        assertNotNull(classUnderTest.getGreeting(),
+                "app should have a greeting");
+    }
+
+    @Test
+    void appHasHelloInforAsGreeting() {
+        App classUnderTest = new App();
+        assertEquals("Hello Arc-E-Tect.", classUnderTest.getGreeting(),
+                "app should have a greeting");
     }
 }
