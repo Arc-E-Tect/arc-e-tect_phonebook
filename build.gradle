@@ -33,10 +33,6 @@ dependencies {
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
-
-    testImplementation group: "io.cucumber", name: "cucumber-java", version: "5.4.1"
-    testImplementation group: "io.cucumber", name: "cucumber-junit", version: "5.4.1"
-    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "5.4.1"
 }
 
 application {
@@ -48,3 +44,14 @@ test {
     // Use junit platform for unit tests
     useJUnitPlatform()
 }
+
+/***************************************************************************************************
+ * Cucumber Support
+ ***************************************************************************************************/
+
+dependencies {
+    testImplementation group: "io.cucumber", name: "cucumber-java", version: "5.4.1"
+    testImplementation group: "io.cucumber", name: "cucumber-junit", version: "5.4.1"
+    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "5.4.1"
+}
+
