@@ -19,8 +19,8 @@ public class RunCucumberTest {
         throw new io.cucumber.java.PendingException();
     }
 
-    @Then("we get the phone number {double} {int} {int}")
-    public void we_get_the_phone_number(Double double1, Integer int1, Integer int2) {
+    @Then("we get the phone number {string}")
+    public void we_get_the_phone_number(String string) {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
