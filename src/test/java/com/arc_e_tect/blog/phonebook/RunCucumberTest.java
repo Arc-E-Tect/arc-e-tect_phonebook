@@ -7,21 +7,20 @@ import io.cucumber.junit.platform.engine.Cucumber;
 
 @Cucumber
 public class RunCucumberTest {
-
-    @Given("some initial state")
-    public void some_initial_state() {
+    @Given("Arc-E-Tect is in our Phonebook")
+    public void arc_E_Tect_is_in_our_Phonebook() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
-    @When("this is a trigger for certain behavior")
-    public void this_is_a_trigger_for_certain_behavior() {
+    @When("we ask for Arc-E-Tect's phone number")
+    public void we_ask_for_Arc_E_Tect_s_phone_number() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
-    @Then("certain behavior is exposed")
-    public void certain_behavior_is_exposed() {
+    @Then("we get the phone number {double} {int} {int}")
+    public void we_get_the_phone_number(Double double1, Integer int1, Integer int2) {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
