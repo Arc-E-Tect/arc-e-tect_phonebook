@@ -43,4 +43,31 @@ application {
 test {
     // Use junit platform for unit tests
     useJUnitPlatform()
+
+    finalizedBy ("jacocoTestReport")
+}
+
+/**********************************************************************************
+ JaCoCo Support
+ **********************************************************************************/
+
+apply plugin: "jacoco"
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination file("${buildDir}/reports/jacocoHtml")
+    }
+}
+
+test {
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        includes= ["com.arc_e_tect.*"]
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
 }
