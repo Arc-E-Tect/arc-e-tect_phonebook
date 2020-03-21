@@ -56,6 +56,16 @@ jacoco {
     toolVersion = "0.8.5"
 }
 
+/***************************************************************************************************
+ * Cucumber Support
+ ***************************************************************************************************/
+
+dependencies {
+    testImplementation group: "io.cucumber", name: "cucumber-java", version: "5.4.1"
+    testImplementation group: "io.cucumber", name: "cucumber-junit", version: "5.4.1"
+    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "5.4.1"
+}
+
 jacocoTestReport {
     reports {
         xml.enabled true
