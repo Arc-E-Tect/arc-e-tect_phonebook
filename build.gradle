@@ -26,13 +26,13 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.0-jre'
+    implementation 'com.google.guava:guava:28.2-jre'
 
     // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
 }
 
 application {
@@ -47,6 +47,15 @@ test {
     finalizedBy ("jacocoTestReport")
 }
 
+/**********************************************************************************
+ JaCoCo Support
+ **********************************************************************************/
+
+apply plugin: "jacoco"
+jacoco {
+    toolVersion = "0.8.5"
+}
+
 /***************************************************************************************************
  * Cucumber Support
  ***************************************************************************************************/
@@ -55,16 +64,6 @@ dependencies {
     testImplementation group: "io.cucumber", name: "cucumber-java", version: "5.4.1"
     testImplementation group: "io.cucumber", name: "cucumber-junit", version: "5.4.1"
     testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "5.4.1"
-}
-
-
-/**********************************************************************************
- JaCoCo Support
- **********************************************************************************/
-
-apply plugin: "jacoco"
-jacoco {
-    toolVersion = "0.8.5"
 }
 
 jacocoTestReport {
