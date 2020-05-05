@@ -1,3 +1,7 @@
+buildscript {
+    apply from: 'dependency_version.properties'
+}
+
 plugins {
     id 'java'
     id 'idea'
@@ -5,7 +9,6 @@ plugins {
 }
 
 apply plugin: 'idea'
-apply from: 'dependency_version.properties'
 
 repositories {
     jcenter()
@@ -17,8 +20,13 @@ dependencies {
     testRuntimeOnly     group: 'org.junit.jupiter',     name: 'junit-jupiter-engine',   version: "${jUnitVersion}"
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
 application {
-    mainClassName = 'com.arc_e_tect.blog.phonebook.App'
+    mainClassName = 'com.arc_e_tect.blog.phonebook.PhonebookApplication'
 }
 
 test {
