@@ -63,7 +63,7 @@ jacoco {
 dependencies {
     testImplementation group: "io.cucumber", name: "cucumber-java", version: "5.7.0"
     testImplementation group: "io.cucumber", name: "cucumber-junit", version: "5.7.0"
-    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "5.7.0"
+    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "6.4.0"
 }
 
 jacocoTestReport {
