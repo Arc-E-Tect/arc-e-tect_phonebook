@@ -1,13 +1,9 @@
 package com.arc_e_tect.blog.phonebook.model;
 
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
 public class Contact {
-    private String phoneNumber;
-
-    public Contact(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+    @NonNull private final String phoneNumber;
 }

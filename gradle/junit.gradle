@@ -1,0 +1,14 @@
+dependencies {
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine',   version: "${jUnitVersion}"
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api',      version: "${jUnitVersion}"
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params',   version: "${jUnitVersion}"
+}
+
+test {
+    systemProperties System.getProperties()
+}
+
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+}
+

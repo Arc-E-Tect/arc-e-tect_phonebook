@@ -5,7 +5,9 @@ package com.arc_e_tect.blog.phonebook;
 
 import com.arc_e_tect.blog.phonebook.model.Contact;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PhonebookApplicationTest {
     @Test

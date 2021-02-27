@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+// -----------------------------------------------------------
+//
+// JaCoCo
+dependencies {
+    implementation "org.jacoco:org.jacoco.agent:${jacocoToolVersion}:runtime"
+}
+
+jacoco {
+    toolVersion = "${jacocoToolVersion}"
+}
+
+jacocoTestReport {
+    sourceSets sourceSets.main    // important!
+    executionData fileTree(project.buildDir.absolutePath).include("jacoco/*.exec")
+    reports {
+        xml.enabled false
+        csv.enabled true
+        html.destination file("${buildDir}/reports/jacoco/Html")
+        csv.destination file("${buildDir}/reports/jacoco/jacoco.csv")
+    }
+
+    afterEvaluate {
+        getClassDirectories().setFrom(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                    ]
+            )
+        })
+    }
+}
+
+jacocoTestCoverageVerification {
+    executionData fileTree(project.buildDir.absolutePath).include("jacoco/*.exec")
+    violationRules {
+        rule {
+            limit {
+                minimum = minCodeCoverage
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
