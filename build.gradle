@@ -16,7 +16,6 @@ repositories {
 }
 
 dependencies {
-    implementation      group: 'com.google.guava',      name: 'guava',                  version: "${guavaVersion}"
     testImplementation  group: 'org.junit.jupiter',     name: 'junit-jupiter-api',      version: "${jUnitVersion}"
     testRuntimeOnly     group: 'org.junit.jupiter',     name: 'junit-jupiter-engine',   version: "${jUnitVersion}"
 }
@@ -43,16 +42,6 @@ test {
 apply plugin: "jacoco"
 jacoco {
     toolVersion = "${jacocoToolVersion}"
-}
-
-/***************************************************************************************************
- * Cucumber Support
- ***************************************************************************************************/
-
-dependencies {
-    testImplementation group: "io.cucumber", name: "cucumber-java", version: "6.6.0"
-    testImplementation group: "io.cucumber", name: "cucumber-junit", version: "6.6.0"
-    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "6.6.0"
 }
 
 jacocoTestReport {
