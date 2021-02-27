@@ -1,3 +1,9 @@
+repositories {
+    maven {
+        url "https://repository.mulesoft.org/nexus/content/repositories/public/"
+    }
+}
+
 dependencies{
     testImplementation group: "io.cucumber", name: "cucumber-jvm", version: "${cucumberVersion}"
     testImplementation group: "io.cucumber", name: "cucumber-java", version: "${cucumberVersion}"
@@ -7,6 +13,7 @@ dependencies{
         exclude group: "commons-logging", module: "commons-logging"
         exclude group: "org.apache.commons", module: "commons-lang3"
     }
+    testImplementation group: "tech.grasshopper", name: "extentreports-cucumber6-adapter", version: "2.6.0"
 }
 
 cucumberReports {
