@@ -18,3 +18,5 @@ gradle-app.setting
 /Phonebook.iws
 /Phonebook.main.iml
 /Phonebook.test.iml
+/trends.json
+/lombok.config

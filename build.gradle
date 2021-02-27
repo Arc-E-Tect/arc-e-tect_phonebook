@@ -1,29 +1,57 @@
 buildscript {
+    ext {
+        minCodeCoverage = 0.80
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter() // for gradle-versions-plugin
+    }
     apply from: 'dependency_version.properties'
+    apply from: 'gradle/jacoco.gradle'
 }
 
 plugins {
     id 'java'
     id 'idea'
+    id 'eclipse'
     id 'application'
+    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
+    id "io.freefair.lombok" version "${lombokGradleVersion}"
+    id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
+    id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
 }
 
+group = 'com.arc_e_tect.blog.phonebook'
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
 apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: "com.github.spacialcircumstances.gradle-cucumber-reporting"
 
 repositories {
     jcenter()
 }
 
+lombok {
+    version = "${lombokVersion}"
+}
+
 dependencies {
-    implementation      group: 'com.google.guava',      name: 'guava',                  version: "${guavaVersion}"
-    testImplementation  group: 'org.junit.jupiter',     name: 'junit-jupiter-api',      version: "${jUnitVersion}"
-    testRuntimeOnly     group: 'org.junit.jupiter',     name: 'junit-jupiter-engine',   version: "${jUnitVersion}"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+jacocoTestReport {
+    dependsOn test
 }
 
 application {
@@ -32,52 +60,30 @@ application {
 
 test {
     useJUnitPlatform()
-
-    finalizedBy ("jacocoTestReport")
-}
-
-/**********************************************************************************
- JaCoCo Support
- **********************************************************************************/
-
-apply plugin: "jacoco"
-jacoco {
-    toolVersion = "${jacocoToolVersion}"
-}
-
-/***************************************************************************************************
- * Cucumber Support
- ***************************************************************************************************/
-
-dependencies {
-    testImplementation group: "io.cucumber", name: "cucumber-java", version: "6.6.0"
-    testImplementation group: "io.cucumber", name: "cucumber-junit", version: "6.6.0"
-    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "6.6.0"
-}
-
-jacocoTestReport {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    testLogging.showStandardStreams = true
     reports {
-        xml.enabled true
-        csv.enabled false
-        html.destination file("${buildDir}/reports/jacocoHtml")
+        junitXml.enabled = true
+        html.enabled = true
     }
+
+    finalizedBy jacocoTestReport
 }
 
-test {
-    jacoco {
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        includes= ["com.arc_e_tect.*"]
-        classDumpDir = file("$buildDir/jacoco/classpathdumps")
-    }
-}
+// -----------------------------------------------------------
+//
+// JUnit
+apply from: 'gradle/junit.gradle'
 
-/***************************************************************************************************
- * Cucumber Support
- ***************************************************************************************************/
+// -----------------------------------------------------------
+//
+// Cucumber
+apply from: 'gradle/cucumber.gradle'
 
-dependencies {
-    testImplementation group: "io.cucumber",    name: "cucumber-java",                  version: "${cucumberVersion}"
-    testImplementation group: "io.cucumber",    name: "cucumber-junit",                 version: "${cucumberVersion}"
-    testImplementation group: 'io.cucumber',    name: 'cucumber-junit-platform-engine', version: "${cucumberVersion}"
-}
+// -----------------------------------------------------------
+//
+// Cucumber
+apply from: 'gradle/sonarlint.gradle'
 

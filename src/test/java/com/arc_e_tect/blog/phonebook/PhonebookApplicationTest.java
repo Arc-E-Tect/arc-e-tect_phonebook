@@ -5,7 +5,9 @@ package com.arc_e_tect.blog.phonebook;
 
 import com.arc_e_tect.blog.phonebook.model.Contact;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PhonebookApplicationTest {
     @Test
@@ -15,7 +17,7 @@ class PhonebookApplicationTest {
         Contact contact = new Contact("+1 555 3247843");
         classUnderTest.addContactToPhonebook(searchKey, contact);
         assertTrue(classUnderTest.getPhonebook().containsKey(searchKey));
-        assertTrue(classUnderTest.getPhonebook().contains(contact));
+        assertEquals(contact, classUnderTest.getPhonebook().get(searchKey));
     }
 
     @Test
@@ -24,6 +26,6 @@ class PhonebookApplicationTest {
         String searchKey = "searchKey";
         Contact contact = new Contact("+1 555 3247843");
         classUnderTest.addContactToPhonebook(searchKey, contact);
-        assertTrue(contact.getPhoneNumber().equals(classUnderTest.getPhoneNumberContactFromPhonebook(searchKey)));
+        assertEquals(contact.getPhoneNumber(),classUnderTest.getPhoneNumberContactFromPhonebook(searchKey));
     }
 }

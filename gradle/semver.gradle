@@ -1,0 +1,10 @@
+// See: https://github.com/jmongard/Git.SemVersioning.Gradle
+semver {
+    groupVersionIncrements = false
+}
+
+version = semver.version
+ext['versionCode'] = semver.infoVersion
+// The buildnumber is either 0, when there are no commits since the last tagging action,
+// or the number of commits since the last tagging action.
+ext['buildNumber'] = ((versionCode.indexOf("+") == -1) ? "0" : versionCode.substring(versionCode.indexOf("+")+1))
