@@ -5,14 +5,17 @@ package com.arc_e_tect.blog.phonebook;
 
 import com.arc_e_tect.blog.phonebook.model.Contact;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class PhonebookApplication {
     public static void main(String[] args) {
+        // This application is doing nothing and is only used to show TDD as part of the Arc-E-Tect
+        // 'Software Engineering done Right' series.
     }
 
-    private Hashtable<String, Contact> phonebook = new Hashtable<>();
-    Hashtable<String, Contact> getPhonebook() {
+    private HashMap<String, Contact> phonebook = new HashMap<>();
+    protected HashMap<String, Contact> getPhonebook() {
         return phonebook;
     }
 
