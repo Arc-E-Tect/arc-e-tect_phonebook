@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="phonebook [clean build jacocoTestReport]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
+  <configuration default="false" name="phonebook [clean build]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -12,7 +12,6 @@
         <list>
           <option value="clean" />
           <option value="build" />
-          <option value="jacocoTestReport" />
         </list>
       </option>
       <option name="vmOptions" value="" />
