@@ -20,6 +20,7 @@ plugins {
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
+    id 'name.remal.sonarlint' version '1.1.6'
 }
 
 group = 'com.arc_e_tect.blog.phonebook'
@@ -80,3 +81,8 @@ apply from: 'gradle/junit.gradle'
 //
 // Cucumber
 apply from: 'gradle/cucumber.gradle'
+
+// -----------------------------------------------------------
+//
+// Cucumber
+apply from: 'gradle/sonarlint.gradle'
