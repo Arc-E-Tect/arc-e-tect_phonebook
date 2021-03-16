@@ -26,7 +26,7 @@ plugins {
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
     id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
-    id "org.owasp.dependencycheck" version "6.1.2"
+    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
 }
 
 group = 'com.arc_e_tect.blog.phonebook'
@@ -91,6 +91,11 @@ apply from: 'gradle/cucumber.gradle'
 
 // -----------------------------------------------------------
 //
-// Cucumber
+// Sonarlint
 apply from: 'gradle/sonarlint.gradle'
+
+// -----------------------------------------------------------
+//
+// Security
+apply from: 'gradle/security.gradle'
 

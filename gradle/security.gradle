@@ -1,0 +1,12 @@
+// See: https://github.com/jeremylong/dependency-check-gradle
+
+dependencyCheck {
+    failOnError = false
+    analyzers {
+        nodeAudit {
+            yarnEnabled = false
+        }
+    }
+}
+
+check.dependsOn dependencyCheckAnalyze
