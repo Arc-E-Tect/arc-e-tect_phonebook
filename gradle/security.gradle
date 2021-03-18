@@ -1,7 +1,7 @@
 // See: https://github.com/jeremylong/dependency-check-gradle
 
 dependencyCheck {
-    failOnError = false
+    failOnError = true
     analyzers {
         nodeAudit {
             yarnEnabled = false
