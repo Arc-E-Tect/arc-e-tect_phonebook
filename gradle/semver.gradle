@@ -1,6 +1,7 @@
 // See: https://github.com/jmongard/Git.SemVersioning.Gradle
 semver {
     groupVersionIncrements = false
+    minorPattern = "\\Afeat|\\Arefactor(?:\\(\\w+\\))?:"
 }
 
 version = semver.version
