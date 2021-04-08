@@ -32,6 +32,7 @@ plugins {
 }
 
 group = 'com.arc_e_tect.blog.phonebook'
+
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
