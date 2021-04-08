@@ -26,18 +26,20 @@ plugins {
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
     id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
-    id "org.owasp.dependencycheck" version "6.1.2"
+    id "org.owasp.dependencycheck" version "${dependencyVulnerabilityChecker}"
 }
 
 group = 'com.arc_e_tect.blog.phonebook'
-
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: "com.github.spacialcircumstances.gradle-cucumber-reporting"
-apply plugin: 'org.owasp.dependencycheck'
+dependencyUpdates.gradleReleaseChannel="current"
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+    }
+}
 
 repositories {
     jcenter()
