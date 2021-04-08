@@ -27,6 +27,8 @@ plugins {
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
     id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
     id "org.owasp.dependencycheck" version "${dependencyVulnerabilityChecker}"
+
+    id "com.cmgapps.licenses" version "${licenseChecker}"
 }
 
 group = 'com.arc_e_tect.blog.phonebook'
