@@ -8,11 +8,12 @@ buildscript {
         jcenter() // for gradle-versions-plugin
     }
 
+    apply from: "dependency_version.properties"
+
     dependencies {
-        classpath 'org.owasp:dependency-check-gradle:6.1.2'
+        classpath  group: "org.owasp", name:"dependency-check-gradle", version:"${dependencyCheckPluginVersion}"
     }
 
-    apply from: 'dependency_version.properties'
     apply from: 'gradle/jacoco.gradle'
 }
 
@@ -26,7 +27,7 @@ plugins {
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
     id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
-    id "org.owasp.dependencycheck" version "${dependencyVulnerabilityChecker}"
+    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
 
     id "com.cmgapps.licenses" version "${licenseChecker}"
 }
@@ -37,6 +38,12 @@ sourceCompatibility = '11'
 targetCompatibility = '11'
 
 dependencyUpdates.gradleReleaseChannel="current"
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
 
 tasks.named("dependencyUpdates").configure {
     rejectVersionIf {
@@ -96,6 +103,11 @@ apply from: 'gradle/cucumber.gradle'
 
 // -----------------------------------------------------------
 //
-// Cucumber
+// Sonarlint
 apply from: 'gradle/sonarlint.gradle'
+
+// -----------------------------------------------------------
+//
+// Security
+apply from: 'gradle/security.gradle'
 
