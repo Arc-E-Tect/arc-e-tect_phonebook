@@ -28,11 +28,14 @@ plugins {
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
     id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
     id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'org.asciidoctor.convert' version "${asciiDoctorGradleVersion}"
 
     id "com.cmgapps.licenses" version "${licenseChecker}"
 }
 
-group = 'com.arc_e_tect.blog.phonebook'
+group = 'com.arc_e_tect.blog'
 
 sourceCompatibility = '11'
 targetCompatibility = '11'
@@ -51,7 +54,14 @@ tasks.named("dependencyUpdates").configure {
     }
 }
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 repositories {
+    mavenCentral()
     jcenter()
 }
 
@@ -59,9 +69,31 @@ lombok {
     version = "${lombokVersion}"
 }
 
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 tasks.withType(JavaCompile) {
