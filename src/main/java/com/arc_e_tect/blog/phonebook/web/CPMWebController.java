@@ -16,10 +16,6 @@ public class CPMWebController {
 
     @Value("${local.server.port:9000}")
     protected int port;
-    @Value("${cpnamespace.port}")
-    protected int cpnamespacePort;
-    @Value("${cpmodel.port}")
-    protected int cpmodelPort;
     @Value("${base.url:http://localhost:}")
     protected String baseUrl;
 }
