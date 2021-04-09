@@ -1,7 +1,6 @@
 package com.arc_e_tect.blog.phonebook;
 
 import com.arc_e_tect.blog.phonebook.model.Contact;
-import com.arc_e_tect.blog.phonebook.PhonebookApplication;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
