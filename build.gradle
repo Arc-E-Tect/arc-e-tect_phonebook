@@ -31,7 +31,7 @@ plugins {
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
     id 'org.asciidoctor.convert' version "${asciiDoctorGradleVersion}"
-
+    id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
     id "com.cmgapps.licenses" version "${licenseChecker}"
 }
 
@@ -85,6 +85,21 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
+
+testSets {
+    intTest { dirName = 'int-test' }
+    bddTest {
+        dirName = 'bdd-test'
+        extendsFrom intTest
+    }
+    docGen {
+        dirName = 'docs'
+    }
+}
+
+intTest.mustRunAfter test
+bddTest.dependsOn intTest
+check.dependsOn bddTest
 
 test {
     outputs.dir snippetsDir
