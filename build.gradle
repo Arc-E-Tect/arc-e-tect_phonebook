@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        minCodeCoverage = 0.80
+        minCodeCoverage = 0.01
     }
 
     repositories {
@@ -118,6 +118,7 @@ testSets {
 dependencies {
     intTestImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
     intTestImplementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
+    intTestImplementation group: "io.cucumber", name: "cucumber-spring", version: "${cucumberVersion}"
 }
 
 intTest.mustRunAfter test
@@ -140,7 +141,7 @@ tasks.withType(JavaCompile) {
 }
 
 jacocoTestReport {
-    dependsOn test
+    dependsOn test, intTest
 }
 
 test {
