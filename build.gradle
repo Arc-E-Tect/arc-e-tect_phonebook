@@ -21,16 +21,14 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id 'application'
     id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
-    id 'name.remal.sonarlint' version "${sonarLintPluginVersion}"
     id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
-    id 'org.asciidoctor.convert' version "${asciiDoctorGradleVersion}"
+    id 'org.asciidoctor.jvm.convert' version "${asciiDoctorGradleVersion}"
     id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
     id "com.cmgapps.licenses" version "${licenseChecker}"
 }
@@ -97,6 +95,11 @@ testSets {
     }
 }
 
+dependencies {
+    intTestImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
+    intTestImplementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
+}
+
 intTest.mustRunAfter test
 bddTest.dependsOn intTest
 check.dependsOn bddTest
@@ -118,10 +121,6 @@ tasks.withType(JavaCompile) {
 
 jacocoTestReport {
     dependsOn test
-}
-
-application {
-    mainClassName = 'com.arc_e_tect.blog.phonebook.PhonebookApplication'
 }
 
 test {
@@ -151,7 +150,7 @@ apply from: 'gradle/cucumber.gradle'
 // -----------------------------------------------------------
 //
 // Sonarlint
-apply from: 'gradle/sonarlint.gradle'
+//apply from: 'gradle/sonarlint.gradle'
 
 // -----------------------------------------------------------
 //
