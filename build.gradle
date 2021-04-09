@@ -63,6 +63,24 @@ repositories {
     jcenter()
 }
 
+apply from: 'gradle/semver.gradle'
+
+// -----------------------------------------------------------
+//
+// Property generation and substitution
+ext['junit-jupiter.version'] = "${jUnitVersion}" // Also change jUnitVersion
+def repositoryDir = rootProject.buildDir.path + File.separator + "repository"
+mkdir repositoryDir
+ext['repositoryDir'] = new File(repositoryDir).toURI()
+ext['projectName'] = project.name
+
+processResources {
+    def props = ["projectName":project.name, "versionName":version, "buildNumber":buildNumber]
+    filesMatching (['**/application.properties', '**/extent-config.xml']) {
+        expand project.properties
+    }
+}
+
 lombok {
     version = "${lombokVersion}"
 }
@@ -82,6 +100,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    implementation group: 'joda-time', name: 'joda-time', version: "${jodaTimeVersion}"
+    implementation group: "com.google.flogger", name: "flogger-system-backend", version: "${floggerVersion}"
 }
 
 testSets {
