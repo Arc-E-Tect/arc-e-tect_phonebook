@@ -118,7 +118,6 @@ testSets {
 dependencies {
     intTestImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
     intTestImplementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
-    intTestImplementation group: "io.cucumber", name: "cucumber-spring", version: "${cucumberVersion}"
 }
 
 intTest.mustRunAfter test
@@ -144,7 +143,9 @@ jacocoTestReport {
     dependsOn test, intTest
 }
 
-test {
+tasks.withType(Test) {
+    systemProperty("spring.profiles.active", "test")
+
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
@@ -158,6 +159,7 @@ test {
     finalizedBy jacocoTestReport
 }
 
+
 // -----------------------------------------------------------
 //
 // JUnit
@@ -170,11 +172,34 @@ apply from: 'gradle/cucumber.gradle'
 
 // -----------------------------------------------------------
 //
-// Sonarlint
-//apply from: 'gradle/sonarlint.gradle'
+// Security
+apply from: 'gradle/security.gradle'
 
 // -----------------------------------------------------------
 //
-// Security
-apply from: 'gradle/security.gradle'
+// ASCII Doctor
+apply from: 'gradle/asciidoctor.gradle'
+
+bootJar {
+    dependsOn asciidoctor
+    mainClass  = 'com.arc_e_tect.blog.phonebook.ArcETectPhonebookApplication'
+    from ("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
+    from ("${cucumberReports.outputDir}/cucumber-html-reports") {
+        into 'static/reports/scenarios'
+    }
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            name = "CriticalPathomizer Models Microservice"
+            additional = [
+                    by: System.properties['user.name'],
+                    continuousIntegration: System.getenv('CI') ? true: false,
+            ]
+        }
+    }
+}
 
