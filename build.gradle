@@ -55,6 +55,8 @@ repositories {
     jcenter()
 }
 
+apply from: 'gradle/semver.gradle'
+
 lombok {
     version = "${lombokVersion}"
 }

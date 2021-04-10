@@ -9,4 +9,4 @@ dependencyCheck {
     }
 }
 
-check.dependsOn dependencyCheckAnalyze
+dependencyCheckAnalyze.mustRunAfter build
