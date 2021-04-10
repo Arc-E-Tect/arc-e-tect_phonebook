@@ -24,8 +24,8 @@ public class IndexSteps {
         httpClient.getRoot();
     }
 
-    @Then("the response contains links to {string}")
-    public void the_response_contains_links_to(String expected) throws JsonProcessingException {
+    @Then("the response contains a link to {string}")
+    public void the_response_contains_a_link_to(String expected) throws JsonProcessingException {
         JsonNode rootNode = stepData.getResponseJsonNode();
         JsonNode linksNode = rootNode.path("_links");
 
