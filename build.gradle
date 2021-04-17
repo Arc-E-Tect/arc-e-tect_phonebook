@@ -116,8 +116,8 @@ testSets {
 }
 
 dependencies {
-    intTestImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
-    intTestImplementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
+    implementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
+    implementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
 }
 
 intTest.mustRunAfter test
