@@ -13,8 +13,7 @@ public class ArcETectPhonebookApplication {
     private static ClientAndServer mockServer = startClientAndServer(9090);
 
 	public static void main(String[] args) {
-		String bodyContacts = "{\n" +
-				"  \"contacts\": [\n" +
+		String bodyContacts = "[" +
 				"    {\n" +
 				"      \"id\": 1,\n" +
 				"      \"name\": \"Arc-E-Tec\",\n" +
@@ -30,8 +29,7 @@ public class ArcETectPhonebookApplication {
 				"      \"name\": \"E-One\",\n" +
 				"      \"phone\": 55523173566\n" +
 				"    }\n" +
-				"  ]\n" +
-				"}";
+				"  ]";
 		String[] bodyContact = {
 				"{\"id\":1,\"name\":\"Arc-E-Tec\",\"phone\":55521212346}"
 				,"{\"id\":2,\"name\":\"Three Axis\",\"phone\":55521467754}"
