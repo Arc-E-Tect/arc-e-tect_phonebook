@@ -13,23 +13,9 @@ public class ArcETectPhonebookApplication {
     private static ClientAndServer mockServer = startClientAndServer(9090);
 
 	public static void main(String[] args) {
-		String bodyContacts = "[" +
-				"    {\n" +
-				"      \"id\": 1,\n" +
-				"      \"name\": \"Arc-E-Tec\",\n" +
-				"      \"phone\": 55521212346\n" +
-				"    },\n" +
-				"    {\n" +
-				"      \"id\": 2,\n" +
-				"      \"name\": \"Three Axis\",\n" +
-				"      \"phone\": 55521467754\n" +
-				"    },\n" +
-				"    {\n" +
-				"      \"id\": 3,\n" +
-				"      \"name\": \"E-One\",\n" +
-				"      \"phone\": 55523173566\n" +
-				"    }\n" +
-				"  ]";
+		String bodyContacts = "[ { \"id\": 1, \"name\": \"Arc-E-Tec\", \"phone\": 55521212346 }," +
+				"{ \"id\": 2, \"name\": \"Three Axis\", \"phone\": 55521467754 }," +
+				"{ \"id\": 3, \"name\": \"E-One\",\"phone\": 55523173566 } ]";
 		String[] bodyContact = {
 				"{\"id\":1,\"name\":\"Arc-E-Tec\",\"phone\":55521212346}"
 				,"{\"id\":2,\"name\":\"Three Axis\",\"phone\":55521467754}"
