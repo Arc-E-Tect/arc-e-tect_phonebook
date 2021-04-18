@@ -21,15 +21,12 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
     id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
-    id 'org.asciidoctor.jvm.convert' version "${asciiDoctorGradleVersion}"
-    id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
     id "com.cmgapps.licenses" version "${licenseChecker}"
 }
 
@@ -85,10 +82,6 @@ lombok {
     version = "${lombokVersion}"
 }
 
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -96,34 +89,13 @@ dependencies {
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "${floggerVersion}"
 }
 
-testSets {
-    intTest { dirName = 'int-test' }
-    bddTest {
-        dirName = 'bdd-test'
-        extendsFrom intTest
-    }
-    docGen {
-        dirName = 'docs'
-    }
-}
-
 dependencies {
     implementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
     implementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
 }
 
-intTest.mustRunAfter test
-bddTest.dependsOn intTest
-check.dependsOn bddTest
-
 test {
-    outputs.dir snippetsDir
     useJUnitPlatform()
-}
-
-asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
 }
 
 tasks.withType(JavaCompile) {
@@ -132,12 +104,10 @@ tasks.withType(JavaCompile) {
 }
 
 jacocoTestReport {
-    dependsOn test, intTest
+    dependsOn test
 }
 
 tasks.withType(Test) {
-    systemProperty("spring.profiles.active", "test")
-
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
@@ -151,7 +121,6 @@ tasks.withType(Test) {
     finalizedBy jacocoTestReport
 }
 
-
 // -----------------------------------------------------------
 //
 // JUnit
@@ -159,34 +128,17 @@ apply from: 'gradle/junit.gradle'
 
 // -----------------------------------------------------------
 //
-// Cucumber
-apply from: 'gradle/cucumber.gradle'
-
-// -----------------------------------------------------------
-//
 // Security
 apply from: 'gradle/security.gradle'
 
-// -----------------------------------------------------------
-//
-// ASCII Doctor
-apply from: 'gradle/asciidoctor.gradle'
-
 bootJar {
-    dependsOn asciidoctor
     mainClass  = 'com.arc_e_tect.blog.phonebook.ArcETectPhonebookApplication'
-    from ("${asciidoctor.outputDir}") {
-        into 'static/docs'
-    }
-    from ("${cucumberReports.outputDir}/cucumber-html-reports") {
-        into 'static/reports/scenarios'
-    }
 }
 
 springBoot {
     buildInfo {
         properties {
-            name = "CriticalPathomizer Models Microservice"
+            name = "Acr-E-Tect Phonebook"
             additional = [
                     by: System.properties['user.name'],
                     continuousIntegration: System.getenv('CI') ? true: false,
