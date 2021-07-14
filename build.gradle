@@ -5,7 +5,6 @@ buildscript {
 
     repositories {
         mavenCentral()
-        jcenter() // for gradle-versions-plugin
     }
 
     apply from: "dependency_version.properties"
@@ -43,7 +42,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 apply from: 'gradle/dependencyupdates.gradle'
