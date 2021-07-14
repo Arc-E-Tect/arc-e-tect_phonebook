@@ -35,20 +35,6 @@ group = 'com.arc_e_tect.blog'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-dependencyUpdates.gradleReleaseChannel="current"
-
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
-}
-
-tasks.named("dependencyUpdates").configure {
-    rejectVersionIf {
-        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
-    }
-}
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -59,6 +45,8 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
+apply from: 'gradle/dependencyupdates.gradle'
 
 apply from: 'gradle/semver.gradle'
 
