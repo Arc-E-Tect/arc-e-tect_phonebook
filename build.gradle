@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        minCodeCoverage = 0.01
+        minCodeCoverage = 0.80
     }
 
     repositories {
@@ -20,13 +20,15 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
-    id "io.freefair.lombok" version "${lombokGradleVersion}"
-    id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
-    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id "io.freefair.lombok" version "${lombokGradleVersion}"
+    id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
+    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
+    id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
+    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id "com.cmgapps.licenses" version "${licenseChecker}"
+    id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
 }
 
 group = 'com.arc_e_tect.blog'
@@ -94,8 +96,20 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
+testSets {
+    bddTest {
+        dirName = 'bdd-test'
+    }
+    docGen {
+        dirName = 'docs'
+    }
+}
+
+bddTest.dependsOn test
+check.dependsOn bddTest
+
 jacocoTestReport {
-    dependsOn test
+    dependsOn bddTest
 }
 
 tasks.withType(Test) {
@@ -105,8 +119,8 @@ tasks.withType(Test) {
     }
     testLogging.showStandardStreams = true
     reports {
-        junitXml.enabled = true
-        html.enabled = true
+        junitXml.required = true
+        html.required = true
     }
 
     finalizedBy jacocoTestReport
@@ -116,6 +130,11 @@ tasks.withType(Test) {
 //
 // JUnit
 apply from: 'gradle/junit.gradle'
+
+// -----------------------------------------------------------
+//
+// Cucumber
+apply from: 'gradle/cucumber.gradle'
 
 // -----------------------------------------------------------
 //

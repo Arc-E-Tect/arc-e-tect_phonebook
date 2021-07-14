@@ -1,10 +1,10 @@
 dependencies{
-    testImplementation group: "io.cucumber", name: "cucumber-jvm", version: "${cucumberVersion}"
-    testImplementation group: "io.cucumber", name: "cucumber-java", version: "${cucumberVersion}"
-    testImplementation group: "io.cucumber", name: "cucumber-junit", version: "${cucumberVersion}"
-    testImplementation group: "io.cucumber", name: "cucumber-spring", version: "${cucumberVersion}"
-    testImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "${cucumberVersion}"
-    testImplementation ("net.masterthought:cucumber-reporting:${cucumberReportingVersion}") {
+    bddTestImplementation group: "io.cucumber", name: "cucumber-jvm", version: "${cucumberVersion}"
+    bddTestImplementation group: "io.cucumber", name: "cucumber-java", version: "${cucumberVersion}"
+    bddTestImplementation group: "io.cucumber", name: "cucumber-junit", version: "${cucumberVersion}"
+    bddTestImplementation group: "io.cucumber", name: "cucumber-spring", version: "${cucumberVersion}"
+    bddTestImplementation group: "io.cucumber", name: "cucumber-junit-platform-engine", version: "${cucumberVersion}"
+    bddTestImplementation ("net.masterthought:cucumber-reporting:${cucumberReportingVersion}") {
         exclude group: "commons-logging", module: "commons-logging"
         exclude group: "org.apache.commons", module: "commons-lang3"
     }
@@ -13,9 +13,10 @@ dependencies{
 cucumberReports {
     outputDir = file("$projectDir/build/reports/tests")
     buildId = "${semver.infoVersion}"
-    reports = files("$projectDir/build/reports/test/Cucumber.json",
-            "$projectDir/build/reports/bdd-test/Cucumber.json",
-            "$projectDir/build/reports/int-test/Cucumber.json")
+    reports = files(
+            "$projectDir/build/reports/test/Cucumber.json",
+            "$projectDir/build/reports/bdd-test/Cucumber.json"
+    )
     trends = file("$projectDir/trends.json")
     trendsLimit = 128
     projectNameOverride = "Arc-E-Tect's - " + project.name
@@ -23,4 +24,3 @@ cucumberReports {
 }
 
 build.finalizedBy generateCucumberReports
-generateCucumberReports.mustRunAfter bddTest
