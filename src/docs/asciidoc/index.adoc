@@ -1,0 +1,47 @@
+:favicon: ./images/favicon/favicon.png
+
+= image:images/phonebook_logo_128x128.png[Arc-E-Tect Phonebook Logo]Arc-E-Tect Phonebook API Guide
+Arc-E-Tect;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[overview]]
+= Overview - Arc-E-Tect Phonebook
+
+[[resources-index]]
+== Index
+
+The index provides the entry point into the service. A `GET` request is used to access the index. Access the index at: link:http://localhost:9090[Arc-E-Tect Phonebook Service,window=_blank].
+
+[[resources-index-access]]
+[[resources-endpoints-get]]
+=== GET all endpoints
+
+A `GET` request is used to retrieve the endpoints of the Arc-E-Tect Phonebook application.
+
+==== Request structure
+
+*Example Request*
+include::{snippets}/get-all-endpoints/http-request.adoc[]
+==== Response structure
+.Response links, contained in the __links_ section of the response
+include::{snippets}/get-all-endpoints/links.adoc[]
+
+*Example Response*
+include::{snippets}/get-all-endpoints/http-response.adoc[]
+
+==== Commandline Invocations
+
+*CURL request*
+include::{snippets}/get-all-endpoints/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/get-all-endpoints/httpie-request.adoc[]
+
+
+
+
