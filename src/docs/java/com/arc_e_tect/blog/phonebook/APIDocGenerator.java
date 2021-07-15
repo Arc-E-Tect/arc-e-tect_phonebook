@@ -1,5 +1,6 @@
 package com.arc_e_tect.blog.phonebook;
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import lombok.extern.flogger.Flogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class APIDocGenerator {
         this.mockMvc.perform(get("/index")
                 .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("{method-name}",
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         indexLinks
                 ));

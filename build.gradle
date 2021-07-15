@@ -24,6 +24,7 @@ plugins {
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
     id "io.freefair.lombok" version "${lombokGradleVersion}"
     id "org.asciidoctor.jvm.convert" version "${asciiDoctorGradleVersion}"
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecGradleVersion}"
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
     id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
@@ -154,6 +155,9 @@ bootJar {
     from ("${cucumberReports.outputDir}/cucumber-html-reports") {
         into 'static/reports/scenarios'
     }
+    from ("${buildDir}/api-spec") {
+        into 'static/specs/openapi3'
+    }
 }
 
 springBoot {
@@ -168,3 +172,23 @@ springBoot {
     }
 }
 
+// -----------------------------------------------------------
+//
+// RestDoc API Spec
+dependencies {
+    testImplementation group: 'com.epages', name: 'restdocs-api-spec-mockmvc', version: "${restdocsApiSpecGradleVersion}"
+}
+
+openapi3 {
+    server = 'https://localhost:9000'
+    title = 'Arc-E-Tect Phonebook API'
+    description = 'API description for the Arc-E-Tect Phonebook service'
+    version = '${version}'
+    format = 'yaml'
+}
+
+postman {
+    title = 'Arc-E-Tect Phonebook API'
+    version = '${version}'
+    baseUrl = 'https://localhost:9000'
+}
