@@ -10,6 +10,7 @@ import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexSteps extends AbstractSteps {
     @Autowired
@@ -29,5 +30,21 @@ public class IndexSteps extends AbstractSteps {
         JsonNode expectedNode = linksNode.path(expected);
 
         assertFalse(expectedNode.isMissingNode(), "The expected link was found.");
+    }
+
+    @Then("the relative path to {string} is {string}")
+    public void the_relative_path_to_is(String link, String expected) throws JsonProcessingException {
+        JsonNode rootNode = stepData.getResponseJsonNode();
+        JsonNode linksNode = rootNode.path("_links");
+
+        JsonNode linkNode = linksNode.path(link);
+        JsonNode referenceNode = linkNode.path("href");
+        String referenceString = referenceNode.asText();
+
+        String baseUrl = String.format("%s:%d",stepData.getBaseurl(), stepData.getServerPort());
+
+        referenceString = referenceString.substring(referenceString.indexOf(baseUrl) + baseUrl.length());
+
+        assertTrue(referenceString.equals(expected));
     }
 }

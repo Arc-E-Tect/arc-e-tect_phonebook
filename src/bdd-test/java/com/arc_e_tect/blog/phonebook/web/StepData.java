@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
@@ -27,6 +28,10 @@ public class StepData {
     private ResponseEntity<JsonNode> responseEntity;
     private HttpEntity<String> request;
     private HttpStatus httpStatus;
+    private String baseurl = "http://localhost";
+
+    @Value("${server.port}")
+    private Integer serverPort;
 
     private ObjectMapper mapper;
 
