@@ -23,6 +23,7 @@ plugins {
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
     id "io.freefair.lombok" version "${lombokGradleVersion}"
+    id "org.asciidoctor.jvm.convert" version "${asciiDoctorGradleVersion}"
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
     id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
@@ -103,10 +104,11 @@ testSets {
 }
 
 bddTest.dependsOn test
-check.dependsOn bddTest
+docGen.mustRunAfter bddTest
+check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn bddTest
+    dependsOn bddTest, docGen
 }
 
 tasks.withType(Test) {
@@ -138,8 +140,20 @@ apply from: 'gradle/cucumber.gradle'
 // Security
 apply from: 'gradle/security.gradle'
 
+// -----------------------------------------------------------
+//
+// ASCII Doctor
+apply from: 'gradle/asciidoctor.gradle'
+
 bootJar {
+    dependsOn asciidoctor
     mainClass  = 'com.arc_e_tect.blog.phonebook.ArcETectPhonebookApplication'
+    from ("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
+    from ("${cucumberReports.outputDir}/cucumber-html-reports") {
+        into 'static/reports/scenarios'
+    }
 }
 
 springBoot {
