@@ -29,7 +29,7 @@ public abstract class AbstractHttpClient {
 
     protected ObjectMapper mapper = new ObjectMapper();
 
-    AbstractHttpClient() {
+    protected AbstractHttpClient() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         mapper.registerModule(new Jackson2HalModule());
     }
@@ -53,16 +53,20 @@ public abstract class AbstractHttpClient {
     public RepresentationModel getBodyAsResource(RepresentationModel representationModel) {
         RepresentationModel result = null;
 
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.registerModule(new Jackson2HalModule());
+
         try {
             result = mapper.readValue(getBody(), representationModel.getClass());
         } catch (IOException e) {
-            log.atWarning().withCause(e).log(e.getMessage());
+            log.atInfo().withCause(e).log(e.getMessage());
         }
 
         return result;
     }
 
-    abstract String getApiEndpoint();
+    abstract protected String getApiEndpoint();
     public String apiEndpoint() {
         return SERVER_URL + ":" + port + getApiEndpoint();
     }
