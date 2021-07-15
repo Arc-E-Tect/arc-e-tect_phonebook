@@ -1,5 +1,6 @@
 package com.arc_e_tect.blog.phonebook.web.index;
 
+import com.arc_e_tect.blog.phonebook.web.contacts.ContactsController;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ public class IndexController {
     public RepresentationModel index() {
         RepresentationModel index = new RepresentationModel();
         index.add(linkTo(IndexController.class).withSelfRel());
+        index.add(linkTo(ContactsController.class).withRel("contacts"));
         return index;
     }
 
