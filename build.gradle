@@ -33,9 +33,6 @@ plugins {
 
 group = 'com.arc_e_tect.blog'
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
