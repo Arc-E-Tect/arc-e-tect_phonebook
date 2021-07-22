@@ -1,0 +1,35 @@
+// This file is provided by ARC-E-TECT (Arc-E-Tect.medium.com)
+// and provided under the Creative Commons - CC BY-SA 4.0 license
+// You can share this code, change it as you see fit and even make money from it,
+// as long as you agree to share under the same circumstance.
+// See: https://creativecommons.org/licenses/by-sa/4.0/
+
+import java.text.SimpleDateFormat
+
+dependencies {
+    implementation group: 'org.springframework.restdocs',  name: 'spring-restdocs-asciidoctor', version: "${springRestDocsVersion}"
+    testImplementation group: 'org.springframework.restdocs',  name: 'spring-restdocs-mockmvc', version: "${springRestDocsVersion}"
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    attributes "snippets": snippetsDir,
+            "source-highlighter": "coderay",
+            "version": version,
+            "date": new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
+            "stylesheet": "themes/riak.css"
+    inputs.dir snippetsDir
+    dependsOn docGen
+    logDocuments true
+    outputDir "build/docs"
+    baseDirFollowsSourceDir()
+}
+
+build.dependsOn asciidoctor

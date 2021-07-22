@@ -1,10 +1,9 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        jcenter()
         mavenCentral()
     }
 }
 
-rootProject.name = 'Phonebook'
+rootProject.name = 'Arc-E-Tect Phonebook'
 
