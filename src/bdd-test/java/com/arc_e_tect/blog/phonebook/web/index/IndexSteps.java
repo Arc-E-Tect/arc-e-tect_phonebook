@@ -1,7 +1,7 @@
 package com.arc_e_tect.blog.phonebook.web.index;
 
 import com.arc_e_tect.blog.phonebook.TestSupportFunctions;
-import com.arc_e_tect.blog.phonebook.web.AbstractSteps;
+import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,13 +15,16 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IndexSteps extends AbstractSteps {
+public class IndexSteps {
+    @Autowired
+    protected StepData stepData;
+
     @Autowired
     private IndexHttpClient httpClient;
 
     @When("the API consumer requests {string}")
-    public void the_api_consumer_requests(String string) {
-        httpClient.executeGet(string);
+    public void the_api_consumer_requests(String relative_url) {
+        httpClient.executeGet(relative_url);
     }
 
     @Then("the response is the same as if requesting {string}")
