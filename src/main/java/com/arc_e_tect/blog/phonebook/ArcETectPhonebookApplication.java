@@ -21,16 +21,13 @@ public class ArcETectPhonebookApplication {
 				,"{\"id\":2,\"name\":\"Three Axis\",\"phone\":55521467754}"
 				,"{\"id\":3,\"name\":\"E-One\",\"phone\":55523173566}"
 		};
-		mockServer.when(request().withMethod("GET")
-				.withPath("/contacts"))
-				.respond(response().withStatusCode(200)
-						.withHeader("Content-Type", "application/hal+json")
-						.withBody(bodyContacts));
+
 		mockServer.when(request().withMethod("GET")
 				.withPath("/contacts/1"))
 				.respond(response().withStatusCode(200)
 						.withHeader("Content-Type", "application/hal+json")
 						.withBody(bodyContact[0]));
+/*
 		mockServer.when(request().withMethod("GET")
 				.withPath("/contacts/2"))
 				.respond(response().withStatusCode(200)
@@ -41,8 +38,33 @@ public class ArcETectPhonebookApplication {
 				.respond(response().withStatusCode(200)
 						.withHeader("Content-Type", "application/hal+json")
 						.withBody(bodyContact[2]));
+*/
+
+/*
 		mockServer.when(request().withMethod("GET")
-				.withPath("/contacts/.*"))
+						.withPath("/contacts/Arc-E-Tect"))
+				.respond(response().withStatusCode(200)
+						.withHeader("Content-Type", "application/hal+json")
+						.withBody(bodyContact[0]));
+		mockServer.when(request().withMethod("GET")
+						.withPath("/contacts/names/Arc-E-Tect"))
+				.respond(response().withStatusCode(200)
+						.withHeader("Content-Type", "application/hal+json")
+						.withBody(bodyContact[0]));
+		mockServer.when(request().withMethod("GET")
+						.withPath("/contacts").withQueryStringParameter("name","Arc-E-Tect"))
+				.respond(response().withStatusCode(200)
+						.withHeader("Content-Type", "application/hal+json")
+						.withBody(bodyContact[0]));
+*/
+		mockServer.when(request().withMethod("GET")
+						.withPath("/contacts"))
+				.respond(response().withStatusCode(200)
+						.withHeader("Content-Type", "application/hal+json")
+						.withBody(bodyContacts));
+
+		mockServer.when(request().withMethod("GET")
+						.withPath("/contacts/.*"))
 				.respond(response().withStatusCode(404)
 						.withHeader("Content-Type", "application/hal+json")
 						.withBody("{\"error\" : \"Contact not found\"}"));
