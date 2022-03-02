@@ -1,11 +1,13 @@
+// This file is provided by ARC-E-TECT (Arc-E-Tect.medium.com)
+// and provided under the Creative Commons - CC BY-SA 4.0 license
+// You can share this code, change it as you see fit and even make money from it,
+// as long as you agree to share under the same circumstance.
+// See: https://creativecommons.org/licenses/by-sa/4.0/
+
 dependencies {
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine',   version: "${jUnitVersion}"
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api',      version: "${jUnitVersion}"
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params',   version: "${jUnitVersion}"
-    testImplementation (group: 'org.springframework.boot',  name: 'spring-boot-starter-test',   version: "${springBootVersion}") {
-        exclude group: "junit"
-    }
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: "${springBootVersion}"
+    testImplementation(platform("org.junit:junit-bom:${jUnitVersion}"))
+    testImplementation("org.junit.platform:junit-platform-suite")
+    testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
 test {
@@ -14,5 +16,6 @@ test {
 
 task testReport(type: TestReport) {
     destinationDir = file("$buildDir/reports/allTests")
+    // Include the results from the `test` task in all subprojects
+    reportOn subprojects*.test
 }
-
