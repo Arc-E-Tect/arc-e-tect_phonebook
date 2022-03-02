@@ -33,8 +33,6 @@ plugins {
     id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
 }
 
-group = 'com.arc_e_tect.blog'
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -156,7 +154,7 @@ bootJar {
         into 'static/reports/scenarios'
     }
     from ("${buildDir}/api-spec") {
-        into 'static/specs/openapi3'
+        into 'static/specs'
     }
 }
 
@@ -184,11 +182,11 @@ openapi3 {
     title = 'Arc-E-Tect Phonebook API'
     description = 'API description for the Arc-E-Tect Phonebook service'
     version = '${version}'
-    format = 'yaml'
+    format = 'json'
 }
 
 postman {
     title = 'Arc-E-Tect Phonebook API'
-    version = '${version}'
+    version = "${version}"
     baseUrl = 'https://localhost:9000'
 }
