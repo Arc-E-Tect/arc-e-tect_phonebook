@@ -1,12 +1,11 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
-import com.arc_e_tect.blog.phonebook.web.AbstractSteps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import lombok.extern.flogger.Flogger;
 
 @Flogger
-public class ContactSteps extends AbstractSteps {
+public class ContactSteps {
 
     @Given("the phonebook has {int} contacts")
     public void the_phonebook_has_contacts(Integer numberOfContacts) {
