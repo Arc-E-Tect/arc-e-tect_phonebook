@@ -11,5 +11,5 @@ After cloning the repository make sure you have Gradle 6+ installed as well as J
 
 ## Tips 
 Update to the latest Gradle release using:
-`gradle wrapper --gradle-version 7.1.1 --distribution-type bin`
+`gradle wrapper --gradle-version 7.4 --distribution-type bin`
 
