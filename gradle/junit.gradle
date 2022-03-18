@@ -7,7 +7,6 @@
 dependencies {
     testImplementation(platform("org.junit:junit-bom:${jUnitVersion}"))
     testImplementation("org.junit.platform:junit-platform-suite")
-    testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
 test {
