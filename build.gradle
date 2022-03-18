@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        minCodeCoverage = 0.01
+        minCodeCoverage = 0.80
     }
 
     repositories {
@@ -20,32 +20,17 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
-    id "io.freefair.lombok" version "${lombokGradleVersion}"
-    id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
-    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id "io.freefair.lombok" version "${lombokGradleVersion}"
+    id "org.asciidoctor.jvm.convert" version "${asciiDoctorGradleVersion}"
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecGradleVersion}"
+    id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
+    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
+    id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
+    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id "com.cmgapps.licenses" version "${licenseChecker}"
-}
-
-group = 'com.arc_e_tect.blog'
-
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
-dependencyUpdates.gradleReleaseChannel="current"
-
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
-}
-
-tasks.named("dependencyUpdates").configure {
-    rejectVersionIf {
-        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
-    }
+    id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
 }
 
 configurations {
@@ -57,6 +42,8 @@ configurations {
 repositories {
     mavenCentral()
 }
+
+apply from: 'gradle/dependencyupdates.gradle'
 
 apply from: 'gradle/semver.gradle'
 
@@ -81,9 +68,18 @@ lombok {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: "${springBootVersion}"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: "${springBootVersion}"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springBootVersion}"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: "${springBootVersion}"
+    testImplementation (group: 'org.springframework.boot',  name: 'spring-boot-starter-test',   version: "${springBootVersion}") {
+        exclude group: "junit"
+    }
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "${floggerVersion}"
 }
 
@@ -101,8 +97,21 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
+testSets {
+    bddTest {
+        dirName = 'bdd-test'
+    }
+    docGen {
+        dirName = 'docs'
+    }
+}
+
+bddTest.dependsOn test
+docGen.mustRunAfter bddTest
+check.dependsOn bddTest, docGen
+
 jacocoTestReport {
-    dependsOn test
+    dependsOn bddTest, docGen
 }
 
 tasks.withType(Test) {
@@ -112,8 +121,8 @@ tasks.withType(Test) {
     }
     testLogging.showStandardStreams = true
     reports {
-        junitXml.enabled = true
-        html.enabled = true
+        junitXml.required = true
+        html.required = true
     }
 
     finalizedBy jacocoTestReport
@@ -126,11 +135,31 @@ apply from: 'gradle/junit.gradle'
 
 // -----------------------------------------------------------
 //
+// Cucumber
+apply from: 'gradle/cucumber.gradle'
+
+// -----------------------------------------------------------
+//
 // Security
 apply from: 'gradle/security.gradle'
 
+// -----------------------------------------------------------
+//
+// ASCII Doctor
+apply from: 'gradle/asciidoctor.gradle'
+
 bootJar {
+    dependsOn asciidoctor
     mainClass  = 'com.arc_e_tect.blog.phonebook.ArcETectPhonebookApplication'
+    from ("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
+    from ("${cucumberReports.outputDir}/cucumber-html-reports") {
+        into 'static/reports/scenarios'
+    }
+    from ("${buildDir}/api-spec") {
+        into 'static/specs'
+    }
 }
 
 springBoot {
@@ -145,3 +174,23 @@ springBoot {
     }
 }
 
+// -----------------------------------------------------------
+//
+// RestDoc API Spec
+dependencies {
+    testImplementation group: 'com.epages', name: 'restdocs-api-spec-mockmvc', version: "${restdocsApiSpecGradleVersion}"
+}
+
+openapi3 {
+    server = 'https://localhost:9000'
+    title = 'Arc-E-Tect Phonebook API'
+    description = 'API description for the Arc-E-Tect Phonebook service'
+    version = '${version}'
+    format = 'json'
+}
+
+postman {
+    title = 'Arc-E-Tect Phonebook API'
+    version = "${version}"
+    baseUrl = 'https://localhost:9000'
+}

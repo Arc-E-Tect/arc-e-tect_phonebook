@@ -1,3 +1,9 @@
+// This file is provided by ARC-E-TECT (Arc-E-Tect.medium.com)
+// and provided under the Creative Commons - CC BY-SA 4.0 license
+// You can share this code, change it as you see fit and even make money from it,
+// as long as you agree to share under the same circumstance.
+// See: https://creativecommons.org/licenses/by-sa/4.0/
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
 
@@ -16,8 +22,8 @@ jacocoTestReport {
     sourceSets sourceSets.main    // important!
     executionData fileTree(project.buildDir.absolutePath).include("jacoco/*.exec")
     reports {
-        xml.enabled false
-        csv.enabled true
+        xml.required = false
+        csv.required = true
         html.destination file("${buildDir}/reports/jacoco/Html")
         csv.destination file("${buildDir}/reports/jacoco/jacoco.csv")
     }
@@ -26,6 +32,8 @@ jacocoTestReport {
         getClassDirectories().setFrom(classDirectories.files.collect {
             fileTree(dir: it,
                     exclude: [
+                            '**/com/arc_e_tect/blog/phonebook/ArcETectPhonebookApplication.class',
+                            '**/com/arc_e_tect/blog/phonebook/**/exception/**.class'
                     ]
             )
         })
@@ -34,6 +42,16 @@ jacocoTestReport {
 
 jacocoTestCoverageVerification {
     executionData fileTree(project.buildDir.absolutePath).include("jacoco/*.exec")
+    afterEvaluate {
+        getClassDirectories().setFrom(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                            '**/com/arc_e_tect/blog/phonebook/ArcETectPhonebookApplication.class',
+                            '**/com/arc_e_tect/blog/phonebook/**/exception/**.class'
+                    ]
+            )
+        })
+    }
     violationRules {
         rule {
             limit {

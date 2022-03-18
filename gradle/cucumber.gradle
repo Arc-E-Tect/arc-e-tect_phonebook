@@ -1,0 +1,31 @@
+// This file is provided by ARC-E-TECT (Arc-E-Tect.medium.com)
+// and provided under the Creative Commons - CC BY-SA 4.0 license
+// You can share this code, change it as you see fit and even make money from it,
+// as long as you agree to share under the same circumstance.
+// See: https://creativecommons.org/licenses/by-sa/4.0/
+
+dependencies{
+    testImplementation(platform("io.cucumber:cucumber-bom:${cucumberVersion}"))
+    testImplementation("io.cucumber:cucumber-java")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine")
+
+    testImplementation group: "io.cucumber", name: "cucumber-spring", version: "${cucumberVersion}"
+    testImplementation ("net.masterthought:cucumber-reporting:${cucumberReportingVersion}") {
+        exclude group: "commons-logging", module: "commons-logging"
+        exclude group: "org.apache.commons", module: "commons-lang3"
+    }
+}
+
+cucumberReports {
+    outputDir = file("$projectDir/build/reports/tests")
+    buildId = "${semver.infoVersion}"
+    reports = files(
+            "$projectDir/build/reports/**/Cucumber.json"
+    )
+    trends = file("$projectDir/trends.json")
+    trendsLimit = 128
+    projectNameOverride = "Arc-E-Tect's - " + project.name
+    testTasksFinalizedByReport=false
+}
+
+generateCucumberReports.mustRunAfter bddTest
