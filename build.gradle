@@ -84,11 +84,6 @@ dependencies {
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "${floggerVersion}"
 }
 
-dependencies {
-    implementation group: 'org.mock-server', name: 'mockserver-client-java', version: "${mockServerVersion}"
-    implementation group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
-}
-
 test {
     useJUnitPlatform()
 }
