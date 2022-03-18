@@ -31,6 +31,7 @@ plugins {
     id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
     id "com.cmgapps.licenses" version "${licenseChecker}"
     id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
+    id "org.cyclonedx.bom" version "${cycloneDxVersion}"
 }
 
 configurations {
