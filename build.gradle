@@ -32,6 +32,7 @@ plugins {
     id "com.cmgapps.licenses" version "${licenseChecker}"
     id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
     id "org.cyclonedx.bom" version "${cycloneDxVersion}"
+    id "nebula.lint" version "${gradleLintVersion}"
 }
 
 configurations {
