@@ -1,22 +1,37 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
-import io.cucumber.java.en.Given;
+import com.arc_e_tect.blog.phonebook.web.StepData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import lombok.extern.flogger.Flogger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Flogger
 public class ContactSteps {
+    @Autowired
+    protected StepData stepData;
 
-    @Given("the phonebook has {int} contacts")
-    public void the_phonebook_has_contacts(Integer numberOfContacts) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @Autowired
+    private ContactsHttpClient httpClient;
+
+    @When("the API consumer requests all contacts")
+    public void the_api_consumer_requests() throws IOException {
+        httpClient.getAll();
     }
 
     @Then("the response contains no contacts")
-    public void the_response_contains_no_contacts() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_response_contains_no_contacts() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(httpClient.getBody());
+        JsonNode contactsNode = rootNode.path("_embedded").path("contacts");
+        assertEquals(0, contactsNode.size());
     }
 
 }

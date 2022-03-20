@@ -13,7 +13,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 
@@ -53,7 +52,11 @@ public class IndexHttpClient extends AbstractHttpClient {
 
     protected final String getApiEndpoint() {return "/";}
 
-    public void getRoot() throws IOException {
+    public void getRoot() {
         executeGet();
+    }
+
+    public void getIndex() {
+        executeGet("/index");
     }
 }
