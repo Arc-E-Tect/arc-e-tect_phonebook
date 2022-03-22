@@ -1,6 +1,6 @@
 :favicon: ./images/favicon/favicon.png
 
-= image:images/phonebook_logo_128x128.png[Arc-E-Tect Phonebook Logo]Arc-E-Tect Phonebook API Guide
+= image:images/phonebook_logo_128x128.png[Arc-E-Tect Phonebook Logo] Arc-E-Tect Phonebook API Guide
 Arc-E-Tect;
 :doctype: book
 :icons: font
