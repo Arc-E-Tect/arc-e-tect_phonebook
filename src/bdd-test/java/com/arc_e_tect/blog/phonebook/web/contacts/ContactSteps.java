@@ -30,7 +30,8 @@ public class ContactSteps {
     public void the_response_contains_no_contacts() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(httpClient.getBody());
-        JsonNode contactsNode = rootNode.path("_embedded").path("contacts");
+        JsonNode embeddedNode = rootNode.path("_embedded");
+        JsonNode contactsNode = embeddedNode.path("contacts");
         assertEquals(0, contactsNode.size());
     }
 
