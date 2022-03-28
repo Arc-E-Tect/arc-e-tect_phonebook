@@ -1,10 +1,16 @@
 {
   "openapi": "3.0.2",
+  "info": {
+    "title": "Arc-E-Tect Phonebook API",
+    "version": "1.0"
+  },
   "paths": {
-    "/contact": {
+    "/contacts": {
       "get": {
+        "description": "Get all Contacts stored in the Arc-E-Tect Phonebook.",
         "responses": {
           "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
