@@ -1,14 +1,31 @@
 {
   "openapi": "3.0.2",
-  "info": {
-    "title": "Arc-E-Tect Phonebook API",
-    "version": "1.0"
-  },
-  "servers": [
-    {
-      "url": "https://localhost:9090/"
-    }
-  ],
   "paths": {
+    "/contact": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "phone_number" : {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
