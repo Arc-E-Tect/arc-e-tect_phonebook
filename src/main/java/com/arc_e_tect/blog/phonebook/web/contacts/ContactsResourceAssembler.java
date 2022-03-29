@@ -1,6 +1,5 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
-import com.arc_e_tect.blog.annotation.ExcludeFromCodeCoverageGeneratedReport;
 import com.arc_e_tect.blog.phonebook.domain.Contact;
 import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import org.springframework.hateoas.CollectionModel;
@@ -20,7 +19,7 @@ public class ContactsResourceAssembler extends RepresentationModelAssemblerSuppo
     }
 
     @Override
-    @ExcludeFromCodeCoverageGeneratedReport
+//    @ExcludeFromCodeCoverageGeneratedReport
     public ContactResource toModel(Contact contact) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not Implemented yet...");

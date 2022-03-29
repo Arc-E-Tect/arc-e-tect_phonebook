@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value= {"/contacts"})
@@ -37,7 +39,11 @@ public class ContactsController {
             })
     @GetMapping(produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
     public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response) {
-        return null;
+        List<Contact> contactList = new LinkedList<>();
+
+        CollectionModel<ContactResource> result = resourceAssembler.toCollectionModel(contactList);
+
+        return result;
     }
 
 }
