@@ -30,12 +30,12 @@ public class ContactsController {
         this.resourceAssembler = resourceAssembler;
     }
 
-    @Operation(summary = "Get all micro plastics from the Atlantic.",
-            description = "# Plastic Man\n\nGet all **spider legs** stored in the _closet_.\n\nPlastic Men have four limbs: a left and a right arm and a left and right leg.")
+    @Operation(summary = "Get all Contacts.",
+            description = "# Contact\n\nGet all **Contacts** stored in the _Arc-E-Tect_ Phonebook.\n\nContacts have three fields: an id, which is a number, a name, which is the fullname of the Contact and a phone-number.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "OK", description = "200",
-                    content = { @Content(mediaType = "application/johnson",
-                            schema = @Schema(implementation = String.class)) }),
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Contact.class)) }),
             })
     @GetMapping(produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
     public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response) {
