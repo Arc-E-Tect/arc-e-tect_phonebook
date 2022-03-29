@@ -109,7 +109,7 @@ docGen.mustRunAfter bddTest
 check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn bddTest, docGen
+    dependsOn bddTest, docGen, openapi3
 }
 
 tasks.withType(Test) {
@@ -183,7 +183,7 @@ openapi3 {
     server = 'https://localhost:9000'
     title = 'Arc-E-Tect Phonebook API'
     description = 'API description for the Arc-E-Tect Phonebook service'
-    version = '${version}'
+    version = '1.0'
     format = 'json'
 }
 
