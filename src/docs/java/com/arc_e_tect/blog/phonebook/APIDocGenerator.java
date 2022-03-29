@@ -73,7 +73,8 @@ public class APIDocGenerator {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        links(linkWithRel("self").description("The URL to the endpoint with to retrieve all contacts."))
                 ));
     }
 }
