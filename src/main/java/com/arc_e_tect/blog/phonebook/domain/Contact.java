@@ -14,4 +14,7 @@ import org.springframework.hateoas.server.core.Relation;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper=false)
 @NoArgsConstructor
 public class Contact {
+    private int id;
+    private String name;
+    private int phone;
 }
