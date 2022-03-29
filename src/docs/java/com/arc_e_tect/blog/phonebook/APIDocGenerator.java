@@ -41,6 +41,10 @@ public class APIDocGenerator {
             linkWithRel("contacts").description("The URL referring to the list of Contacts in the Phonebook.")
     );
 
+    protected final LinksSnippet contactLinks = links(
+            linkWithRel("self").description("The URL to the endpoint with to retrieve all contacts.")
+    );
+
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -59,5 +63,10 @@ public class APIDocGenerator {
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         indexLinks
                 ));
+    }
+
+    @Test
+    void getAllContacts() throws Exception {
+        this.mockMvc.perform(get("/contacts")).andDo(print()).andExpect(status().isOk());
     }
 }
