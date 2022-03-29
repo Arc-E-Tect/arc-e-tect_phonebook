@@ -67,6 +67,11 @@ public class APIDocGenerator {
 
     @Test
     void getAllContacts() throws Exception {
-        this.mockMvc.perform(get("/contacts")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(get("/contacts")
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
+                ));
     }
 }
