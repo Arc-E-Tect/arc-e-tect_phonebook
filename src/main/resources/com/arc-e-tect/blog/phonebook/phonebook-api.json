@@ -7,7 +7,8 @@
   "paths": {
     "/contacts": {
       "get": {
-        "description": "Get all Contacts stored in the Arc-E-Tect Phonebook.",
+        "summary": "Get all Contacts.",
+        "description": "Get all Contacts stored in the Arc-E-Tect Phonebook.\n\nContacts have three fields: an id, which is a number, a name, which is the fullname of the Contact and a phone-number.",
         "responses": {
           "200": {
             "description": "OK",
@@ -19,13 +20,16 @@
                     "type": "object",
                     "properties": {
                       "id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "A unique identifier for the Contact."
                       },
                       "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "The full name of the Contact."
                       },
                       "phone_number" : {
-                        "type": "string"
+                        "type": "integer",
+                        "description": "The phone-number of the Contact."
                       }
                     }
                   }
@@ -38,3 +42,4 @@
     }
   }
 }
+
