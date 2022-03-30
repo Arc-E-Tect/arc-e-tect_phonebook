@@ -109,7 +109,7 @@ docGen.mustRunAfter bddTest
 check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn bddTest, docGen, openapi3
+    dependsOn bddTest, docGen
 }
 
 tasks.withType(Test) {
