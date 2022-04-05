@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        minCodeCoverage = 1.0
+        minCodeCoverage = 0.35
     }
 
     repositories {
