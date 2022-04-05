@@ -44,6 +44,7 @@ jobs:
 
       - name: Prepare Gradle
         run: |
+          chmod +x ./gradlew
           ./gradlew clean
 
       - name: Check dependencies for vulnerabilities
@@ -52,7 +53,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew build generateCucumberReports testReport bootJar
+          ./gradlew build asciidoctor openapi3 postman
 
       - name: Update release with basic commit message
         if: env.GIT_COMMIT_MESSAGE_BODY == ''
@@ -73,11 +74,6 @@ jobs:
           git push origin --tags
           git push origin --all --force
 
-      - name: Visualize Sources
-        uses: githubocto/repo-visualizer@main
-        with:
-          excluded_paths: "ignore,.github"
-
       - name: Show version information
         run:  |
           ./gradlew printVersion
@@ -92,13 +88,20 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: API-documentation
-          path: build/docs
+          path: |
+            build/docs
+            build/api-spec
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v2
         with:
           name: test-reports
           path: build/reports/tests
+
+      - name: Visualize Sources
+        uses: githubocto/repo-visualizer@main
+        with:
+          excluded_paths: "ignore,.github"
 
       - name: Generate Jacoco Badge
         id: jacoco
