@@ -47,9 +47,9 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean
 
-#      - name: Check dependencies for vulnerabilities
-#        run: |
-#          ./gradlew dependencyCheckAnalyze
+      - name: Check dependencies for vulnerabilities
+        run: |
+          ./gradlew dependencyCheckAnalyze
 
       - name: Build with Gradle
         run: |
