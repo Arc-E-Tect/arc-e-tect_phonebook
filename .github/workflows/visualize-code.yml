@@ -8,9 +8,14 @@ jobs:
   get_data:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Update diagram
-        uses: githubocto/repo-visualizer@main
-        with:
-          excluded_paths: "ignore,.github"
+    - name: Update diagram
+      id: make_diagram
+      uses: githubocto/repo-visualizer@0.8.1
+      with:
+        output_file: "output-diagram.svg"
+        artifact_name: "arc-e-tect_sources"
+    - name: Get artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: "arc-e-tect_sources"
+        path: "downloads"
