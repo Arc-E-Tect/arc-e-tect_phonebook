@@ -8,8 +8,6 @@ on:
       - '.github/badges/**'
       - '.idea/**'
       - '**/*.md'
-      - '.github/workflows/merge**'
-      - '.github/workflows/push**'
       - '.github/workflows/nigthly**'
 
 jobs:
@@ -74,6 +72,11 @@ jobs:
         run: |
           git push origin --tags
           git push origin --all --force
+
+      - name: Visualize Sources
+        uses: githubocto/repo-visualizer@main
+        with:
+          excluded_paths: "ignore,.github"
 
       - name: Show version information
         run:  |
