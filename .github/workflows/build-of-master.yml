@@ -47,27 +47,13 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean
 
-      - name: Check dependencies for vulnerabilities
-        run: |
-          ./gradlew dependencyCheckAnalyze
+      #      - name: Check dependencies for vulnerabilities
+      #        run: |
+      #          ./gradlew dependencyCheckAnalyze
 
       - name: Build with Gradle
         run: |
           ./gradlew build asciidoctor openapi3 postman
-
-      - name: Update release with basic commit message
-        if: env.GIT_COMMIT_MESSAGE_BODY == ''
-        run: |
-          ./gradlew releaseVersion --message="${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}"
-
-      - name: Update release with extended commit message
-        if: env.GIT_COMMIT_MESSAGE_BODY != ''
-        run:  |
-          ./gradlew releaseVersion --message="${{ env.GIT_COMMIT_MESSAGE_BODY }}"
-
-      - name: Show version information
-        run:  |
-          ./gradlew printVersion
 
       - name: Push changes back to origin
         run: |
