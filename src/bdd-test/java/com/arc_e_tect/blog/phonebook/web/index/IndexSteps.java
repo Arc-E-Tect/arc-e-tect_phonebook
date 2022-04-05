@@ -22,9 +22,14 @@ public class IndexSteps {
     @Autowired
     private IndexHttpClient httpClient;
 
-    @When("the API consumer requests {string}")
-    public void the_api_consumer_requests(String relative_url) {
-        httpClient.executeGet(relative_url);
+    @When("the API consumer requests the root")
+    public void the_api_consumer_requests_the_root() {
+        httpClient.getRoot();
+    }
+
+    @When("the API consumer requests the index")
+    public void the_api_consumer_requests_the_index() {
+        httpClient.getIndex();
     }
 
     @Then("the response is the same as if requesting {string}")

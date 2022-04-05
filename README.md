@@ -1,6 +1,7 @@
 # arc-e-tect_phonebook
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/organization/repository)
+[![Build of Master](https://github.com/Arc-E-Tect/arc-e-tect_phonebook/actions/workflows/build-of-master.yml/badge.svg?branch=master)](https://github.com/Arc-E-Tect/arc-e-tect_phonebook/actions/workflows/build-of-master.yml) ![JaCoCo Code Coverage](/.github/badges/jacoco.svg)
+
 
 Public Repository in support of the Medium article series by Arc-E-Tect on the development of software.
 
@@ -11,5 +12,8 @@ After cloning the repository make sure you have Gradle 6+ installed as well as J
 
 ## Tips 
 Update to the latest Gradle release using:
-`gradle wrapper --gradle-version 7.4.1 --distribution-type bin`
+`.\gradlew wrapper --gradle-version 7.4.1 --distribution-type bin`
 
+# Source Code
+
+![Visualization of the codebase](./diagram.svg)

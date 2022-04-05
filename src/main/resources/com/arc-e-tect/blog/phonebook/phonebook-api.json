@@ -1,0 +1,45 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Arc-E-Tect Phonebook API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/contacts": {
+      "get": {
+        "summary": "Get all Contacts.",
+        "description": "# Contact\n\nGet all **Contacts** stored in the _Arc-E-Tect_ Phonebook.\n\nContacts have three fields: an id, which is a number, a name, which is the fullname of the Contact and a phone-number.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "A unique identifier for the Contact."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The full name of the Contact."
+                      },
+                      "phone_number" : {
+                        "type": "integer",
+                        "description": "The phone-number of the Contact."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

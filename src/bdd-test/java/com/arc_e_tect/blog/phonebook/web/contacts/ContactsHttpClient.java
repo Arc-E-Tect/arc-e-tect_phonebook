@@ -53,7 +53,4 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executeGet(apiEndpoint());
     }
 
-    public void getRoot() throws IOException {
-        executeGet();
-    }
 }

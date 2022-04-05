@@ -1,6 +1,6 @@
 :favicon: ./images/favicon/favicon.png
 
-= image:images/phonebook_logo_128x128.png[Arc-E-Tect Phonebook Logo]Arc-E-Tect Phonebook API Guide
+= image:images/phonebook_logo_128x128.png[Arc-E-Tect Phonebook Logo] Arc-E-Tect Phonebook API Guide
 Arc-E-Tect;
 :doctype: book
 :icons: font
@@ -43,5 +43,27 @@ include::{snippets}/get-all-endpoints/curl-request.adoc[]
 include::{snippets}/get-all-endpoints/httpie-request.adoc[]
 
 
+[[resources-contacts-access]]
+[[resources-contacts-get]]
+=== GET all Contacts
 
+A `GET` request is used to retrieve all Contacts stored in the Arc-E-Tect Phonebook application.
 
+==== Request structure
+
+*Example Request*
+include::{snippets}/get-all-contacts/http-request.adoc[]
+==== Response structure
+.Response links, contained in the __links_ section of the response
+include::{snippets}/get-all-contacts/links.adoc[]
+
+*Example Response*
+include::{snippets}/get-all-contacts/http-response.adoc[]
+
+==== Commandline Invocations
+
+*CURL request*
+include::{snippets}/get-all-contacts/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/get-all-contacts/httpie-request.adoc[]

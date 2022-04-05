@@ -16,13 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Flogger
@@ -39,6 +39,10 @@ public class APIDocGenerator {
     protected final LinksSnippet indexLinks = links(
             linkWithRel("self").description("The URL to the index page itself."),
             linkWithRel("contacts").description("The URL referring to the list of Contacts in the Phonebook.")
+    );
+
+    protected final LinksSnippet contactLinks = links(
+            linkWithRel("self").description("The URL to the endpoint with to retrieve all contacts.")
     );
 
     @BeforeEach
@@ -58,6 +62,19 @@ public class APIDocGenerator {
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         indexLinks
+                ));
+    }
+
+    @Test
+    void getAllContacts() throws Exception {
+        this.mockMvc.perform(get("/contacts")
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        links(halLinks(),
+                                (linkWithRel("self").description("The URL to the endpoint to retrieve all contacts.")))
                 ));
     }
 }

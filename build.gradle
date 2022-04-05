@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        minCodeCoverage = 0.80
+        minCodeCoverage = 1.0
     }
 
     repositories {
@@ -22,15 +22,31 @@ plugins {
     id 'eclipse'
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+
+    // Java developers should always use Lombok to make their code less cluttered.
     id "io.freefair.lombok" version "${lombokGradleVersion}"
+
+    // Documentation is best generated with every build.
     id "org.asciidoctor.jvm.convert" version "${asciiDoctorGradleVersion}"
     id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecGradleVersion}"
+
+    // Being able to continuously scan whether there are new versions of your dependencies will simplify your life
     id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
+
     id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
     id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
+
+    // Used to have continuous vulnerability scanning for my dependencies.
+    // Simple way to eliminate the risk of Log4Shell shock
     id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
+
+    // Knowing what licenses the dependencies of your application have and fail the build when you violate a compliance
+    // rule during development time saves a lot of time and money from lawsuits
     id "com.cmgapps.licenses" version "${licenseChecker}"
     id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
+
+    // Having all dependencies in a standard format available will make it easier for your legal department to define
+    // contracts that can be uphold from day one.
     id "org.cyclonedx.bom" version "${cycloneDxVersion}"
     id "nebula.lint" version "${gradleLintVersion}"
 }
@@ -75,6 +91,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: "${springBootVersion}"
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springBootVersion}"
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: "${springBootVersion}"
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: "${springDocVersion}"
     testImplementation (group: 'org.springframework.boot',  name: 'spring-boot-starter-test',   version: "${springBootVersion}") {
         exclude group: "junit"
     }
@@ -182,7 +199,7 @@ openapi3 {
     server = 'https://localhost:9000'
     title = 'Arc-E-Tect Phonebook API'
     description = 'API description for the Arc-E-Tect Phonebook service'
-    version = '${version}'
+    version = '1.0'
     format = 'json'
 }
 
