@@ -25,17 +25,6 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_ECR_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
@@ -61,8 +50,6 @@ jobs:
 
       - name: Check dependencies for vulnerabilities
         run: |
-          echo "GitHubPackages.user=${{ secrets.REPO_GHA_USERNAME }}" > ~/.gradle/gradle.properties
-          echo "GitHubPackages.key=${{ secrets.REPO_GHA_PAT }}" >> ~/.gradle/gradle.properties
           ./gradlew dependencyCheckAnalyze
 
       - name: Build with Gradle
@@ -95,7 +82,7 @@ jobs:
       - name: Upload bootJar
         uses: actions/upload-artifact@v2
         with:
-          name: CPModel-Microservice
+          name: Arc-E-Tect_Phonebook-Microservice
           path: build/libs
 
       - name: Upload Documentation
@@ -131,58 +118,4 @@ jobs:
         with:
           name: jacoco-report
           path: build/reports/jacoco
-
-  push-to-ECR:
-    needs: build
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: 11
-          distribution: 'adopt'
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_ECR_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Download bootJar
-        uses: actions/download-artifact@v2
-        with:
-          name: CPModel-Microservice
-          path: build/libs
-
-      - name: Build Docker image
-        run: |
-          ./gradlew docker
-
-      - name: Push Docker image
-        run: |
-          ./gradlew dockerTagsPush
 
