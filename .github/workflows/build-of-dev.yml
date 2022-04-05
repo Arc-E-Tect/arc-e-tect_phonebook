@@ -1,9 +1,9 @@
-name: Build of Master
+name: Build of Dev
 
 on:
   push:
     branches:
-      - '!master'
+      - 's**'
     paths-ignore:
       - '.github/badges/**'
       - '.idea/**'

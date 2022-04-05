@@ -19,6 +19,5 @@ gradle-app.setting
 /Phonebook.main.iml
 /Phonebook.test.iml
 /trends.json
-/lombok.config
 /node_modules/.package-lock.json
 /package-lock.json
