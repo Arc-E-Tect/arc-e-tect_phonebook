@@ -13,7 +13,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class ContactsResourceAssembler extends RepresentationModelAssemblerSupport<Contact, ContactResource> {
 
-    public static final String LINK_COLLECTION_NAMESPACES = "contacts";
+    public static final String LINK_COLLECTION_CONTACTS = "contacts";
 
     public ContactsResourceAssembler() {
         super(ContactsController.class, ContactResource.class);
@@ -27,8 +27,8 @@ public class ContactsResourceAssembler extends RepresentationModelAssemblerSuppo
     }
 
     @Override
-    public CollectionModel<ContactResource> toCollectionModel(Iterable<? extends Contact> namespaces) {
-        CollectionModel<ContactResource> ContactResources = super.toCollectionModel(namespaces);
+    public CollectionModel<ContactResource> toCollectionModel(Iterable<? extends Contact> contacts) {
+        CollectionModel<ContactResource> ContactResources = super.toCollectionModel(contacts);
 
         ContactResources.add(linkTo(methodOn(ContactsController.class).getAllContacts(null)).withSelfRel());
 
