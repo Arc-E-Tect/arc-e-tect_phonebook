@@ -4,6 +4,7 @@ import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.flogger.Flogger;
@@ -21,7 +22,11 @@ public class ContactSteps {
     @Autowired
     private ContactsHttpClient httpClient;
 
-    @When("the API consumer requests all contacts")
+    @Given("the phonebook is empty")
+    public void the_phonebook_is_empty() {
+    }
+
+    @When("all contacts are requested")
     public void the_api_consumer_requests() throws IOException {
         httpClient.getAll();
     }
