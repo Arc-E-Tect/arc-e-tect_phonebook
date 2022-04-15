@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - '.github/badges/**'
       - '.idea/**'
-      - '**/*.md'
       - '.github/workflows/nigthly**'
 
 jobs:
