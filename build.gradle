@@ -45,6 +45,9 @@ plugins {
     id "com.cmgapps.licenses" version "${licenseChecker}"
     id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
 
+    // Running MongoDB in a Docker container simplifies development and therefore speeds it up
+    id 'com.avast.gradle.docker-compose' version "$avastDockerComposeGradleVersion"
+
     // Having all dependencies in a standard format available will make it easier for your legal department to define
     // contracts that can be uphold from day one.
     id "org.cyclonedx.bom" version "${cycloneDxVersion}"
@@ -210,3 +213,10 @@ postman {
     version = "${version}"
     baseUrl = 'https://localhost:9000'
 }
+
+// ------------------------------------------------------------
+// Docker
+
+dockerCompose.isRequiredBy(bddTest)
+dockerCompose.isRequiredBy(docGen)
+dockerCompose.isRequiredBy(bootRun)
