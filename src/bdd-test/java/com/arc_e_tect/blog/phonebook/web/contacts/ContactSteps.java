@@ -1,7 +1,6 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
 import com.arc_e_tect.blog.phonebook.domain.TestContact;
-import com.arc_e_tect.blog.phonebook.repository.ContactRepository;
 import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,9 +35,6 @@ public class ContactSteps {
     @Autowired
     private ContactsHttpClient httpClient;
 
-    @Autowired
-    private ContactRepository contactRepository;
-
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     CodecRegistry pojoCodecRegistry;
@@ -51,7 +47,7 @@ public class ContactSteps {
         pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         mongoDatabase = mongoClient.getDatabase("ContactsDB").withCodecRegistry(pojoCodecRegistry);
-        collection = mongoDatabase.getCollection("contacts", TestContact.class);
+        collection = mongoDatabase.getCollection("contact", TestContact.class);
         collection.drop();
     }
 
