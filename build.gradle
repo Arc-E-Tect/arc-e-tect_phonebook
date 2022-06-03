@@ -227,5 +227,5 @@ dockerCompose.isRequiredBy(bootRun)
 
 gradleLint {
     autoLintAfterFailure="false"
-    rules  = ['unused-dependency']
+    rules  = ['archaic-wrapper']
 }
