@@ -105,6 +105,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "${floggerVersion}"
+
+    compileOnly group: "org.mongodb", name: "mongodb-driver-sync", version: "${mongodbDriveSyncVersion}"
 }
 
 test {
@@ -231,3 +233,4 @@ gradleLint {
     autoLintAfterFailure="false"
     rules  = ['archaic-wrapper']
 }
+
