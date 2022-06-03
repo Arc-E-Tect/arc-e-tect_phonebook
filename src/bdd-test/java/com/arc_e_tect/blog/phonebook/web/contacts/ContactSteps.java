@@ -1,22 +1,28 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
 import com.arc_e_tect.blog.phonebook.domain.Contact;
-import com.arc_e_tect.blog.phonebook.repository.ContactRepository;
-import com.arc_e_tect.blog.phonebook.repository.SequenceRepository;
 import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.flogger.Flogger;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.Iterator;
 
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,19 +32,19 @@ public class ContactSteps {
     protected StepData stepData;
 
     @Autowired
-    private ContactRepository contactRepository;
-
-    @Autowired
-    private SequenceRepository sequenceRepository;
-
-    @Autowired
     private ContactsHttpClient httpClient;
+
+    MongoClient mongoClient;
+    MongoDatabase mongoDatabase;
+    CodecRegistry pojoCodecRegistry;
 
     @Before
     public void setup() {
         log.atInfo().log("Clearing database.");
-        contactRepository.deleteAll();
-        sequenceRepository.deleteAll();
+        mongoClient = MongoClients.create("mongodb://hostOne:37017");
+        mongoDatabase = mongoClient.getDatabase("contacts");
+        pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
     }
 
     @Given("the phonebook is empty")
@@ -47,11 +53,8 @@ public class ContactSteps {
 
     @Given("the contact {string} is listed in the phonebook")
     public void the_contact_is_listed_in_the_phonebook(String contact) {
-        log.atInfo().log("Number of contacts stored before save: %d", contactRepository.count());
         Contact newContact = new Contact();
         newContact.setName(contact);
-        contactRepository.save(newContact);
-        log.atInfo().log("Number of contacts stored after save : %d", contactRepository.count());
     }
 
     @When("all contacts are requested")
