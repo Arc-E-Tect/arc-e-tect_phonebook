@@ -227,6 +227,8 @@ dockerCompose.isRequiredBy(bddTest)
 dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
 
+dockerCompose.stopContainers=false
+
 gradleLint {
     autoLintAfterFailure="false"
     rules  = ['archaic-wrapper']
