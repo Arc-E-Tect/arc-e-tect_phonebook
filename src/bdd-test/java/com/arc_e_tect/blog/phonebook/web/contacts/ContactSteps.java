@@ -1,6 +1,7 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
-import com.arc_e_tect.blog.phonebook.domain.Contact;
+import com.arc_e_tect.blog.phonebook.domain.TestContact;
+import com.arc_e_tect.blog.phonebook.repository.ContactRepository;
 import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -34,17 +36,23 @@ public class ContactSteps {
     @Autowired
     private ContactsHttpClient httpClient;
 
+    @Autowired
+    private ContactRepository contactRepository;
+
     MongoClient mongoClient;
     MongoDatabase mongoDatabase;
     CodecRegistry pojoCodecRegistry;
+    MongoCollection<TestContact> collection;
 
     @Before
     public void setup() {
         log.atInfo().log("Clearing database.");
-        mongoClient = MongoClients.create("mongodb://hostOne:37017");
-        mongoDatabase = mongoClient.getDatabase("contacts");
+        mongoClient = MongoClients.create("mongodb://localhost:37017");
         pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+        mongoDatabase = mongoClient.getDatabase("ContactsDB").withCodecRegistry(pojoCodecRegistry);
+        collection = mongoDatabase.getCollection("contacts", TestContact.class);
+        collection.drop();
     }
 
     @Given("the phonebook is empty")
@@ -53,8 +61,11 @@ public class ContactSteps {
 
     @Given("the contact {string} is listed in the phonebook")
     public void the_contact_is_listed_in_the_phonebook(String contact) {
-        Contact newContact = new Contact();
+        TestContact newContact = new TestContact();
         newContact.setName(contact);
+        newContact.setId(1l);
+        collection.insertOne(newContact);
+        TestContact contact1 = newContact;
     }
 
     @When("all contacts are requested")
