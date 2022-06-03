@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
+import org.springframework.data.annotation.Transient;
 import org.springframework.hateoas.server.core.Relation;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -12,9 +13,11 @@ import org.springframework.hateoas.server.core.Relation;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter @Setter @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper=false)
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class Contact {
-    private int id;
+    @Transient
+    public static final String SEQUENCE_NAME = "contacts_sequence";
+    private long id;
     private String name;
-    private int phone;
+    private String phone;
 }
