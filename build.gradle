@@ -224,3 +224,8 @@ postman {
 dockerCompose.isRequiredBy(bddTest)
 dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
+
+gradleLint {
+    autoLintAfterFailure="false"
+    rules  = ['unused-dependency']
+}
