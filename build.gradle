@@ -227,7 +227,7 @@ dockerCompose.isRequiredBy(bddTest)
 dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
 
-dockerCompose.stopContainers=false
+dockerCompose.stopContainers=true
 
 gradleLint {
     autoLintAfterFailure="false"
