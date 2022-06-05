@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public abstract class AbstractHttpClient {
     protected StepData stepData;
 
     @Getter
-    @LocalServerPort
+    @Value("${local.server.port}")
     protected int port;
 
     public String getBody() {
