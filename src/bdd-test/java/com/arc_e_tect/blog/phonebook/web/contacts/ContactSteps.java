@@ -53,6 +53,7 @@ public class ContactSteps {
 
     @Given("the phonebook is empty")
     public void the_phonebook_is_empty() {
+        collection.drop();
     }
 
     @Given("the contact {string} is listed in the phonebook")
