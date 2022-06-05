@@ -61,7 +61,6 @@ public class ContactSteps {
         newContact.setName(contact);
         newContact.setId(1l);
         collection.insertOne(newContact);
-        TestContact contact1 = newContact;
     }
 
     @When("all contacts are requested")
