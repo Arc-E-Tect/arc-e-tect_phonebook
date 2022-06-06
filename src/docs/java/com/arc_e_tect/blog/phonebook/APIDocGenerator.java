@@ -93,12 +93,9 @@ public class APIDocGenerator {
         collection.drop();
         this.mockMvc.perform(get("/contacts")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andExpect(status().isNoContent())
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                        links(halLinks(),
-                                (linkWithRel("self").description("The URL to the endpoint to retrieve all contacts.")))
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
                 ));
     }
 
@@ -108,6 +105,10 @@ public class APIDocGenerator {
         newContact.setName("John Doe");
         newContact.setId(1l);
         collection.insertOne(newContact);
+        Contact otherContact = new Contact();
+        otherContact.setName("Jane Doe");
+        otherContact.setId(2l);
+        collection.insertOne(otherContact);
         this.mockMvc.perform(get("/contacts")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
