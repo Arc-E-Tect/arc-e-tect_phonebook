@@ -53,4 +53,9 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executeGet(apiEndpoint());
     }
 
+    public void getSingleById(Long id) throws IOException {
+        String url = String.format("%s/%d", apiEndpoint(), id);
+        executeGet(url);
+    }
+
 }
