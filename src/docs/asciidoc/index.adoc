@@ -57,19 +57,21 @@ To retrieve all contacts stored in the Arc-E-Tect Phonebook, call the `GET` on t
 ==== Request structure
 
 *Example Request*
-When the phonebook is empty, no content is returned. This is indicated with a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204[204 - No Content].
+
+When the phonebook is empty, no content is returned. This is indicated with a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204[204 - No Content]. In case there are Contacts stored in the phonebook, the response contains an array of Contacts and the http status is https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200[200 - OK].
+
+When there are items in the phonebook, the response contains an array of Contacts and the response contains http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200[200 - OK].
+
+include::{snippets}/get-all-contacts/http-request.adoc[]
+
+==== Response structure
+*Example Response*
+include::{snippets}/get-all-contacts/http-response.adoc[]
 
 include::{snippets}/get-all-contacts-when-phonebook-is-empty/http-response.adoc[]
 
-When there are items in the phonebook, the response contains an array of Contacts.
-
-include::{snippets}/get-all-contacts/http-request.adoc[]
-==== Response structure
 .Response links, contained in the __links_ section of the response
 include::{snippets}/get-all-contacts/links.adoc[]
-
-*Example Response*
-include::{snippets}/get-all-contacts/http-response.adoc[]
 
 ==== Commandline Invocations
 
