@@ -7,7 +7,7 @@ Feature: Store a contact into the phonebook
 
   Scenario: 01 - Add a new contact to the phonebook
     Given the contact with id 42 is not listed in the phonebook
-    When the contact with id 42 is and name "John Doe" is added to the phonebook
+    When the contact with id 42 and name "John Doe" is added to the phonebook
     Then the phonebook contains the contact with id 42
     And the contact with id 42 has name "John Doe"
     And the response contains the contact with id 42
@@ -16,7 +16,7 @@ Feature: Store a contact into the phonebook
   Scenario: 02 - Try to add a contact to the phonebook that is already listed
     Given the contact with id 666 is listed in the phonebook
     And the contact with id 666 has name "Mephisto"
-    When the contact with id 666 is and name "John Doe" is added to the phonebook
+    When the contact with id 666 and name "John Doe" is added to the phonebook
     Then the phonebook contains the contact with id 666
     And the contact with id 666 has name "Mephisto"
     And the response contains no contact
