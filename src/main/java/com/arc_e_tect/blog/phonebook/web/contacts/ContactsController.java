@@ -5,8 +5,11 @@ import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,4 +45,12 @@ public class ContactsController {
         return result;
     }
 
+    @GetMapping(value="/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ContactResource> getSingleContactById(@PathVariable Long id, HttpServletResponse response) {
+        Contact contact = contactService.getContactByID(id);
+
+        ContactResource result = resourceAssembler.toModel(contact);
+
+        return new ResponseEntity<ContactResource>(result, HttpStatus.OK);
+    }
 }
