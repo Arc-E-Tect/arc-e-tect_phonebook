@@ -20,6 +20,6 @@ Feature: Get a single contact from the phonebook
   @error
   Scenario: 03 - Requests a contact that is not listed in the phonebook
     Given the contact with id 666 is not listed in the phonebook
-    When a the contact with id 666 is requested
+    When the contact with id 666 is requested
     Then the contact cannot be found
     And the response contains no contact
