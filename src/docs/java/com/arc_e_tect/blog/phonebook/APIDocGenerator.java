@@ -105,10 +105,6 @@ public class APIDocGenerator {
         newContact.setName("John Doe");
         newContact.setId(1l);
         collection.insertOne(newContact);
-        Contact otherContact = new Contact();
-        otherContact.setName("Jane Doe");
-        otherContact.setId(2l);
-        collection.insertOne(otherContact);
         this.mockMvc.perform(get("/contacts")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
