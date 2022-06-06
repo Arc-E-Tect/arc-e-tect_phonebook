@@ -29,8 +29,8 @@ public class ContactsHttpClient extends AbstractHttpClient {
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
                 .doOnConnected(connection ->
-                        connection.addHandlerLast(new ReadTimeoutHandler(3))
-                                .addHandlerLast(new WriteTimeoutHandler(3)));
+                        connection.addHandlerLast(new ReadTimeoutHandler(300))
+                                .addHandlerLast(new WriteTimeoutHandler(300)));
 
         apiClient = WebClient.builder()
                 .baseUrl(String.format(baseUrl))

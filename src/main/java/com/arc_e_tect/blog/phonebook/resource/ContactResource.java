@@ -15,7 +15,7 @@ import org.springframework.hateoas.server.core.Relation;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper=false)
 @NoArgsConstructor @AllArgsConstructor
 public class ContactResource extends RepresentationModel<ContactResource> {
-    private int id;
+    private long id;
     private String name;
     private String phone;
 }

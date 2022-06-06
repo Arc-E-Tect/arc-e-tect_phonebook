@@ -11,6 +11,10 @@ Arc-E-Tect;
 
 [[overview]]
 = Overview - Arc-E-Tect Phonebook
+This is the Arc-E-Tect Phonebook application, it is an _API-only_ application, which means that the application has no user interface, instead, all information and functionality is exposed through an API. The provided API of the Arc-E-Tect Phonebook is RESTful and exposed through http endpoints.
+
+This application is used to explain how to develop API-First, or API-Only applications in such a way that it is inherrently secure and of high quality. This process of software engineering is described on the https://arc-e-tect.blog/subscribe[Arc-E-Tect blog]. You can read the first episode of this course through this link: https://medium.com/codex/software-engineering-done-right-de312acf5c0?sk=5ed46509dc43749970dc94649bbd0855[Software Engineering done Right]. The link is a special link and will not count towards your two free articles on Medium.com.
+
 
 [[resources-index]]
 == Index
@@ -32,6 +36,7 @@ include::{snippets}/get-all-endpoints/http-request.adoc[]
 include::{snippets}/get-all-endpoints/links.adoc[]
 
 *Example Response*
+
 include::{snippets}/get-all-endpoints/http-response.adoc[]
 
 ==== Commandline Invocations
@@ -47,18 +52,26 @@ include::{snippets}/get-all-endpoints/httpie-request.adoc[]
 [[resources-contacts-get]]
 === GET all Contacts
 
-A `GET` request is used to retrieve all Contacts stored in the Arc-E-Tect Phonebook application.
+To retrieve all contacts stored in the Arc-E-Tect Phonebook, call the `GET` on the Contacts endpoint.
 
 ==== Request structure
 
 *Example Request*
-include::{snippets}/get-all-contacts/http-request.adoc[]
-==== Response structure
-.Response links, contained in the __links_ section of the response
-include::{snippets}/get-all-contacts/links.adoc[]
 
+When the phonebook is empty, no content is returned. This is indicated with a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204[204 - No Content]. In case there are Contacts stored in the phonebook, the response contains an array of Contacts and the http status is https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200[200 - OK].
+
+When there are items in the phonebook, the response contains an array of Contacts and the response contains http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200[200 - OK].
+
+include::{snippets}/get-all-contacts/http-request.adoc[]
+
+==== Response structure
 *Example Response*
 include::{snippets}/get-all-contacts/http-response.adoc[]
+
+include::{snippets}/get-all-contacts-when-phonebook-is-empty/http-response.adoc[]
+
+.Response links, contained in the __links_ section of the response
+include::{snippets}/get-all-contacts/links.adoc[]
 
 ==== Commandline Invocations
 

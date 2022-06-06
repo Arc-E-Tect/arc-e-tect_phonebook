@@ -24,7 +24,6 @@ import java.util.Iterator;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Flogger
@@ -53,6 +52,7 @@ public class ContactSteps {
 
     @Given("the phonebook is empty")
     public void the_phonebook_is_empty() {
+        collection.drop();
     }
 
     @Given("the contact {string} is listed in the phonebook")
@@ -61,7 +61,6 @@ public class ContactSteps {
         newContact.setName(contact);
         newContact.setId(1l);
         collection.insertOne(newContact);
-        TestContact contact1 = newContact;
     }
 
     @When("all contacts are requested")
@@ -71,10 +70,7 @@ public class ContactSteps {
 
     @Then("the response contains no contacts")
     public void the_response_contains_no_contacts() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(httpClient.getBody());
-        JsonNode contactsNode = rootNode.path("_embedded").path("contacts");
-        assertEquals(0, contactsNode.size());
+        assertTrue(httpClient.getHttpStatus().value() == 204);
     }
 
     @Then("the response contains the contact {string}")
