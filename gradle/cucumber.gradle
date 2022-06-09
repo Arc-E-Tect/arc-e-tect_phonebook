@@ -20,7 +20,7 @@ cucumberReports {
     outputDir = file("$projectDir/build/reports/tests")
     buildId = "${semver.infoVersion}"
     reports = files(
-            "$projectDir/build/reports/**/Cucumber.json"
+            "$buildDir/reports/bdd-test/Cucumber.json"
     )
     trends = file("$projectDir/trends.json")
     trendsLimit = 128
