@@ -73,6 +73,8 @@ include::{snippets}/get-all-contacts-when-phonebook-is-empty/http-response.adoc[
 .Response links, contained in the __links_ section of the response
 include::{snippets}/get-all-contacts/links.adoc[]
 
+include::{snippets}/get-all-contacts/response-fields.adoc[]
+
 ==== Commandline Invocations
 
 *CURL request*
