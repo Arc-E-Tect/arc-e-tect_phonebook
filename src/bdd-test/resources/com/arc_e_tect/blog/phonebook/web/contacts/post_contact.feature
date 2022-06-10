@@ -14,8 +14,7 @@ Feature: Store a contact into the phonebook
 
   @error
   Scenario: 02 - Try to add a contact to the phonebook that is already listed
-    Given the contact with id 666 is listed in the phonebook
-    And the contact with id 666 has name "Mephisto"
+    Given the contact with id 666 and name "Mephisto" is listed in the phonebook
     When the contact with id 666 and name "John Doe" is added to the phonebook
     Then the phonebook contains the contact with id 666
     And the contact with id 666 has name "Mephisto"
