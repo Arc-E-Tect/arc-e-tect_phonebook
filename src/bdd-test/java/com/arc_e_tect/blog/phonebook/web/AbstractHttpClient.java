@@ -87,4 +87,20 @@ public abstract class AbstractHttpClient {
         stepData.setResponseEntity(response);
     }
 
+    protected void executePost(String jsonDocument) {
+        executePost(apiEndpoint(), jsonDocument);
+    }
+
+    protected void executePost(String url, String jsonDocument) {
+        ResponseEntity<JsonNode> response = getApiClient().post()
+                .uri(url)
+                .bodyValue(jsonDocument)
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .toEntity(JsonNode.class)
+                .block();
+
+        stepData.setResponseEntity(response);
+    }
 }

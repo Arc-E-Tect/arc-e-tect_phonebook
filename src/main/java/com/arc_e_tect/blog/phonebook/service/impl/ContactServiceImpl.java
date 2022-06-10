@@ -7,7 +7,6 @@ import com.arc_e_tect.blog.phonebook.service.exception.ContactNotFoundException;
 import lombok.Setter;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,17 +20,28 @@ public class ContactServiceImpl implements ContactService {
     ContactRepository repo;
 
     @Override
-    public Contact getContactByID(Long id) throws ContactNotFoundException {
-        try {
-            Optional<Contact> result = repo.findById(id);
-            if (!result.isPresent()) {
-                throw new ContactNotFoundException(id);
-            }
+    public Contact saveContact(Contact contact) {
+        return repo.save(contact);
+    }
 
-            return result.get();
-        } catch (DataAccessResourceFailureException darfe) {
-            throw darfe;
+    @Override
+    public Contact getContactByID(Long id) throws ContactNotFoundException {
+        Optional<Contact> result = repo.findById(id);
+        if (!result.isPresent()) {
+            throw new ContactNotFoundException(id);
         }
+
+        return result.get();
+    }
+
+    @Override
+    public Contact getContactByName(String name) throws ContactNotFoundException {
+        Contact result = repo.findByName(name);
+        if (result == null) {
+            throw new ContactNotFoundException(name);
+        }
+
+        return result;
     }
 
     @Override

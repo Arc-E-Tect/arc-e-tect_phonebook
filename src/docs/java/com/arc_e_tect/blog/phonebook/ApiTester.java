@@ -31,8 +31,11 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({ RestDocumentationExtension.class, SpringExtension.class })
 @SpringBootTest(classes = ArcETectPhonebookApplication.class)
 @ActiveProfiles({"docgen"})
-public class APIDocGenerator {
+public class ApiTester {
 
     private MockMvc mockMvc;
 
@@ -50,7 +53,7 @@ public class APIDocGenerator {
     CodecRegistry pojoCodecRegistry;
     MongoCollection<Contact> collection;
 
-    public APIDocGenerator() {
+    public ApiTester() {
     }
 
     protected final LinksSnippet indexLinks = links(
@@ -132,9 +135,56 @@ public class APIDocGenerator {
         newContact.setId(42l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
-        this.mockMvc.perform(get("/contacts/42")
+        this.mockMvc.perform(get("/contacts/{id}", 42)
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("id")
+                                .description("Identifier of the Contact that is to be retrieved.")),
+                        responseFields(
+                                fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
+                                fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),
+                                fieldWithPath("phone").description("The Contact's phone number. Typically this includes the country code, the area code and the subscriber code." +
+                                        "The alias is for documentation purposes only").type(JsonFieldType.STRING).optional(),
+                                subsectionWithPath("_links").ignored().optional()),
+                        links(halLinks(),
+                                (linkWithRel("self").description("The URL to the endpoint to retrieve this contact.")),
+                                (linkWithRel("contacts").description("The URL to the endpoint to retrieve all contacts.")))
+                ));
+    }
+
+    @Test
+    void getNotExistentContact() throws Exception {
+        collection.drop();
+        this.mockMvc.perform(get("/contacts/{id}", 666)
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("id")
+                                .description("Identifier of the Contact that is to be retrieved.")),
+                        responseFields(
+                                fieldWithPath("timestamp").description("The time the at which the error occurred. The timestamp is the server time.").type(JsonFieldType.STRING),
+                                fieldWithPath("status").description("The http status related to the error.").type(JsonFieldType.STRING),
+                                fieldWithPath("title").description("Short description of the error. Typically this is a one-liner.").type(JsonFieldType.STRING),
+                                fieldWithPath("detail").description("Verbose description of the error.").type(JsonFieldType.STRING).optional(),
+                                subsectionWithPath("_links").ignored().optional())
+                ));
+    }
+
+    @Test
+    void postNewContact() throws Exception {
+        collection.drop();
+
+        String jsonDoc = "{\"name\":\"John Doe\",\"phone\":\"+1 (555) 748432\"}";
+
+        this.mockMvc.perform(post("/contacts")
+                        .content(jsonDoc)
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
@@ -151,11 +201,18 @@ public class APIDocGenerator {
     }
 
     @Test
-    void getNotExistentContact() throws Exception {
-        collection.drop();
-        this.mockMvc.perform(get("/contacts/666")
+    void postExistentContact() throws Exception {
+        Contact newContact = new Contact();
+        newContact.setName("John Doe");
+        newContact.setId(42l);
+        newContact.setPhone("+1 (555) 748432");
+        collection.insertOne(newContact);
+
+        String jsonDoc = "{\"name\":\"John Doe\",\"phone\":\"+1 (555) 748432\"}";
+        this.mockMvc.perform(post("/contacts")
+                        .content(jsonDoc)
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
-                .andExpect(status().isNotFound())
+                .andExpect(status().isConflict())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),

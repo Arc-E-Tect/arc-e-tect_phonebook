@@ -1,16 +1,14 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
 import com.arc_e_tect.blog.phonebook.domain.TestContact;
+import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.result.DeleteResult;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -75,15 +73,49 @@ public class ContactSteps {
         collection.insertOne(newContact);
     }
 
+    @Given("the contact with id name {string} is listed in the phonebook")
+    public void the_contact_with_id_name_is_listed_in_the_phonebook(String name) {
+        TestContact newContact = new TestContact();
+        newContact.setName(name);
+        newContact.setId(42l);
+        collection.insertOne(newContact);
+    }
+
     @Given("the contact with id {long} is not listed in the phonebook")
     public void the_contact_with_id_is_not_listed_in_the_phonebook(Long id) {
-        Bson query = eq("id", Long.toString(id));
+        Bson query = eq("_id", id);
         try {
             DeleteResult result = collection.deleteOne(query);
             log.atInfo().log("Deleted document count: %S", result.getDeletedCount());
         } catch (MongoException me) {
             log.atWarning().log("Unable to delete due to an error: %s", me);
         }
+    }
+
+    @Given("the contact with id {long} and name {string} is listed in the phonebook")
+    public void the_contact_with_id_and_name_is_listed_in_the_phonebook(Long id, String name) {
+        TestContact newContact = new TestContact();
+        newContact.setName(name);
+        newContact.setId(id);
+        collection.insertOne(newContact);
+    }
+
+    @Given("the contact with name {string} is not listed in the phonebook")
+    public void the_contact_with_name_is_not_listed_in_the_phonebook(String name) {
+        Bson query = eq("name", name);
+        try {
+            DeleteResult result = collection.deleteOne(query);
+            log.atInfo().log("Deleted document count: %S", result.getDeletedCount());
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to delete due to an error: %s", me);
+        }
+    }
+
+    @When("the contact with name {string} is added to the phonebook")
+    public void the_contact_with_name_is_added_to_the_phonebook(String name) throws IOException {
+        ContactResource resource = new ContactResource();
+        resource.setName(name);
+        httpClient.postNewContact(resource);
     }
 
     @When("all contacts are requested")
@@ -94,6 +126,38 @@ public class ContactSteps {
     @When("the contact with id {long} is requested")
     public void the_contact_with_id_is_requested(Long id) throws IOException {
         httpClient.getSingleById(id);
+    }
+
+    @When("the contact with id {long} and name {string} is added to the phonebook")
+    public void the_contact_with_id_and_name_is_added_to_the_phonebook(Long id, String name) throws IOException {
+        ContactResource resource = new ContactResource(id, name, "");
+        httpClient.postNewContact(resource);
+    }
+
+    @Then("the phonebook contains the contact with id {long}")
+    public void the_phonebook_contains_the_contact_with_id(Long id) {
+        Bson query = eq("_id", id);
+
+        try {
+            FindIterable<TestContact> foundIt = collection.find(query);
+            TestContact found = foundIt.first();
+            assertNotNull(found);
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to delete due to an error: %s", me);
+        }
+    }
+
+    @Then("the contact with id {long} has name {string}")
+    public void the_contact_with_id_has_name(Long id, String name) {
+        Bson query = eq("_id", id);
+        try {
+            TestContact found = collection.find(query).first();
+            assertAll("Found with id and name",
+                    () -> assertNotNull(found),
+                    () -> assertEquals(name, found.getName()));
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
     }
 
     @Then("the response contains no contacts")
@@ -121,8 +185,8 @@ public class ContactSteps {
     public void the_response_contains_the_contact_with_id(Long id) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode contactNode = objectMapper.readTree(httpClient.getBody());
-        Long contactName = contactNode.path("id").asLong();
-        assertEquals(id, contactName);
+        Long contactId = contactNode.path("id").asLong();
+        assertEquals(id, contactId);
     }
 
     @Then("the contact cannot be found")
@@ -137,5 +201,26 @@ public class ContactSteps {
         assertAll("No Contact",
                 () -> assertNull(contactNode.get("id")),
                 () -> assertNull(contactNode.get("name")));
+    }
+
+    @Then("the phonebook contains the contact with name {string}")
+    public void the_phonebook_contains_the_contact_with_name(String name) {
+        Bson query = eq("name", name);
+        try {
+            TestContact found = collection.find(query).first();
+            assertAll("Found with name",
+                    () -> assertNotNull(found),
+                    () -> assertEquals(name, found.getName()));
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
+    }
+
+    @Then("the response contains the contact with name {string}")
+    public void the_response_contains_the_contact_with_name(String name) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode contactNode = objectMapper.readTree(httpClient.getBody());
+        String contactName = contactNode.path("name").asText();
+        assertEquals(name, contactName);
     }
 }

@@ -1,6 +1,8 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
+import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.web.AbstractHttpClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -58,4 +60,13 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executeGet(url);
     }
 
+    public void postNewContact(ContactResource resource) throws IOException {
+        String jsonDocument = new ObjectMapper().writeValueAsString(resource);
+
+        executePost(jsonDocument);
+    }
+
+    public void postNewContact(long id, String jsonDoc) {
+        executePost(apiEndpoint(), jsonDoc);
+    }
 }

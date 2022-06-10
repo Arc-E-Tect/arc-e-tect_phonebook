@@ -49,7 +49,6 @@ include::{snippets}/get-all-endpoints/httpie-request.adoc[]
 
 == Contacts
 
-[[resources-contacts-access]]
 [[resources-contacts-get]]
 === GET all Contacts
 
@@ -86,3 +85,40 @@ include::{snippets}/get-all-contacts/curl-request.adoc[]
 
 *HTTPie request*
 include::{snippets}/get-all-contacts/httpie-request.adoc[]
+
+[[resources-contacts-post]]
+=== POST new Contact
+
+To store a new contact in the Arc-E-Tect Phonebook, call the `POST` on the Contacts endpoint.
+
+==== Request structure
+
+*Example Request*
+
+When the Contact is not yet listed, a new Contact is create in the Arc-E-Tect Phonebook with the provided information. In case an id is provided, that ID will be used, in case no ID is used, a new unique ID will be generated. When a new Contact is stored in the phonebook, it is indicated with a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201[201 - Created] and the newly created Contact is returned.
+
+When the Contact is already listed in the Arc-E-Tect Phonebook, the provided Contact is not stored as the phonebook does not allow for duplicates. The response is of http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409[409 - Conflict].
+
+include::{snippets}/post-new-contact/http-request.adoc[]
+
+==== Response structure
+*Example Response*
+include::{snippets}/post-new-contact/http-response.adoc[]
+
+include::{snippets}/post-existent-contact/http-response.adoc[]
+
+.Response links, contained in the __links_ section of the response
+include::{snippets}/post-new-contact/links.adoc[]
+
+include::{snippets}/post-new-contact/response-fields.adoc[]
+
+==== Swagger
+link:../swagger-ui-Arc_E_Tect_Phonebook/index.html#/contacts/post-new-contact[Post New Contact]
+
+==== Commandline Invocations
+
+*CURL request*
+include::{snippets}/post-new-contact/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/post-new-contact/httpie-request.adoc[]

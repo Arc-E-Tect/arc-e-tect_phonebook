@@ -3,15 +3,14 @@ package com.arc_e_tect.blog.phonebook.web.contacts;
 import com.arc_e_tect.blog.phonebook.domain.Contact;
 import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.service.ContactService;
+import com.arc_e_tect.blog.phonebook.service.exception.ContactNotFoundException;
+import com.arc_e_tect.blog.phonebook.service.exception.DuplicateContactException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -52,5 +51,29 @@ public class ContactsController {
         ContactResource result = resourceAssembler.toModel(contact);
 
         return new ResponseEntity<ContactResource>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(consumes = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE},
+            produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ContactResource postContact(@RequestBody ContactResource newResource, HttpServletResponse response) {
+        try {
+            if (newResource.getId() > 0) {
+                contactService.getContactByID(newResource.getId());
+                throw new DuplicateContactException(newResource.getId());
+            }
+            contactService.getContactByName(newResource.getName());
+            response.setStatus(HttpStatus.CONFLICT.value());
+            throw new DuplicateContactException(newResource.getName());
+        } catch (ContactNotFoundException cnfe) {
+            // this is good.
+        }
+
+        // save to MongoDB database
+        Contact contact = new Contact(newResource.getId(), newResource.getName(), newResource.getPhone());
+        contact = contactService.saveContact(contact);
+
+        response.setStatus(HttpStatus.CREATED.value());
+
+        return resourceAssembler.toModel(contact);
     }
 }
