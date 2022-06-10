@@ -5,12 +5,12 @@
 // See: https://creativecommons.org/licenses/by-sa/4.0/
 
 dependencies{
-    testImplementation(platform("io.cucumber:cucumber-bom:${cucumberVersion}"))
+    testImplementation(platform("io.cucumber:cucumber-bom:_"))
     testImplementation("io.cucumber:cucumber-java")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
 
-    testImplementation group: "io.cucumber", name: "cucumber-spring", version: "${cucumberVersion}"
-    testImplementation ("net.masterthought:cucumber-reporting:${cucumberReportingVersion}") {
+    testImplementation group: "io.cucumber", name: "cucumber-spring", version: "_"
+    testImplementation ("net.masterthought:cucumber-reporting:_") {
         exclude group: "commons-logging", module: "commons-logging"
         exclude group: "org.apache.commons", module: "commons-lang3"
     }

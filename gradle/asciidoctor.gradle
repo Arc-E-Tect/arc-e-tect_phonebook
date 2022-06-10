@@ -7,8 +7,8 @@
 import java.text.SimpleDateFormat
 
 dependencies {
-    implementation group: 'org.springframework.restdocs',  name: 'spring-restdocs-asciidoctor', version: "${springRestDocsVersion}"
-    testImplementation group: 'org.springframework.restdocs',  name: 'spring-restdocs-mockmvc', version: "${springRestDocsVersion}"
+    implementation group: 'org.springframework.restdocs',  name: 'spring-restdocs-asciidoctor', version: "_"
+    testImplementation group: 'org.springframework.restdocs',  name: 'spring-restdocs-mockmvc', version: "_"
 }
 
 ext {
