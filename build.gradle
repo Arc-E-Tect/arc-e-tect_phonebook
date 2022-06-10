@@ -7,10 +7,8 @@ buildscript {
         mavenCentral()
     }
 
-    apply from: "dependency_version.properties"
-
     dependencies {
-        classpath  group: "org.owasp", name:"dependency-check-gradle", version:"${dependencyCheckPluginVersion}"
+        classpath  group: "org.owasp", name:"dependency-check-gradle", version:"_"
     }
 
     apply from: 'gradle/jacoco.gradle'
@@ -20,38 +18,41 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id 'org.springframework.boot' version "${springBootVersion}"
-    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 
     // Java developers should always use Lombok to make their code less cluttered.
-    id "io.freefair.lombok" version "${lombokGradleVersion}"
+    id "io.freefair.lombok"
 
     // Documentation is best generated with every build.
-    id "org.asciidoctor.jvm.convert" version "${asciiDoctorGradleVersion}"
-    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecGradleVersion}"
+    id "org.asciidoctor.jvm.convert"
+    id 'com.epages.restdocs-api-spec'
 
     // Being able to continuously scan whether there are new versions of your dependencies will simplify your life
-    id "com.github.ben-manes.versions" version "${gitversionerGradleVersion}"
+    id "com.github.ben-manes.versions"
 
-    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "${cucumberReportingGradleVersion}"
-    id "com.github.jmongard.git-semver-plugin" version "${gitSemverPluginVersion}"
+    id "com.github.spacialcircumstances.gradle-cucumber-reporting"
+    id "com.github.jmongard.git-semver-plugin"
 
     // Used to have continuous vulnerability scanning for my dependencies.
     // Simple way to eliminate the risk of Log4Shell shock
-    id "org.owasp.dependencycheck" version "${dependencyCheckPluginVersion}"
+    id "org.owasp.dependencycheck"
 
     // Knowing what licenses the dependencies of your application have and fail the build when you violate a compliance
     // rule during development time saves a lot of time and money from lawsuits
-    id "com.cmgapps.licenses" version "${licenseChecker}"
-    id 'org.unbroken-dome.test-sets' version "${testSetsGradleVersion}"
+    id "com.cmgapps.licenses"
+    id 'org.unbroken-dome.test-sets'
 
     // Running MongoDB in a Docker container simplifies development and therefore speeds it up
-    id 'com.avast.gradle.docker-compose' version "$avastDockerComposeGradleVersion"
+    id 'com.avast.gradle.docker-compose'
 
     // Having all dependencies in a standard format available will make it easier for your legal department to define
     // contracts that can be uphold from day one.
-    id "org.cyclonedx.bom" version "${cycloneDxVersion}"
-    id "nebula.lint" version "${gradleLintVersion}"
+    id "org.cyclonedx.bom"
+    id "nebula.lint"
+
+    id 'org.hidetake.swagger.generator'
+//    id "io.cloudflight.license-gradle-plugin"
 }
 
 configurations {
@@ -71,7 +72,7 @@ apply from: 'gradle/semver.gradle'
 // -----------------------------------------------------------
 //
 // Property generation and substitution
-ext['junit-jupiter.version'] = "${jUnitVersion}" // Also change jUnitVersion
+//ext['junit-jupiter.version'] = '$version.junit' // Also change jUnitVersion
 def repositoryDir = rootProject.buildDir.path + File.separator + "repository"
 mkdir repositoryDir
 ext['repositoryDir'] = new File(repositoryDir).toURI()
@@ -84,29 +85,25 @@ processResources {
     }
 }
 
-lombok {
-    version = "${lombokVersion}"
-}
-
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: "${springBootVersion}"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: "${springBootVersion}"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springBootVersion}"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: "${springBootVersion}"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "${springBootVersion}"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: "_"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "_"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: "_"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "_"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: "_"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "_"
 
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: "${springDocVersion}"
-    testImplementation (group: 'org.springframework.boot',  name: 'spring-boot-starter-test',   version: "${springBootVersion}") {
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: "_"
+    testImplementation (group: 'org.springframework.boot',  name: 'spring-boot-starter-test',   version: "_") {
         exclude group: "junit"
     }
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation group: "com.google.flogger", name: "flogger-system-backend", version: "${floggerVersion}"
+    implementation group: "com.google.flogger", name: "flogger-system-backend", version: "_"
 
-    compileOnly group: "org.mongodb", name: "mongodb-driver-sync", version: "${mongodbDriveSyncVersion}"
+    compileOnly group: "org.mongodb", name: "mongodb-driver-sync", version: "_"
 }
 
 test {
@@ -203,11 +200,11 @@ springBoot {
 //
 // RestDoc API Spec
 dependencies {
-    testImplementation group: 'com.epages', name: 'restdocs-api-spec-mockmvc', version: "${restdocsApiSpecGradleVersion}"
+    testImplementation group: 'com.epages', name: 'restdocs-api-spec-mockmvc', version: "_"
 }
 
 openapi3 {
-    server = 'https://localhost:9000'
+    server = 'https://localhost:9090'
     title = 'Arc-E-Tect Phonebook API'
     description = 'API description for the Arc-E-Tect Phonebook service'
     version = '1.0'
@@ -217,7 +214,7 @@ openapi3 {
 postman {
     title = 'Arc-E-Tect Phonebook API'
     version = "${version}"
-    baseUrl = 'https://localhost:9000'
+    baseUrl = 'https://localhost:9090'
 }
 
 // ------------------------------------------------------------
@@ -227,10 +224,25 @@ dockerCompose.isRequiredBy(bddTest)
 dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
 
-dockerCompose.stopContainers=false
+dockerCompose.stopContainers=true
 
 gradleLint {
     autoLintAfterFailure="false"
     rules  = ['archaic-wrapper']
 }
 
+dependencies {
+    swaggerUI 'org.webjars:swagger-ui:_'
+}
+
+swaggerSources {
+    Arc_E_Tect_Phonebook {
+        inputFile = file('build/api-spec/openapi3.json')
+    }
+}
+
+tasks.all { task ->
+    if (task.name == 'openapi3') {
+        task.dependsOn docGen
+    }
+}
