@@ -10,5 +10,6 @@ tasks.named("dependencyUpdates").configure {
     rejectVersionIf {
         isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
     }
+    outputFormatter='html'
 }
 
