@@ -129,7 +129,7 @@ docGen.mustRunAfter bddTest
 check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn bddTest, docGen
+    dependsOn test, bddTest, docGen
 }
 
 jacocoTestCoverageVerification {
