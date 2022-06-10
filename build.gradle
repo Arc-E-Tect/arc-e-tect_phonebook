@@ -54,6 +54,7 @@ plugins {
     id "nebula.lint" version "${gradleLintVersion}"
 
     id 'org.hidetake.swagger.generator' version '2.19.2'
+    id "io.cloudflight.license-gradle-plugin" version "1.0.3"
 }
 
 configurations {
@@ -213,13 +214,13 @@ openapi3 {
     title = 'Arc-E-Tect Phonebook API'
     description = 'API description for the Arc-E-Tect Phonebook service'
     version = '1.0'
-    format = 'yaml'
+    format = 'json'
 }
 
 postman {
     title = 'Arc-E-Tect Phonebook API'
     version = "${version}"
-    baseUrl = 'https://localhost:9000'
+    baseUrl = 'https://localhost:9090'
 }
 
 // ------------------------------------------------------------
@@ -242,7 +243,12 @@ dependencies {
 
 swaggerSources {
     Arc_E_Tect_Phonebook {
-        inputFile = file('build/api-spec/openapi3.yaml')
+        inputFile = file('build/api-spec/openapi3.json')
     }
 }
 
+tasks.all { task ->
+    if (task.name == 'openapi3') {
+        task.dependsOn docGen
+    }
+}
