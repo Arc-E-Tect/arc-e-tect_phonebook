@@ -47,6 +47,7 @@ include::{snippets}/get-all-endpoints/curl-request.adoc[]
 *HTTPie request*
 include::{snippets}/get-all-endpoints/httpie-request.adoc[]
 
+== Contacts
 
 [[resources-contacts-access]]
 [[resources-contacts-get]]
@@ -72,6 +73,11 @@ include::{snippets}/get-all-contacts-when-phonebook-is-empty/http-response.adoc[
 
 .Response links, contained in the __links_ section of the response
 include::{snippets}/get-all-contacts/links.adoc[]
+
+include::{snippets}/get-all-contacts/response-fields.adoc[]
+
+==== Swagger
+link:../swagger-ui-Arc_E_Tect_Phonebook/index.html#/contacts/get-all-contacts[Get All Contacts]
 
 ==== Commandline Invocations
 
