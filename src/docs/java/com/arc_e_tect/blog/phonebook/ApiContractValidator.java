@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({ RestDocumentationExtension.class, SpringExtension.class })
 @SpringBootTest(classes = ArcETectPhonebookApplication.class)
 @ActiveProfiles({"docgen"})
-public class ApiTester {
+public class ApiContractValidator {
 
     private MockMvc mockMvc;
 
@@ -53,7 +53,7 @@ public class ApiTester {
     CodecRegistry pojoCodecRegistry;
     MongoCollection<Contact> collection;
 
-    public ApiTester() {
+    public ApiContractValidator() {
     }
 
     protected final LinksSnippet indexLinks = links(
