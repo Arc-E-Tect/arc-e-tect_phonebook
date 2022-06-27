@@ -2,6 +2,7 @@
 
 dependencyCheck {
     failOnError = true
+    suppressionFile = "suppression.xml"
     analyzers {
         nodeAudit {
             yarnEnabled = false
