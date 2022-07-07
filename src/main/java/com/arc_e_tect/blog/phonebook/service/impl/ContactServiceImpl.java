@@ -49,4 +49,9 @@ public class ContactServiceImpl implements ContactService {
        return repo.findAll();
     }
 
+    @Override
+    public void deleteContactById(Long id) {
+        repo.deleteById(id);
+    }
+
 }

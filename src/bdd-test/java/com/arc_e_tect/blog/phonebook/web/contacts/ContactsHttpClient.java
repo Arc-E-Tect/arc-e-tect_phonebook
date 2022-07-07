@@ -69,4 +69,10 @@ public class ContactsHttpClient extends AbstractHttpClient {
     public void postNewContact(long id, String jsonDoc) {
         executePost(apiEndpoint(), jsonDoc);
     }
+
+    public void deleteContact(long contactId) {
+        String url = String.format("%s/%d", apiEndpoint(), contactId);
+        executeDelete(url);
+    }
+
 }

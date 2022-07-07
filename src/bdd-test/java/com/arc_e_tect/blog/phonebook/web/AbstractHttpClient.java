@@ -103,4 +103,30 @@ public abstract class AbstractHttpClient {
 
         stepData.setResponseEntity(response);
     }
+
+    protected void executeDelete(String url) {
+        log.atInfo().log("Executing DELETE on URI %s", url);
+
+        ResponseEntity<JsonNode> response = getApiClient().delete()
+                .uri(url)
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .toEntity(JsonNode.class)
+                .block();
+
+        stepData.setResponseEntity(response);
+
+        log.atInfo().log("\t responseEntity received: %s", stepData.getResponseEntity().toString());
+        log.atInfo().log("\t HTTP Status is : %s", stepData.getHttpStatus());
+        log.atInfo().log("\t StepData: %s", stepData);
+
+        log.atInfo().log("Delete data :");
+        log.atInfo().log("\t url        :%s", url);
+        log.atInfo().log("\t response   :%s", stepData.getResponseString());
+        log.atInfo().log("\t httpStatus :%s", stepData.getHttpStatus());
+        log.atInfo().log("\t headers    :%s", (stepData.getResponseHeaders() != null ? stepData.getResponseHeaders() : "NO HEADERS"));
+        log.atInfo().log(" ===> Done executing the Delete on URL: %s, received body: %s", url, stepData.getResponseString());
+    }
+
 }

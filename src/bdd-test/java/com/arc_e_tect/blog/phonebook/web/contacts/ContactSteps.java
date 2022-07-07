@@ -118,6 +118,10 @@ public class ContactSteps {
         httpClient.postNewContact(resource);
     }
 
+    @When("the contact with id {long} is deleted")
+    public void the_contact_with_id_is_deleted(long contactId) {
+        httpClient.deleteContact(contactId);
+    }
     @When("all contacts are requested")
     public void the_api_consumer_requests() throws IOException {
         httpClient.getAll();
@@ -143,7 +147,20 @@ public class ContactSteps {
             TestContact found = foundIt.first();
             assertNotNull(found);
         } catch (MongoException me) {
-            log.atWarning().log("Unable to delete due to an error: %s", me);
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
+    }
+
+    @Then("the phonebook does not contain the contact with id {long}")
+    public void the_phonebook_does_not_contain_the_contact_with_id(Long id) {
+        Bson query = eq("_id", id);
+
+        try {
+            FindIterable<TestContact> foundIt = collection.find(query);
+            TestContact found = foundIt.first();
+            assertNull(found);
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
         }
     }
 
