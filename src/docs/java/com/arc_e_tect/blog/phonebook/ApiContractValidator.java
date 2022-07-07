@@ -30,8 +30,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -222,6 +221,31 @@ public class ApiContractValidator {
                                 fieldWithPath("title").description("Short description of the error. Typically this is a one-liner.").type(JsonFieldType.STRING),
                                 fieldWithPath("detail").description("Verbose description of the error.").type(JsonFieldType.STRING).optional(),
                                 subsectionWithPath("_links").ignored().optional())
+                ));
+    }
+
+    @Test
+    void deleteExistentContact() throws Exception {
+        Contact newContact = new Contact();
+        newContact.setName("John Doe");
+        newContact.setId(42l);
+        newContact.setPhone("+1 (555) 748432");
+        collection.insertOne(newContact);
+        this.mockMvc.perform(delete("/contacts/{contact_id}", 42)
+                .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isNoContent())
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
+                ));
+    }
+
+    @Test
+    void deleteNonExistentContact() throws Exception {
+        this.mockMvc.perform(delete("/contacts/{contact_id}", 24)
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isNoContent())
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
                 ));
     }
 }

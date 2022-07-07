@@ -80,6 +80,6 @@ public class ContactsController {
     @DeleteMapping(value = "/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
     public void deleteContact(@PathVariable Long id, HttpServletResponse response) {
         contactService.deleteContactById(id);
-        response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.NO_CONTENT.value());
     }
 }
