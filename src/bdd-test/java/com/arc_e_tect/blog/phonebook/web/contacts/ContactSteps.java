@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -118,10 +120,32 @@ public class ContactSteps {
         httpClient.postNewContact(resource);
     }
 
+    @Given("the listed contact")
+    public void the_listed_contact(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String, String>> signUpForms = dataTable.asMaps(String.class, String.class);
+
+        Long id = Long.parseLong(signUpForms.get(0).get("id"));
+        String name = signUpForms.get(0).get("name");
+        String phone = signUpForms.get(0).get("phone");
+
+        TestContact contact = new TestContact();
+        contact.setId(id);
+        contact.setName(name);
+        contact.setPhone(phone);
+        collection.insertOne(contact);
+    }
+
+    @When("the phone number of contact {long} is changed to {string}")
+    public void the_phone_number_of_contact_is_changed_to(Long id, String phone) throws JsonProcessingException {
+        ContactResource resource = new ContactResource(id, null, phone);
+        httpClient.patchContact(id,resource);
+    }
+
     @When("the contact with id {long} is deleted")
     public void the_contact_with_id_is_deleted(long contactId) {
         httpClient.deleteContact(contactId);
     }
+
     @When("all contacts are requested")
     public void the_api_consumer_requests() throws IOException {
         httpClient.getAll();
@@ -181,6 +205,7 @@ public class ContactSteps {
     public void the_response_contains_no_contacts() {
         assertEquals(204, httpClient.getHttpStatus().value());
     }
+
     @Then("the response contains the contact {string}")
     public void the_response_contains_the_contact(String name) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -240,4 +265,18 @@ public class ContactSteps {
         String contactName = contactNode.path("name").asText();
         assertEquals(name, contactName);
     }
+
+    @Then("the contact with id {long} has phone number {string}")
+    public void the_contact_with_id_has_phone(Long id, String phone) {
+        Bson query = eq("_id", id);
+        try {
+            TestContact found = collection.find(query).first();
+            assertAll("Found with id and phone",
+                    () -> assertNotNull(found),
+                    () -> assertEquals(phone, found.getPhone()));
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
+    }
+
 }

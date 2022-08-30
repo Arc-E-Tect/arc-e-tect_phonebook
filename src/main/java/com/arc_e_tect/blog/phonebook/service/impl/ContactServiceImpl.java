@@ -54,4 +54,26 @@ public class ContactServiceImpl implements ContactService {
         repo.deleteById(id);
     }
 
+    @Override
+    public Contact updateContactById(Long id, Contact patch) {
+        Optional<Contact> result = repo.findById(id);
+        if (!result.isPresent()) {
+            throw new ContactNotFoundException(id);
+        }
+
+        Contact contact = result.get();
+
+        if (patch.getName() != null) {
+            contact.setName(patch.getName());
+        }
+        if (patch.getPhone() != null) {
+            contact.setPhone(patch.getPhone());
+        }
+
+        contact = repo.save(contact);
+
+        return contact;
+    }
+
+
 }

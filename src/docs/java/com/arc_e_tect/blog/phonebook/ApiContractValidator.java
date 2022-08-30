@@ -190,8 +190,7 @@ public class ApiContractValidator {
                         responseFields(
                                 fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
                                 fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),
-                                fieldWithPath("phone").description("The Contact's phone number. Typically this includes the country code, the area code and the subscriber code." +
-                                        "The alias is for documentation purposes only").type(JsonFieldType.STRING).optional(),
+                                fieldWithPath("phone").description("The Contact's phone number. Typically this includes the country code, the area code and the subscriber code.").type(JsonFieldType.STRING),
                                 subsectionWithPath("_links").ignored().optional()),
                         links(halLinks(),
                                 (linkWithRel("self").description("The URL to the endpoint to retrieve this contact.")),
@@ -221,6 +220,33 @@ public class ApiContractValidator {
                                 fieldWithPath("title").description("Short description of the error. Typically this is a one-liner.").type(JsonFieldType.STRING),
                                 fieldWithPath("detail").description("Verbose description of the error.").type(JsonFieldType.STRING).optional(),
                                 subsectionWithPath("_links").ignored().optional())
+                ));
+    }
+
+    @Test
+    void patchExistentContactPhone() throws Exception {
+        Contact newContact = new Contact();
+        newContact.setName("John Doe");
+        newContact.setId(42l);
+        newContact.setPhone("+1 (555) 748432");
+        collection.insertOne(newContact);
+
+        String jsonDoc = "{\"phone\":\"+1 (666) 748432\"}";
+        this.mockMvc.perform(patch("/contacts/42")
+                        .content(jsonDoc)
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
+                                fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),
+                                fieldWithPath("phone").description("The Contact's phone number. Typically this includes the country code, the area code and the subscriber code.").type(JsonFieldType.STRING),
+                                subsectionWithPath("_links").ignored().optional()),
+                        links(halLinks(),
+                                (linkWithRel("self").description("The URL to the endpoint to retrieve this contact.")),
+                                (linkWithRel("contacts").description("The URL to the endpoint to retrieve all contacts.")))
                 ));
     }
 

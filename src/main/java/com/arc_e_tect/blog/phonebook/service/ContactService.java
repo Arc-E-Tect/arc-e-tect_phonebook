@@ -13,5 +13,7 @@ public interface ContactService {
     Contact getContactByName(String name) throws ContactNotFoundException;
     List<Contact> retrieveAllContacts();
 
+    Contact updateContactById(Long id, Contact patch);
+
     void deleteContactById(Long id);
 }

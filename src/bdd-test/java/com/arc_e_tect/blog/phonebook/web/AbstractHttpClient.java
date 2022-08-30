@@ -104,6 +104,19 @@ public abstract class AbstractHttpClient {
         stepData.setResponseEntity(response);
     }
 
+    protected void executePatch(String url, String jsonDocument) {
+        ResponseEntity<JsonNode> response = getApiClient().patch()
+                .uri(url)
+                .bodyValue(jsonDocument)
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .toEntity(JsonNode.class)
+                .block();
+
+        stepData.setResponseEntity(response);
+    }
+
     protected void executeDelete(String url) {
         log.atInfo().log("Executing DELETE on URI %s", url);
 

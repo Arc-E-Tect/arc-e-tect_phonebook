@@ -82,4 +82,13 @@ public class ContactsController {
         contactService.deleteContactById(id);
         response.setStatus(HttpStatus.NO_CONTENT.value());
     }
+
+    @PatchMapping(value = "/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ContactResource patchContact(@PathVariable Long id, @RequestBody ContactResource newResource, HttpServletResponse response) {
+        Contact contact = new Contact(newResource.getId(), newResource.getName(), newResource.getPhone());
+        contact = contactService.updateContactById(id, contact);
+        response.setStatus(HttpStatus.OK.value());
+
+        return resourceAssembler.toModel(contact);
+    }
 }

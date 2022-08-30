@@ -2,6 +2,7 @@ package com.arc_e_tect.blog.phonebook.web.contacts;
 
 import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.web.AbstractHttpClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -68,6 +69,13 @@ public class ContactsHttpClient extends AbstractHttpClient {
 
     public void postNewContact(long id, String jsonDoc) {
         executePost(apiEndpoint(), jsonDoc);
+    }
+
+    public void patchContact(long id, ContactResource resource) throws JsonProcessingException {
+        String url = String.format("%s/%d", apiEndpoint(), id);
+        String jsonDocument = new ObjectMapper().writeValueAsString(resource);
+
+        executePatch(url, jsonDocument);
     }
 
     public void deleteContact(long contactId) {
