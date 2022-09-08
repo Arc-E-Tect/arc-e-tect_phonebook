@@ -34,7 +34,7 @@ public class ContactsController {
     public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response) {
         List<Contact> contactList = contactService.retrieveAllContacts();
 
-        if (contactList == null || contactList.size() == 0) {
+        if (contactList.size() == 0) {
             response.setStatus(204);
             return null;
         }
