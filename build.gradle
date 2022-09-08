@@ -52,7 +52,6 @@ plugins {
     id "nebula.lint"
 
     id 'org.hidetake.swagger.generator'
-//    id "io.cloudflight.license-gradle-plugin"
 }
 
 configurations {
