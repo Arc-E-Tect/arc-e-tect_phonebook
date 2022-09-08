@@ -141,6 +141,12 @@ public class ContactSteps {
         httpClient.patchContact(id,resource);
     }
 
+    @When("the name of contact {long} is changed to {string}")
+    public void the_name_of_contact_is_changed_to(Long id, String name) throws JsonProcessingException {
+        ContactResource resource = new ContactResource(id, name, null);
+        httpClient.patchContact(id,resource);
+    }
+
     @When("the contact with id {long} is deleted")
     public void the_contact_with_id_is_deleted(long contactId) {
         httpClient.deleteContact(contactId);
