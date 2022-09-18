@@ -47,8 +47,6 @@ plugins {
     // contracts that can be uphold from day one.
     id "org.cyclonedx.bom"
     id "nebula.lint"
-
-    id 'org.hidetake.swagger.generator'
 }
 
 configurations {
