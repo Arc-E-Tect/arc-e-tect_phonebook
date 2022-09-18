@@ -49,7 +49,7 @@ include::{snippets}/get-all-endpoints/httpie-request.adoc[]
 
 == Contacts
 
-[[resources-contacts-get]]
+[[resources-contacts-get-all]]
 === GET all Contacts
 
 To retrieve all contacts stored in the Arc-E-Tect Phonebook, call the `GET` on the Contacts endpoint.
@@ -68,15 +68,13 @@ include::{snippets}/get-all-contacts/http-request.adoc[]
 *Example Response*
 include::{snippets}/get-all-contacts/http-response.adoc[]
 
+Get all contacts from an empty phonebook
 include::{snippets}/get-all-contacts-when-phonebook-is-empty/http-response.adoc[]
 
 .Response links, contained in the __links_ section of the response
 include::{snippets}/get-all-contacts/links.adoc[]
 
 include::{snippets}/get-all-contacts/response-fields.adoc[]
-
-==== Swagger
-link:../swagger-ui-Arc_E_Tect_Phonebook/index.html#/contacts/get-all-contacts[Get All Contacts]
 
 ==== Commandline Invocations
 
@@ -85,6 +83,44 @@ include::{snippets}/get-all-contacts/curl-request.adoc[]
 
 *HTTPie request*
 include::{snippets}/get-all-contacts/httpie-request.adoc[]
+
+
+[[resources-contacts-get-single]]
+=== GET single Contact
+
+To retrieve a single contact stored in the Arc-E-Tect Phonebook, call the `GET` on the Contacts endpoint with the name of the contact to be retrieved.
+
+==== Request structure
+
+*Example Request*
+
+When the phonebook is empty, no content is returned. This is indicated with a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204[204 - No Content]. In case there are Contacts stored in the phonebook, the response contains the contact with the name provided and the http status is https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200[200 - OK].
+
+include::{snippets}/get-single-contact/http-request.adoc[]
+
+==== Response structure
+*Example Response*
+include::{snippets}/get-single-contact/http-response.adoc[]
+
+Retrieving an unknown contact
+include::{snippets}/get-not-existent-contact/http-response.adoc[]
+
+Retrieving a contact from an empty phonebook
+include::{snippets}/get-single-contact-empty-phonebook/http-response.adoc[]
+
+.Response links, contained in the __links_ section of the response
+include::{snippets}/get-single-contact/links.adoc[]
+
+include::{snippets}/get-single-contact/response-fields.adoc[]
+
+==== Commandline Invocations
+
+*CURL request*
+include::{snippets}/get-single-contact/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/get-single-contact/httpie-request.adoc[]
+
 
 [[resources-contacts-post]]
 === POST new Contact
@@ -105,6 +141,7 @@ include::{snippets}/post-new-contact/http-request.adoc[]
 *Example Response*
 include::{snippets}/post-new-contact/http-response.adoc[]
 
+Storing an duplicate contact
 include::{snippets}/post-existent-contact/http-response.adoc[]
 
 .Response links, contained in the __links_ section of the response
@@ -112,13 +149,86 @@ include::{snippets}/post-new-contact/links.adoc[]
 
 include::{snippets}/post-new-contact/response-fields.adoc[]
 
-==== Swagger
-link:../swagger-ui-Arc_E_Tect_Phonebook/index.html#/contacts/post-new-contact[Post New Contact]
-
 ==== Commandline Invocations
-
 *CURL request*
 include::{snippets}/post-new-contact/curl-request.adoc[]
 
 *HTTPie request*
 include::{snippets}/post-new-contact/httpie-request.adoc[]
+
+
+[[resources-contacts-delete]]
+=== DELETE Contact
+
+To delete a contact stored in the Arc-E-Tect Phonebook, call the `DELETE` on the Contacts endpoint with the name of the contact to be deleted.
+
+==== Example Request
+===== Request structure
+The deletion is successful when a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204[204 - No Content] is returned, indicating that the Contact no longer exists in the phonebook.
+
+include::{snippets}/delete-existent-contact/http-request.adoc[]
+
+===== Response structure
+
+include::{snippets}/delete-existent-contact/http-response.adoc[]
+
+Deleting an unknown contact
+include::{snippets}/delete-non-existent-contact/http-response.adoc[]
+
+==== Commandline Invocations
+*CURL request*
+include::{snippets}/delete-existent-contact/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/delete-existent-contact/httpie-request.adoc[]
+
+
+[[resources-contacts-patch]]
+=== PATCH Contact
+
+To change a contact's name or phone number stored in the Arc-E-Tect Phonebook, call the `PATCH` on the Contacts endpoint with the name of the contact to be changed and providing the changed fields.
+
+==== Example - Patching a contact's name
+
+===== Request structure
+include::{snippets}/patch-existent-contact-name/http-request.adoc[]
+
+===== Response structure
+include::{snippets}/patch-existent-contact-name/http-response.adoc[]
+
+===== Commandline Invocations
+*CURL request*
+include::{snippets}/patch-existent-contact-name/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/patch-existent-contact-name/httpie-request.adoc[]
+
+==== Example - Patching a contact's phone number
+
+===== Request structure
+include::{snippets}/patch-existent-contact-phone/http-request.adoc[]
+
+===== Response structure
+include::{snippets}/patch-existent-contact-phone/http-response.adoc[]
+
+===== Commandline Invocations
+*CURL request*
+include::{snippets}/patch-existent-contact-phone/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/patch-existent-contact-phone/httpie-request.adoc[]
+
+==== Example - Patching a contact's name and phone number
+
+===== Request structure
+include::{snippets}/patch-existent-contact-name-and-phone/http-request.adoc[]
+
+===== Response structure
+include::{snippets}/patch-existent-contact-name-and-phone/http-response.adoc[]
+
+===== Commandline Invocations
+*CURL request*
+include::{snippets}/patch-existent-contact-phone/curl-request.adoc[]
+
+*HTTPie request*
+include::{snippets}/patch-existent-contact-phone/httpie-request.adoc[]
