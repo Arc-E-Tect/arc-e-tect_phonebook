@@ -28,9 +28,6 @@ plugins {
     id "org.asciidoctor.jvm.convert"
     id 'com.epages.restdocs-api-spec'
 
-    // Being able to continuously scan whether there are new versions of your dependencies will simplify your life
-    id "com.github.ben-manes.versions"
-
     id "com.github.spacialcircumstances.gradle-cucumber-reporting"
     id "com.github.jmongard.git-semver-plugin"
 
@@ -63,8 +60,6 @@ configurations {
 repositories {
     mavenCentral()
 }
-
-apply from: 'gradle/dependencyupdates.gradle'
 
 apply from: 'gradle/semver.gradle'
 
