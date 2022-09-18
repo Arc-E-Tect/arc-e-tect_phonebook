@@ -30,7 +30,7 @@
         </ENTRIES>
       </extension>
     </EXTENSION>
-    <DebugAllEnabled>false</DebugAllEnabled>
+    <DebugAllEnabled>true</DebugAllEnabled>
     <method v="2" />
   </configuration>
 </component>
