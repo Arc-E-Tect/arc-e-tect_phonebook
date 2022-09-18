@@ -17,7 +17,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = versionFor("version.org.jacoco..org.jacoco.agent")
+    toolVersion = versionFor(project, "version.org.jacoco..org.jacoco.agent")
 }
 
 jacocoTestReport {

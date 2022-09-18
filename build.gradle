@@ -223,16 +223,6 @@ gradleLint {
     rules  = ['archaic-wrapper']
 }
 
-dependencies {
-    swaggerUI 'org.webjars:swagger-ui:_'
-}
-
-swaggerSources {
-    Arc_E_Tect_Phonebook {
-        inputFile = file('build/api-spec/openapi3.json')
-    }
-}
-
 tasks.all { task ->
     if (task.name == 'openapi3') {
         task.dependsOn docGen
