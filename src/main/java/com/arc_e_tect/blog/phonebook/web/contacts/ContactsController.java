@@ -77,16 +77,16 @@ public class ContactsController {
         return resourceAssembler.toModel(contact);
     }
 
-    @DeleteMapping(value = "/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public void deleteContact(@PathVariable Long id, HttpServletResponse response) {
-        contactService.deleteContactById(id);
+    @DeleteMapping(value = "/{name}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public void deleteContact(@PathVariable String name, HttpServletResponse response) {
+        contactService.deleteContactByName(name);
         response.setStatus(HttpStatus.NO_CONTENT.value());
     }
 
-    @PatchMapping(value = "/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public ContactResource patchContact(@PathVariable Long id, @RequestBody ContactResource newResource, HttpServletResponse response) {
+    @PatchMapping(value = "/{name}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ContactResource patchContact(@PathVariable String name, @RequestBody ContactResource newResource, HttpServletResponse response) {
         Contact contact = new Contact(newResource.getId(), newResource.getName(), newResource.getPhone());
-        contact = contactService.updateContactById(id, contact);
+        contact = contactService.updateContactByName(name, contact);
         response.setStatus(HttpStatus.OK.value());
 
         return resourceAssembler.toModel(contact);

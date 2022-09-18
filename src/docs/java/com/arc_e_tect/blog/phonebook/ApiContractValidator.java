@@ -104,7 +104,7 @@ public class ApiContractValidator {
     @Test
     void getAllContacts() throws Exception {
         Contact newContact = new Contact();
-        newContact.setName("John Doe");
+        newContact.setName("Peter Parker");
         newContact.setId(1l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
@@ -130,17 +130,17 @@ public class ApiContractValidator {
     @Test
     void getSingleContact() throws Exception {
         Contact newContact = new Contact();
-        newContact.setName("John Doe");
+        newContact.setName("Peter Parker");
         newContact.setId(42l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
-        this.mockMvc.perform(get("/contacts/{name}", newContact.getName())
+        this.mockMvc.perform(get("/contacts/{contact_name}", newContact.getName())
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                        pathParameters(parameterWithName("name")
+                        pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be retrieved.")),
                         responseFields(
                                 fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
@@ -155,15 +155,35 @@ public class ApiContractValidator {
     }
 
     @Test
-    void getNotExistentContact() throws Exception {
+    void getSingleContactEmptyPhonebook() throws Exception {
         collection.drop();
-        this.mockMvc.perform(get("/contacts/{id}", 666)
+        this.mockMvc.perform(get("/contacts/{contact_name}", "John Doe")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                        pathParameters(parameterWithName("id")
+                        pathParameters(parameterWithName("contact_name")
+                                .description("Identifier of the Contact that is to be retrieved.")),
+                        responseFields(
+                                fieldWithPath("timestamp").description("The time the at which the error occurred. The timestamp is the server time.").type(JsonFieldType.STRING),
+                                fieldWithPath("status").description("The http status related to the error.").type(JsonFieldType.STRING),
+                                fieldWithPath("title").description("Short description of the error. Typically this is a one-liner.").type(JsonFieldType.STRING),
+                                fieldWithPath("detail").description("Verbose description of the error.").type(JsonFieldType.STRING).optional(),
+                                subsectionWithPath("_links").ignored().optional())
+                ));
+    }
+
+    @Test
+    void getNotExistentContact() throws Exception {
+        collection.drop();
+        this.mockMvc.perform(get("/contacts/{contact_name}", "John Doe")
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("contact_name")
                                 .description("Identifier of the Contact that is to be retrieved.")),
                         responseFields(
                                 fieldWithPath("timestamp").description("The time the at which the error occurred. The timestamp is the server time.").type(JsonFieldType.STRING),
@@ -178,7 +198,7 @@ public class ApiContractValidator {
     void postNewContact() throws Exception {
         collection.drop();
 
-        String jsonDoc = "{\"name\":\"John Doe\",\"phone\":\"+1 (555) 748432\"}";
+        String jsonDoc = "{\"name\":\"Peter Parker\",\"phone\":\"+1 (555) 748432\"}";
 
         this.mockMvc.perform(post("/contacts")
                         .content(jsonDoc)
@@ -201,12 +221,12 @@ public class ApiContractValidator {
     @Test
     void postExistentContact() throws Exception {
         Contact newContact = new Contact();
-        newContact.setName("John Doe");
+        newContact.setName("Peter Parker");
         newContact.setId(42l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
 
-        String jsonDoc = "{\"name\":\"John Doe\",\"phone\":\"+1 (555) 748432\"}";
+        String jsonDoc = "{\"name\":\"Peter Parker\",\"phone\":\"+1 (555) 748432\"}";
         this.mockMvc.perform(post("/contacts")
                         .content(jsonDoc)
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
@@ -224,21 +244,81 @@ public class ApiContractValidator {
     }
 
     @Test
-    void patchExistentContactPhone() throws Exception {
+    void patchExistentContactNameAndPhone() throws Exception {
         Contact newContact = new Contact();
-        newContact.setName("John Doe");
+        newContact.setName("Peter Parker");
         newContact.setId(42l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
 
-        String jsonDoc = "{\"phone\":\"+1 (666) 748432\"}";
-        this.mockMvc.perform(patch("/contacts/42")
+        String jsonDoc = "{\"name\":\"John Stark\",\"phone\":\"+1 (555) 432748\"}";
+        this.mockMvc.perform(patch("/contacts/{contact_name}", "Peter Parker")
                         .content(jsonDoc)
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("contact_name")
+                                .description("Name of the Contact that is to be patched.")),
+                        responseFields(
+                                fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
+                                fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),
+                                fieldWithPath("phone").description("The Contact's phone number. Typically this includes the country code, the area code and the subscriber code.").type(JsonFieldType.STRING),
+                                subsectionWithPath("_links").ignored().optional()),
+                        links(halLinks(),
+                                (linkWithRel("self").description("The URL to the endpoint to retrieve this contact.")),
+                                (linkWithRel("contacts").description("The URL to the endpoint to retrieve all contacts.")))
+                ));
+    }
+
+    @Test
+    void patchExistentContactName() throws Exception {
+        Contact newContact = new Contact();
+        newContact.setName("Peter Parker");
+        newContact.setId(42l);
+        newContact.setPhone("+1 (555) 748432");
+        collection.insertOne(newContact);
+
+        String jsonDoc = "{\"name\":\"John Stark\"}";
+        this.mockMvc.perform(patch("/contacts/{contact_name}", "Peter Parker")
+                        .content(jsonDoc)
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("contact_name")
+                                .description("Name of the Contact that is to be patched.")),
+                        responseFields(
+                                fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
+                                fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),
+                                fieldWithPath("phone").description("The Contact's phone number. Typically this includes the country code, the area code and the subscriber code.").type(JsonFieldType.STRING),
+                                subsectionWithPath("_links").ignored().optional()),
+                        links(halLinks(),
+                                (linkWithRel("self").description("The URL to the endpoint to retrieve this contact.")),
+                                (linkWithRel("contacts").description("The URL to the endpoint to retrieve all contacts.")))
+                ));
+    }
+
+    @Test
+    void patchExistentContactPhone() throws Exception {
+        Contact newContact = new Contact();
+        newContact.setName("Peter Parker");
+        newContact.setId(42l);
+        newContact.setPhone("+1 (555) 748432");
+        collection.insertOne(newContact);
+
+        String jsonDoc = "{\"phone\":\"+1 (555) 432748\"}";
+        this.mockMvc.perform(patch("/contacts/{contact_name}", "Peter Parker")
+                        .content(jsonDoc)
+                        .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
+                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("contact_name")
+                                .description("Name of the Contact that is to be patched.")),
                         responseFields(
                                 fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
                                 fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),
@@ -253,25 +333,29 @@ public class ApiContractValidator {
     @Test
     void deleteExistentContact() throws Exception {
         Contact newContact = new Contact();
-        newContact.setName("John Doe");
+        newContact.setName("Peter Parker");
         newContact.setId(42l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
-        this.mockMvc.perform(delete("/contacts/{contact_id}", 42)
+        this.mockMvc.perform(delete("/contacts/{contact_name}", newContact.getName())
                 .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("contact_name")
+                                .description("Name of the Contact that is to be patched."))
                 ));
     }
 
     @Test
     void deleteNonExistentContact() throws Exception {
-        this.mockMvc.perform(delete("/contacts/{contact_id}", 24)
+        this.mockMvc.perform(delete("/contacts/{contact_name}", "John Doe")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("contact_name")
+                                .description("Name of the Contact that is to be patched."))
                 ));
     }
 }

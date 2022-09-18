@@ -21,7 +21,7 @@ public class ContactsResourceAssembler extends RepresentationModelAssemblerSuppo
 
     @Override
     public ContactResource toModel(Contact contact) {
-        ContactResource result = super.createModelWithId(contact.getId(), contact);
+        ContactResource result = super.createModelWithId(contact.getName(), contact);
 
         BeanUtils.copyProperties(contact, result);
 

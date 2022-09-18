@@ -36,12 +36,12 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact getContactByName(String name) throws ContactNotFoundException {
-        Contact result = repo.findByName(name);
-        if (result == null) {
+        Optional<Contact>  result = repo.findByName(name);
+        if (!result.isPresent()) {
             throw new ContactNotFoundException(name);
         }
 
-        return result;
+        return result.get();
     }
 
     @Override
@@ -50,15 +50,19 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void deleteContactById(Long id) {
-        repo.deleteById(id);
+    public void deleteContactByName(String name) {
+        Optional<Contact> result = repo.findByName(name);
+        if (result.isPresent()) {
+            Contact deletable = result.get();
+            repo.deleteById(deletable.getId());
+        }
     }
 
     @Override
-    public Contact updateContactById(Long id, Contact patch) {
-        Optional<Contact> result = repo.findById(id);
+    public Contact updateContactByName(String name, Contact patch) {
+        Optional<Contact> result = repo.findByName(name);
         if (!result.isPresent()) {
-            throw new ContactNotFoundException(id);
+            throw new ContactNotFoundException(name);
         }
 
         Contact contact = result.get();

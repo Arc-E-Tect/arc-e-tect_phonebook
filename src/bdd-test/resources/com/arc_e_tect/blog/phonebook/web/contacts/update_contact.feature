@@ -7,20 +7,20 @@ Feature: Update a contact in the phonebook
 
   Scenario: Update the phone number of the contact
     Given the listed contact
-    | id | name     | phone         |
-    | 42 | John Doe | 1-555-2124578 |
-    When the phone number of contact 42 is changed to "1-666-2124578"
+      | id | name    | phone         |
+      | 42 | Peter Parker | 1-555-2124578 |
+    When the phone number of contact "Peter Parker" is changed to "1-666-2124578"
     Then the contact with id 42 has phone number "1-666-2124578"
 
   Scenario: Update the name of the contact
     Given the listed contact
-    | id | name     | phone         |
-    | 42 | John Doe | 1-555-2124578 |
-    When the name of contact 42 is changed to "Jane Doe"
-    Then the contact with id 42 has name "Jane Doe"
+      | id | name         | phone         |
+      | 42 | Peter Parker | 1-555-2124578 |
+    When the name of contact "Peter Parker" is changed to "John Stark"
+    Then the contact with id 42 has name "John Stark"
 
   Scenario: Update the phone number of an unknown contact
     Given the phonebook is empty
-    When the phone number of contact 666 is changed to "1-666-2124578"
+    When the phone number of contact "John Doe" is changed to "1-666-2124578"
     Then the contact cannot be found
     And the response contains no contact

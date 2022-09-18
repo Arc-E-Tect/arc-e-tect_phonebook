@@ -71,15 +71,15 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executePost(apiEndpoint(), jsonDoc);
     }
 
-    public void patchContact(long id, ContactResource resource) throws JsonProcessingException {
-        String url = String.format("%s/%d", apiEndpoint(), id);
+    public void patchContact(String name, ContactResource resource) throws JsonProcessingException {
+        String url = String.format("%s/%s", apiEndpoint(), name);
         String jsonDocument = new ObjectMapper().writeValueAsString(resource);
 
         executePatch(url, jsonDocument);
     }
 
-    public void deleteContact(long contactId) {
-        String url = String.format("%s/%d", apiEndpoint(), contactId);
+    public void deleteContact(String contactName) {
+        String url = String.format("%s/%s", apiEndpoint(), contactName);
         executeDelete(url);
     }
 

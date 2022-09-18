@@ -149,21 +149,21 @@ public class ContactSteps {
         collection.insertOne(contact);
     }
 
-    @When("the phone number of contact {long} is changed to {string}")
-    public void the_phone_number_of_contact_is_changed_to(Long id, String phone) throws JsonProcessingException {
-        ContactResource resource = new ContactResource(id, null, phone);
-        httpClient.patchContact(id,resource);
+    @When("the phone number of contact {string} is changed to {string}")
+    public void the_phone_number_of_contact_is_changed_to(String name, String phone) throws JsonProcessingException {
+        ContactResource resource = new ContactResource(0, name, phone);
+        httpClient.patchContact(name,resource);
     }
 
-    @When("the name of contact {long} is changed to {string}")
-    public void the_name_of_contact_is_changed_to(Long id, String name) throws JsonProcessingException {
-        ContactResource resource = new ContactResource(id, name, null);
-        httpClient.patchContact(id,resource);
+    @When("the name of contact {string} is changed to {string}")
+    public void the_name_of_contact_is_changed_to(String name, String newName) throws JsonProcessingException {
+        ContactResource resource = new ContactResource(0, newName, null);
+        httpClient.patchContact(name,resource);
     }
 
-    @When("the contact with id {long} is deleted")
-    public void the_contact_with_id_is_deleted(long contactId) {
-        httpClient.deleteContact(contactId);
+    @When("the contact with name {string} is deleted")
+    public void the_contact_with_name_is_deleted(String name) {
+        httpClient.deleteContact(name);
     }
 
     @When("all contacts are requested")
@@ -273,6 +273,17 @@ public class ContactSteps {
             assertAll("Found with name",
                     () -> assertNotNull(found),
                     () -> assertEquals(name, found.getName()));
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
+    }
+
+    @Then("the phonebook does not contain the contact with name {string}")
+    public void the_phonebook_does_not_contain_the_contact_with_name(String name) {
+        Bson query = eq("name", name);
+        try {
+            TestContact found = collection.find(query).first();
+            assertNull(found);
         } catch (MongoException me) {
             log.atWarning().log("Unable to find due to an error: %s", me);
         }
