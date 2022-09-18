@@ -43,8 +43,11 @@ public class ContactSteps {
     CodecRegistry pojoCodecRegistry;
     MongoCollection<TestContact> collection;
 
+    private long contactId = 1;
+
     @Before
     public void setup() {
+        contactId = 1;
         log.atInfo().log("Clearing database.");
         mongoClient = MongoClients.create("mongodb://localhost:37017");
         pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
@@ -63,14 +66,14 @@ public class ContactSteps {
     public void the_contact_is_listed_in_the_phonebook(String contact) {
         TestContact newContact = new TestContact();
         newContact.setName(contact);
-        newContact.setId(1L);
+        newContact.setId(contactId++);
         collection.insertOne(newContact);
     }
 
     @Given("the contact with id {long} is listed in the phonebook")
     public void the_contact_with_id_is_listed_in_the_phonebook(Long id) {
         TestContact newContact = new TestContact();
-        newContact.setName("John Doe");
+        newContact.setName("Peter Parker");
         newContact.setId(id);
         collection.insertOne(newContact);
     }
