@@ -6,20 +6,20 @@ Feature: Get a single contact from the phonebook
   relevant for the scenario.
 
   Scenario: 01 - Requests a contact that is listed in the phonebook
-    Given the contact with id 42 is listed in the phonebook
-    When the contact with id 42 is requested
-    Then the response contains the contact with id 42
+    Given the contact with name "Peter Parker" is listed in the phonebook
+    When the contact with name "Peter Parker" is requested
+    Then the response contains the contact with name "Peter Parker"
 
   @error
   Scenario: 02 - Requests a contact from an empty phonebook
     Given the phonebook is empty
-    When the contact with id 1 is requested
+    When the contact with name "Peter Parker" is requested
     Then the contact cannot be found
     And the response contains no contact
 
   @error
   Scenario: 03 - Requests a contact that is not listed in the phonebook
-    Given the contact with id 666 is not listed in the phonebook
-    When the contact with id 666 is requested
+    Given the contact with name "John Doe" is not listed in the phonebook
+    When the contact with name "John Doe" is requested
     Then the contact cannot be found
     And the response contains no contact

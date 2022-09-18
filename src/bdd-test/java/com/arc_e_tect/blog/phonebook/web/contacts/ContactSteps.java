@@ -78,11 +78,11 @@ public class ContactSteps {
         collection.insertOne(newContact);
     }
 
-    @Given("the contact with id name {string} is listed in the phonebook")
+    @Given("the contact with name {string} is listed in the phonebook")
     public void the_contact_with_id_name_is_listed_in_the_phonebook(String name) {
         TestContact newContact = new TestContact();
         newContact.setName(name);
-        newContact.setId(42l);
+        newContact.setId(contactId++);
         collection.insertOne(newContact);
     }
 
@@ -103,6 +103,17 @@ public class ContactSteps {
         newContact.setName(name);
         newContact.setId(id);
         collection.insertOne(newContact);
+    }
+
+    @Given("the contact with id {long} and name {string} is not listed in the phonebook")
+    public void the_contact_with_id_and_name_is_not_listed_in_the_phonebook(Long id, String name) {
+        Bson query = eq("id", id);
+        try {
+            DeleteResult result = collection.deleteOne(query);
+            log.atInfo().log("Deleted document count: %S", result.getDeletedCount());
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to delete due to an error: %s", me);
+        }
     }
 
     @Given("the contact with name {string} is not listed in the phonebook")
@@ -160,9 +171,9 @@ public class ContactSteps {
         httpClient.getAll();
     }
 
-    @When("the contact with id {long} is requested")
-    public void the_contact_with_id_is_requested(Long id) throws IOException {
-        httpClient.getSingleById(id);
+    @When("the contact with name {string} is requested")
+    public void the_contact_with_name_is_requested(String name) throws IOException {
+        httpClient.getSingleByName(name);
     }
 
     @When("the contact with id {long} and name {string} is added to the phonebook")

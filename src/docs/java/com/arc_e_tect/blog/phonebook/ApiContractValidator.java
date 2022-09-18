@@ -134,14 +134,14 @@ public class ApiContractValidator {
         newContact.setId(42l);
         newContact.setPhone("+1 (555) 748432");
         collection.insertOne(newContact);
-        this.mockMvc.perform(get("/contacts/{id}", 42)
+        this.mockMvc.perform(get("/contacts/{name}", newContact.getName())
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                        pathParameters(parameterWithName("id")
-                                .description("Identifier of the Contact that is to be retrieved.")),
+                        pathParameters(parameterWithName("name")
+                                .description("Name of the Contact that is to be retrieved.")),
                         responseFields(
                                 fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
                                 fieldWithPath("name").description("The name of the Contact. Typically this is the firstname and lastname combined.").type(JsonFieldType.STRING),

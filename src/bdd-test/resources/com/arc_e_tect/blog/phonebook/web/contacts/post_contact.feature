@@ -11,8 +11,15 @@ Feature: Store a contact into the phonebook
     Then the phonebook contains the contact with name "Peter Parker"
     And the response contains the contact with name "Peter Parker"
 
+  Scenario: 02 - Add a contact with an id to the phonebook
+    Given the contact with id 42 and name "Peter Parker" is not listed in the phonebook
+    When the contact with id 42 and name "Peter Parker" is added to the phonebook
+    Then the phonebook contains the contact with id 42
+    And the contact with id 42 has name "Peter Parker"
+    And the response contains the contact with name "Peter Parker"
+
   @error
-  Scenario: 02 - Try to add a contact with an id to the phonebook that is already listed
+  Scenario: 03 - Try to add a contact with an id to the phonebook that is already listed
     Given the contact with id 666 and name "Mephisto" is listed in the phonebook
     When the contact with id 666 and name "Peter Parker" is added to the phonebook
     Then the phonebook contains the contact with id 666
@@ -20,8 +27,8 @@ Feature: Store a contact into the phonebook
     And the response contains no contact
 
   @error
-  Scenario: 03 - Try to add a contact with a name to the phonebook that is already listed
-    Given the contact with id name "Peter Parker" is listed in the phonebook
+  Scenario: 04 - Try to add a contact with a name to the phonebook that is already listed
+    Given the contact with name "Peter Parker" is listed in the phonebook
     When the contact with name "Peter Parker" is added to the phonebook
     Then the phonebook contains the contact with name "Peter Parker"
     And the response contains no contact

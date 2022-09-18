@@ -44,9 +44,9 @@ public class ContactsController {
         return result;
     }
 
-    @GetMapping(value="/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ContactResource> getSingleContactById(@PathVariable Long id, HttpServletResponse response) {
-        Contact contact = contactService.getContactByID(id);
+    @GetMapping(value="/{name}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ContactResource> getSingleContactByName(@PathVariable String name, HttpServletResponse response) {
+        Contact contact = contactService.getContactByName(name);
 
         ContactResource result = resourceAssembler.toModel(contact);
 
