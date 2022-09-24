@@ -5,20 +5,20 @@ Feature: Get a single contact from the phonebook
   in the scenarios. The contact with the id 666, the number of the beast, is used for those error flows where the id is
   relevant for the scenario.
 
-  Scenario: 01 - Requests a contact that is listed in the phonebook
+  Scenario: 01 - A contact that is listed
     Given the contact with name "Peter Parker" is listed in the phonebook
     When the contact with name "Peter Parker" is requested
     Then the response contains the contact with name "Peter Parker"
 
   @error
-  Scenario: 02 - Requests a contact from an empty phonebook
+  Scenario: 02 - A contact from an empty phonebook
     Given the phonebook is empty
     When the contact with name "Peter Parker" is requested
     Then the contact cannot be found
     And the response contains no contact
 
   @error
-  Scenario: 03 - Requests a contact that is not listed in the phonebook
+  Scenario: 03 - A contact that is not listed
     Given the contact with name "John Doe" is not listed in the phonebook
     When the contact with name "John Doe" is requested
     Then the contact cannot be found

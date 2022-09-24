@@ -5,12 +5,12 @@ Feature: Delete a Contact from the phonebook
   in the scenarios. The contact with the id 666, the number of the beast, is used for those error flows where the id is
   relevant for the scenario. Contacts with the id 24 are unknown, as you can file a missing person report after 24 hours.
 
-  Scenario: 01 - Deleting an existing contact from the phonebook
+  Scenario: 01 - An existing contact
     Given the contact with name "Peter Parker" is listed in the phonebook
     When the contact with name "Peter Parker" is deleted
     Then the phonebook does not contain the contact with name "Peter Parker"
 
-  Scenario: 02 - Deleting a non-existing contact from the phonebook
+  Scenario: 02 - A non-existing contact
     Given the contact with name "John Doe" is not listed in the phonebook
     When the contact with name "John Doe" is deleted
     Then the phonebook does not contain the contact with name "John Doe"

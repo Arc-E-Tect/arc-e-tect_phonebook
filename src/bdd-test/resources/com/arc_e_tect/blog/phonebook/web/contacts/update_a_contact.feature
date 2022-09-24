@@ -5,7 +5,7 @@ Feature: Update a contact in the phonebook
   in the scenarios. The contact with the id 666, the number of the beast, is used for those error flows where the id is
   relevant for the scenario.
 
-  Scenario: 01 - Update the phone number of the contact
+  Scenario: 01 - Update the contact's phone number
     Given the listed contact
       | name         | phone           |
       | Peter Parker | +1 (555) 748432 |
@@ -13,14 +13,14 @@ Feature: Update a contact in the phonebook
     Then the contact with name "Peter Parker" has phone number "+1 (555) 432748"
 
   @ignore
-  Scenario: 02 - Update the name of the contact
+  Scenario: 02 - Update the contact's name
     Given the listed contact
       | name         | phone           |
       | Peter Parker | +1 (555) 748432 |
     When the name of contact "Peter Parker" is changed to "John Stark"
     Then the contact with phone "+1 (555) 748432" has name "John Stark"
 
-  Scenario: 02 - Update the name of the contact
+  Scenario: 02 - Update the contact's name
     Given the listed contact
       | name         | phone           |
       | Peter Parker | +1 (555) 748432 |
@@ -35,7 +35,7 @@ Feature: Update a contact in the phonebook
     And the response contains no contact
 
   @error
-  Scenario: 04 - Update the phone number of an unknown contact
+  Scenario: 04 - Update an unlisted Contact
     Given the contact with name "John Doe" is not listed in the phonebook
     When the phone number of contact "John Doe" is changed to "+1 (555) 432748"
     Then the contact cannot be found
