@@ -5,6 +5,7 @@ import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.service.ContactService;
 import com.arc_e_tect.blog.phonebook.service.exception.ContactNotFoundException;
 import com.arc_e_tect.blog.phonebook.service.exception.DuplicateContactException;
+import com.arc_e_tect.blog.phonebook.web.contacts.advisories.InvalidContactDataExcption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -56,11 +57,11 @@ public class ContactsController {
     @PostMapping(consumes = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE},
             produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
     public ContactResource postContact(@RequestBody ContactResource newResource, HttpServletResponse response) {
+        if ((newResource.getName()== null) || ("".equals(newResource.getName()))) {
+            throw new InvalidContactDataExcption(newResource.getName(), "name");
+        }
+
         try {
-            if (newResource.getId() > 0) {
-                contactService.getContactByID(newResource.getId());
-                throw new DuplicateContactException(newResource.getId());
-            }
             contactService.getContactByName(newResource.getName());
             response.setStatus(HttpStatus.CONFLICT.value());
             throw new DuplicateContactException(newResource.getName());
