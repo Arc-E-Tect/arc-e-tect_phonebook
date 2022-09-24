@@ -29,4 +29,11 @@ class ContactAdvisoryHandler extends ResponseEntityExceptionHandler {
         ErrorDetails error = new ErrorDetails(new Date(),HttpStatus.CONFLICT, "Contact already exists", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(InvalidContactDataExcption.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public final ResponseEntity<ErrorDetails> invalidContactDataHandler(InvalidContactDataExcption ex, WebRequest request) {
+        ErrorDetails error = new ErrorDetails(new Date(),HttpStatus.UNPROCESSABLE_ENTITY, "Invalid Contact data", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }
