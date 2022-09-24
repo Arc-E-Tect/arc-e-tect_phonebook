@@ -175,7 +175,7 @@ public class ApiContractValidator {
     }
 
     @Test
-    void getNotExistentContact() throws Exception {
+    void getUnlistedContact() throws Exception {
         collection.drop();
         this.mockMvc.perform(get("/contacts/{contact_name}", "John Doe")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
@@ -219,7 +219,7 @@ public class ApiContractValidator {
     }
 
     @Test
-    void postExistentContact() throws Exception {
+    void postListedContact() throws Exception {
         Contact newContact = new Contact();
         newContact.setName("Peter Parker");
         newContact.setId(42l);
@@ -244,7 +244,7 @@ public class ApiContractValidator {
     }
 
     @Test
-    void patchExistentContactNameAndPhone() throws Exception {
+    void patchListedContactNameAndPhone() throws Exception {
         Contact newContact = new Contact();
         newContact.setName("Peter Parker");
         newContact.setId(42l);
@@ -273,7 +273,7 @@ public class ApiContractValidator {
     }
 
     @Test
-    void patchExistentContactName() throws Exception {
+    void patchListedContactName() throws Exception {
         Contact newContact = new Contact();
         newContact.setName("Peter Parker");
         newContact.setId(42l);
@@ -302,7 +302,7 @@ public class ApiContractValidator {
     }
 
     @Test
-    void patchExistentContactPhone() throws Exception {
+    void patchListedContactPhone() throws Exception {
         Contact newContact = new Contact();
         newContact.setName("Peter Parker");
         newContact.setId(42l);
@@ -331,7 +331,7 @@ public class ApiContractValidator {
     }
 
     @Test
-    void deleteExistentContact() throws Exception {
+    void deleteListedContact() throws Exception {
         Contact newContact = new Contact();
         newContact.setName("Peter Parker");
         newContact.setId(42l);
@@ -348,14 +348,14 @@ public class ApiContractValidator {
     }
 
     @Test
-    void deleteNonExistentContact() throws Exception {
+    void deleteUnlistedContact() throws Exception {
         this.mockMvc.perform(delete("/contacts/{contact_name}", "John Doe")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
-                                .description("Name of the Contact that is to be patched."))
+                                .description("Name of the Contact that is to be deleted."))
                 ));
     }
 }

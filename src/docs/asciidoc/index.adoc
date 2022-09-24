@@ -113,7 +113,7 @@ include::{snippets}/get-single-contact-empty-phonebook/http-response.adoc[]
 
 ==== Example - Retrieving an unknown contact
 ===== Response structure
-include::{snippets}/get-not-existent-contact/http-response.adoc[]
+include::{snippets}/get-unlisted-contact/http-response.adoc[]
 
 
 [[resources-contacts-post]]
@@ -147,7 +147,7 @@ include::{snippets}/post-new-contact/httpie-request.adoc[]
 When the Contact is already listed in the Arc-E-Tect Phonebook, the provided Contact is not stored as the phonebook does not allow for duplicates. The response is of http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409[409 - Conflict].
 
 ===== Response structure
-include::{snippets}/post-existent-contact/http-response.adoc[]
+include::{snippets}/post-listed-contact/http-response.adoc[]
 
 
 [[resources-contacts-delete]]
@@ -159,21 +159,21 @@ To delete a contact stored in the Arc-E-Tect Phonebook, call the `DELETE` on the
 ===== Request structure
 The deletion is successful when a http status https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204[204 - No Content] is returned, indicating that the Contact no longer exists in the phonebook.
 
-include::{snippets}/delete-existent-contact/http-request.adoc[]
+include::{snippets}/delete-listed-contact/http-request.adoc[]
 
 ===== Response structure
-include::{snippets}/delete-existent-contact/http-response.adoc[]
+include::{snippets}/delete-listed-contact/http-response.adoc[]
 
 ===== Commandline Invocations
 *CURL request*
-include::{snippets}/delete-existent-contact/curl-request.adoc[]
+include::{snippets}/delete-listed-contact/curl-request.adoc[]
 
 *HTTPie request*
-include::{snippets}/delete-existent-contact/httpie-request.adoc[]
+include::{snippets}/delete-listed-contact/httpie-request.adoc[]
 
 ==== Example - Deleting an unknown contact
 ===== Response structure
-include::{snippets}/delete-non-existent-contact/http-response.adoc[]
+include::{snippets}/delete-unlisted-contact/http-response.adoc[]
 
 
 [[resources-contacts-patch]]
@@ -183,40 +183,40 @@ To change a contact's name or phone number stored in the Arc-E-Tect Phonebook, c
 
 ==== Example - Patching a contact's name
 ===== Request structure
-include::{snippets}/patch-existent-contact-name/http-request.adoc[]
+include::{snippets}/patch-listed-contact-name/http-request.adoc[]
 
 ===== Response structure
-include::{snippets}/patch-existent-contact-name/http-response.adoc[]
+include::{snippets}/patch-listed-contact-name/http-response.adoc[]
 
 .Response fields
-include::{snippets}/patch-existent-contact-name/response-fields.adoc[]
+include::{snippets}/patch-listed-contact-name/response-fields.adoc[]
 
 .Response links, contained in the __links_ section of the response
-include::{snippets}/patch-existent-contact-name/links.adoc[]
+include::{snippets}/patch-listed-contact-name/links.adoc[]
 
 ====== Commandline Invocations
 *CURL request*
-include::{snippets}/patch-existent-contact-name/curl-request.adoc[]
+include::{snippets}/patch-listed-contact-name/curl-request.adoc[]
 
 *HTTPie request*
-include::{snippets}/patch-existent-contact-name/httpie-request.adoc[]
+include::{snippets}/patch-listed-contact-name/httpie-request.adoc[]
 
 ==== Example - Patching a contact's phone number
 ===== Request structure
-include::{snippets}/patch-existent-contact-phone/http-request.adoc[]
+include::{snippets}/patch-listed-contact-phone/http-request.adoc[]
 
 ===== Response structure
-include::{snippets}/patch-existent-contact-phone/http-response.adoc[]
+include::{snippets}/patch-listed-contact-phone/http-response.adoc[]
 
 .Response fields
-include::{snippets}/patch-existent-contact-phone/response-fields.adoc[]
+include::{snippets}/patch-listed-contact-phone/response-fields.adoc[]
 
 ==== Example - Patching a contact's name and phone number
 ===== Request structure
-include::{snippets}/patch-existent-contact-name-and-phone/http-request.adoc[]
+include::{snippets}/patch-listed-contact-name-and-phone/http-request.adoc[]
 
 ===== Response structure
-include::{snippets}/patch-existent-contact-name-and-phone/http-response.adoc[]
+include::{snippets}/patch-listed-contact-name-and-phone/http-response.adoc[]
 
 .Response fields
-include::{snippets}/patch-existent-contact-name-and-phone/response-fields.adoc[]
+include::{snippets}/patch-listed-contact-name-and-phone/response-fields.adoc[]
