@@ -4,6 +4,8 @@
 // as long as you agree to share under the same circumstance.
 // See: https://creativecommons.org/licenses/by-sa/4.0/
 
+import static de.fayard.refreshVersions.core.Versions.versionFor
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
 
@@ -15,7 +17,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = '0.8.8'
+    toolVersion = versionFor(project, "version.org.jacoco..org.jacoco.agent")
 }
 
 jacocoTestReport {
