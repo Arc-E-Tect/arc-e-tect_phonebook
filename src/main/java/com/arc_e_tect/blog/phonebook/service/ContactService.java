@@ -9,8 +9,8 @@ public interface ContactService {
 
     Contact saveContact(Contact contact);
 
-    Contact getContactByID(Long id) throws ContactNotFoundException;
     Contact getContactByName(String name) throws ContactNotFoundException;
+
     List<Contact> retrieveAllContacts();
 
     Contact updateContactByName(String name, Contact patch);

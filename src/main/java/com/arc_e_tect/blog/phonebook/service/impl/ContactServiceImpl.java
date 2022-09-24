@@ -25,19 +25,9 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact getContactByID(Long id) throws ContactNotFoundException {
-        Optional<Contact> result = repo.findById(id);
-        if (!result.isPresent()) {
-            throw new ContactNotFoundException(id);
-        }
-
-        return result.get();
-    }
-
-    @Override
     public Contact getContactByName(String name) throws ContactNotFoundException {
         Optional<Contact>  result = repo.findByName(name);
-        if (!result.isPresent()) {
+        if (result.isEmpty()) {
             throw new ContactNotFoundException(name);
         }
 
@@ -61,7 +51,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact updateContactByName(String name, Contact patch) {
         Optional<Contact> result = repo.findByName(name);
-        if (!result.isPresent()) {
+        if (result.isEmpty()) {
             throw new ContactNotFoundException(name);
         }
 
