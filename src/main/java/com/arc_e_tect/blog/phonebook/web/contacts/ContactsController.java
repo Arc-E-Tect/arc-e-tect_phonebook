@@ -2,11 +2,7 @@ package com.arc_e_tect.blog.phonebook.web.contacts;
 
 import com.arc_e_tect.blog.phonebook.domain.Contact;
 import com.arc_e_tect.blog.phonebook.resource.ContactResource;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.arc_e_tect.blog.phonebook.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -25,21 +20,22 @@ public class ContactsController {
     HashMap<String, String> contacts;
     private final ContactsResourceAssembler resourceAssembler;
 
+    private final ContactService contactService;
+
     @Autowired
-    ContactsController(ContactsResourceAssembler resourceAssembler) {
+    ContactsController(ContactService contactService, ContactsResourceAssembler resourceAssembler) {
         this.resourceAssembler = resourceAssembler;
+        this.contactService = contactService;
     }
 
-    @Operation(summary = "Get all Contacts.",
-            description = "# Contact\n\nGet all **Contacts** stored in the _Arc-E-Tect_ Phonebook.\n\nContacts have three fields: an id, which is a number, a name, which is the fullname of the Contact and a phone-number.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Contact.class)) }),
-            })
     @GetMapping(produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
     public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response) {
-        List<Contact> contactList = new LinkedList<>();
+        List<Contact> contactList = contactService.retrieveAllContacts();
+
+        if (contactList == null || contactList.size() == 0) {
+            response.setStatus(204);
+            return null;
+        }
 
         CollectionModel<ContactResource> result = resourceAssembler.toCollectionModel(contactList);
 

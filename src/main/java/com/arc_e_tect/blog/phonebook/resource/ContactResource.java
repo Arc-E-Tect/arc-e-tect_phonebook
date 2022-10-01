@@ -13,6 +13,9 @@ import org.springframework.hateoas.server.core.Relation;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter @Setter @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper=false)
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class ContactResource extends RepresentationModel<ContactResource> {
+    private long id;
+    private String name;
+    private String phone;
 }

@@ -1,8 +1,8 @@
 package com.arc_e_tect.blog.phonebook.web.contacts;
 
-import com.arc_e_tect.blog.annotation.ExcludeFromCodeCoverageGeneratedReport;
 import com.arc_e_tect.blog.phonebook.domain.Contact;
 import com.arc_e_tect.blog.phonebook.resource.ContactResource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -20,10 +20,14 @@ public class ContactsResourceAssembler extends RepresentationModelAssemblerSuppo
     }
 
     @Override
-    @ExcludeFromCodeCoverageGeneratedReport
     public ContactResource toModel(Contact contact) {
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("Not Implemented yet...");
+        ContactResource result = super.createModelWithId(contact.getId(), contact);
+
+        BeanUtils.copyProperties(contact, result);
+
+        result.add(linkTo(methodOn(ContactsController.class).getAllContacts(null)).withRel(LINK_COLLECTION_CONTACTS));
+
+        return result;
     }
 
     @Override
