@@ -137,10 +137,10 @@ public class ContactSteps {
 
     @Given("the listed contact")
     public void the_listed_contact(io.cucumber.datatable.DataTable dataTable) {
-        List<Map<String, String>> signUpForms = dataTable.asMaps(String.class, String.class);
+        List<Map<String, String>> listedContacts = dataTable.asMaps(String.class, String.class);
 
-        String name = signUpForms.get(0).get("name");
-        String phone = signUpForms.get(0).get("phone");
+        String name = listedContacts.get(0).get("name");
+        String phone = listedContacts.get(0).get("phone");
 
         contact.setId(contactId++);
         contact.setName(name);
