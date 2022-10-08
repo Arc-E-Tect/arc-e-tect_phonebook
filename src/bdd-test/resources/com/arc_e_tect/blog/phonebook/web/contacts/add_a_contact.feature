@@ -28,6 +28,18 @@ Feature: Add a contact to the phonebook
     When the contact with name "Peter Parker" is added to the phonebook
     Then the response is an error indicating that a contact with the same name already exists
 
+  @ignore
+  Scenario: 04 - An already listed contact
+    Given the listed contact
+      | name    | phone         |
+      | Peter Parker | +1 (555) 748432 |
+    When the contact is added to the phonebook
+      | name         | phone        |
+      | Peter Parker | +1 (555) 432748 |
+    Then the phonebook contains the contact with name "Peter Parker"
+    And the contact with name "Peter Parker" has phone number "+1 (555) 432748"
+    And the response contains the contact with name "Peter Parker"
+
   Scenario: 05 - A new contact
     Given the contact with name "Peter Parker" is not listed in the phonebook
     When the contact is added to the phonebook
