@@ -28,9 +28,6 @@ plugins {
     id "org.asciidoctor.jvm.convert"
     id 'com.epages.restdocs-api-spec'
 
-    // Being able to continuously scan whether there are new versions of your dependencies will simplify your life
-    id "com.github.ben-manes.versions"
-
     id "com.github.spacialcircumstances.gradle-cucumber-reporting"
     id "com.github.jmongard.git-semver-plugin"
 
@@ -50,9 +47,6 @@ plugins {
     // contracts that can be uphold from day one.
     id "org.cyclonedx.bom"
     id "nebula.lint"
-
-    id 'org.hidetake.swagger.generator'
-//    id "io.cloudflight.license-gradle-plugin"
 }
 
 configurations {
@@ -64,8 +58,6 @@ configurations {
 repositories {
     mavenCentral()
 }
-
-apply from: 'gradle/dependencyupdates.gradle'
 
 apply from: 'gradle/semver.gradle'
 
@@ -129,7 +121,7 @@ docGen.mustRunAfter bddTest
 check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn bddTest, docGen
+    dependsOn test, bddTest, docGen
 }
 
 jacocoTestCoverageVerification {
@@ -229,16 +221,6 @@ dockerCompose.stopContainers=true
 gradleLint {
     autoLintAfterFailure="false"
     rules  = ['archaic-wrapper']
-}
-
-dependencies {
-    swaggerUI 'org.webjars:swagger-ui:_'
-}
-
-swaggerSources {
-    Arc_E_Tect_Phonebook {
-        inputFile = file('build/api-spec/openapi3.json')
-    }
 }
 
 tasks.all { task ->
