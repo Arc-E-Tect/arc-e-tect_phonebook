@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="phonebook [clean build]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
+  <configuration default="false" name="phonebook [build asciidoctor]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,8 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="clean" />
           <option value="build" />
+          <option value="asciidoctor" />
         </list>
       </option>
       <option name="vmOptions" value="" />
@@ -30,7 +30,7 @@
         </ENTRIES>
       </extension>
     </EXTENSION>
-    <DebugAllEnabled>false</DebugAllEnabled>
+    <DebugAllEnabled>true</DebugAllEnabled>
     <method v="2" />
   </configuration>
 </component>
