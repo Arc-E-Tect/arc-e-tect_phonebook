@@ -1,9 +1,6 @@
 Feature: Update a contact in the phonebook
 
   This feature-file specifies the scenarios related to storing a contact into the Arc-E-Tect Phonebook.
-  The following conventions are used. The contact with the id 42, which is the universal answer, is used for the happy-flow
-  in the scenarios. The contact with the id 666, the number of the beast, is used for those error flows where the id is
-  relevant for the scenario.
 
   Scenario: 01 - Update the contact's phone number
     Given the listed contact
