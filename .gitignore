@@ -21,3 +21,5 @@ gradle-app.setting
 /trends.json
 /node_modules/.package-lock.json
 /package-lock.json
+
+bin
