@@ -1,12 +1,15 @@
-name: Build of Dev
+name: Push to dev branch
 
 on:
   push:
-    branches:
-      - 's**'
+    branches-ignore:
+      - master
     paths-ignore:
       - '.github/badges/**'
       - '.idea/**'
+      - '**/*.md'
+      - '.github/workflows/merge**'
+      - '.github/workflows/**master**'
       - '.github/workflows/nigthly**'
 
 jobs:
