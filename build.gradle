@@ -90,8 +90,8 @@ dependencies {
         exclude group: "junit"
     }
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:_'
+    annotationProcessor 'org.projectlombok:lombok:_'
 
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "_"
 
@@ -114,8 +114,17 @@ testSets {
     docGen {
         dirName = 'docs'
     }
+    prototyping {
+        dirName = 'proto'
+    }
 }
 
+dependencies {
+    prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: '_'
+    prototypingImplementation group: 'org.mock-server', name: 'mockserver-netty', version: '_'
+}
+
+prototyping.dependsOn test
 bddTest.dependsOn test
 docGen.mustRunAfter bddTest
 check.dependsOn bddTest, docGen
