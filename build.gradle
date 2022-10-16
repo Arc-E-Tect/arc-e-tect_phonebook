@@ -124,7 +124,6 @@ dependencies {
     prototypingImplementation group: 'org.mock-server', name: 'mockserver-netty', version: '_'
 }
 
-prototyping.dependsOn test
 bddTest.dependsOn test
 docGen.mustRunAfter bddTest
 check.dependsOn bddTest, docGen
@@ -221,11 +220,23 @@ postman {
 // ------------------------------------------------------------
 // Docker
 
-dockerCompose.isRequiredBy(bddTest)
-dockerCompose.isRequiredBy(docGen)
-dockerCompose.isRequiredBy(bootRun)
+if (System.getProperty("prototyping").equals('true')) {
+    println "Setting up for prototyping"
+    println "Arc-E-Tect Phonebook will be mocked by Mock-Server"
+    dockerCompose.isRequiredBy(prototyping)
+    dockerCompose {
+        stopContainers=true
+        useComposeFiles=['docker-compose.yml','docker-compose-mockserver.yml']
+    }
+} else {
+    dockerCompose.isRequiredBy(bddTest)
+    dockerCompose.isRequiredBy(docGen)
+    dockerCompose.isRequiredBy(bootRun)
+    dockerCompose {
+        stopContainers=true
+    }
+}
 
-dockerCompose.stopContainers=true
 
 gradleLint {
     autoLintAfterFailure="false"

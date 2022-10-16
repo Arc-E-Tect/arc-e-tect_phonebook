@@ -33,6 +33,9 @@ public class StepData {
     @Value("${server.port}")
     private Integer serverPort;
 
+    @Value("${mock.port}")
+    private Integer mockPort;
+
     private ObjectMapper mapper;
 
     public StepData() {
