@@ -120,8 +120,7 @@ testSets {
 }
 
 dependencies {
-    prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: '_'
-    prototypingImplementation group: 'org.mock-server', name: 'mockserver-netty', version: '_'
+    prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java-no-dependencies', version: '_'
 }
 
 bddTest.dependsOn test
