@@ -22,7 +22,7 @@ public class IndexHttpClient extends AbstractHttpClient {
 
     @PostConstruct
     public WebClient initApiClient() {
-        baseUrl = String.format("%s:%d", SERVER_URL, getPort());
+        baseUrl = String.format("%s:%d", SERVER_URL, stepData.getMockPort());
 
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
@@ -53,7 +53,7 @@ public class IndexHttpClient extends AbstractHttpClient {
     protected final String getApiEndpoint() {return "/";}
 
     public void getRoot() {
-        executeGet();
+        executeGet("/");
     }
 
     public void getIndex() {

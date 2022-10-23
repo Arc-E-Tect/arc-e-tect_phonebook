@@ -76,9 +76,11 @@ public abstract class AbstractHttpClient {
     }
 
     public void executeGet(String url) {
-        ResponseEntity<JsonNode> response = getApiClient().get()
+        WebClient.ResponseSpec spec = getApiClient().get()
                 .uri(url)
-                .retrieve()
+                .retrieve();
+
+        ResponseEntity<JsonNode> response = spec
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)

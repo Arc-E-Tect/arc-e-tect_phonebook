@@ -1,6 +1,7 @@
 package com.arc_e_tect.blog.phonebook.web.index;
 
 import com.arc_e_tect.blog.phonebook.TestSupportFunctions;
+import com.arc_e_tect.blog.phonebook.commons.MockServerExpectations;
 import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,18 +25,24 @@ public class IndexSteps {
 
     @When("the API consumer requests the root")
     public void the_api_consumer_requests_the_root() {
+        MockServerExpectations.create_GetRootInfo();
         httpClient.getRoot();
+        MockServerExpectations.remove_GetRootInfo();
     }
 
     @When("the API consumer requests the index")
     public void the_api_consumer_requests_the_index() {
+        MockServerExpectations.create_GetIndexInfo();
         httpClient.getIndex();
+        MockServerExpectations.remove_GetIndexInfo();
     }
 
     @Then("the response is the same as if requesting {string}")
     public void the_response_is_the_same_as_if_requesting(String alternativeLink) throws IOException, JSONException {
         JsonNode rootNode = stepData.getResponseJsonNode();
+        MockServerExpectations.create_GetIndexInfo();
         httpClient.executeGet(alternativeLink);
+        MockServerExpectations.remove_GetIndexInfo();
         JsonNode altNode = stepData.getResponseJsonNode();
 
         TestSupportFunctions.matchJson(rootNode.asText(), altNode.asText());
@@ -61,7 +68,7 @@ public class IndexSteps {
         JsonNode referenceNode = linkNode.path("href");
         String referenceString = referenceNode.asText();
 
-        String baseUrl = String.format("%s:%d",stepData.getBaseurl(), stepData.getServerPort());
+        String baseUrl = String.format("%s:%d",stepData.getBaseurl(), stepData.getMockPort());
 
         referenceString = referenceString.substring(referenceString.indexOf(baseUrl) + baseUrl.length());
 
