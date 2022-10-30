@@ -1,7 +1,10 @@
 package com.arc_e_tect.blog.phonebook.commons;
 
+import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import lombok.extern.flogger.Flogger;
 import org.mockserver.client.MockServerClient;
+
+import java.util.List;
 
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -46,5 +49,13 @@ public class MockServerExpectations {
         new MockServerClient("localhost",9091).clear(request()
                 .withPath(String.format("/%s",serviceUrl))
         );
+    }
+
+    public static void create_ListedContacts(List<ContactResource> contactList) {
+        String contactTemplate =
+                """
+                {
+                }
+                """;
     }
 }
