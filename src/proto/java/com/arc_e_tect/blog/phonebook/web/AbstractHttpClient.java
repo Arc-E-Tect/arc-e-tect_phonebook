@@ -68,7 +68,7 @@ public abstract class AbstractHttpClient {
 
     abstract protected String getApiEndpoint();
     public String apiEndpoint() {
-        return SERVER_URL + ":" + port + getApiEndpoint();
+        return SERVER_URL + ":" + stepData.getMockPort() + getApiEndpoint();
     }
 
     protected void executeGet() {
