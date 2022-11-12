@@ -53,37 +53,12 @@ public class MockServerExpectations {
 
     public static String contactListTemplate =
             """
-            {
-                "_embedded": {
-                    "contacts": [
-                    %s
-                    ]
-                },
-                "_links": {
-                    "self": {
-                        "href": "http://localhost:9090/contacts{?contactName}",
-                        "templated": true
-                    }
-                }
-            }
+            { "_embedded": {"contacts": [%s]}, "_links": {"self": {"href": "http://localhost:9090/contacts{?contactName}", "templated": true}}}
             """;
 
     public static String contactTemplate =
             """
-                {
-                    "id": %d,
-                    "name": "%s",
-                    "phone": "%s",
-                    "_links": {
-                        "self": {
-                            "href": "http://localhost:9090/contacts/%d"
-                        },
-                        "contacts": {
-                            "href": "http://localhost:9090/contacts{?contactName}",
-                            "templated": true
-                        }
-                    }
-                }
+            { "id": %d, "name": "%s", "phone": "%s", "_links": { "self": { "href": "http://localhost:9090/contacts/%d" }, "contacts": { "href": "http://localhost:9090/contacts{?contactName}", "templated": true } } }
             """;
 
     public static void create_ListedContacts(List<ContactResource> contactList) {
@@ -93,6 +68,7 @@ public class MockServerExpectations {
             String contact = String.format(contactTemplate,
                     contactResource.getId(), contactResource.getName(), contactResource.getPhone(), contactResource.getId());
             contacts += (isFirst ? contact : ", " + contact);
+            isFirst=false;
         }
         String jsonDoc = String.format(contactListTemplate,contacts);
 
