@@ -6,12 +6,14 @@ import com.arc_e_tect.blog.phonebook.web.StepData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.flogger.Flogger;
+import org.mockserver.client.MockServerClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -37,6 +39,11 @@ public class ContactSteps {
 
     @Before
     public void setup() {
+    }
+
+    @After
+    public void teardown() {
+        new MockServerClient("localhost",9091).reset();
     }
 
     @Given("the listed contacts")
