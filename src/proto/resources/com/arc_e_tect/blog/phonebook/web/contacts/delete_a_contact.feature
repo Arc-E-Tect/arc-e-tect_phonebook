@@ -1,4 +1,3 @@
-@ignore
 Feature: Delete a Contact from the phonebook
 
   This feature-file specifies the scenarios related to deleting a single contact from the Arc-E-Tect Phonebook.
@@ -25,5 +24,4 @@ Feature: Delete a Contact from the phonebook
       | 2  | Peter Parker |  | +1 (555) 234947 |
     When the contact with id 2 is deleted
     Then the phonebook does not contain a contact with id 2
-    And the phonebook contains a contact with name "Peter Parker" and phone "+1 (555) 748432"
 

@@ -1,5 +1,6 @@
 package com.arc_e_tect.blog.phonebook.web;
 
+import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 
@@ -35,6 +38,8 @@ public class StepData {
 
     @Value("${mock.port}")
     private Integer mockPort;
+
+    private List<ContactResource> contactList = new ArrayList<>();
 
     private ObjectMapper mapper;
 

@@ -1,4 +1,3 @@
-@ignore
 Feature: Update a contact in the phonebook
 
   This feature-file specifies the scenarios related to storing a contact into the Arc-E-Tect Phonebook.
@@ -8,14 +7,14 @@ Feature: Update a contact in the phonebook
       | id | name         | phone           |
       | 1  | Peter Parker | +1 (555) 748432 |
     When the phone number of contact 1 is changed to "+1 (555) 432748"
-    Then the contact with name "Peter Parker" has phone number "+1 (555) 432748"
+    Then the response contains the contact "Peter Parker" with phone "+1 (555) 432748"
 
   Scenario: 02 - Update the contact's name
     Given the listed contact
       | id | name         | phone           |
       | 1  | Peter Parker | +1 (555) 748432 |
     When the name of contact 1 is changed to "John Stark"
-    Then the contact with phone "+1 (555) 748432" has name "John Stark"
+    Then the response contains the contact "John Stark" with phone "+1 (555) 748432"
 
   Scenario: 03 - Update the contact with a different id
     Given the listed contact
