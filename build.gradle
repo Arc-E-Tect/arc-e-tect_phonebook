@@ -219,6 +219,9 @@ postman {
 // ------------------------------------------------------------
 // Docker
 
+dockerCompose.isRequiredBy(bddTest)
+dockerCompose.isRequiredBy(docGen)
+dockerCompose.isRequiredBy(bootRun)
 if (System.getProperty("prototyping").equals('true')) {
     println "Setting up for prototyping"
     println "Arc-E-Tect Phonebook will be mocked by Mock-Server"
@@ -228,9 +231,6 @@ if (System.getProperty("prototyping").equals('true')) {
         useComposeFiles=['docker-compose.yml','docker-compose-mockserver.yml']
     }
 } else {
-    dockerCompose.isRequiredBy(bddTest)
-    dockerCompose.isRequiredBy(docGen)
-    dockerCompose.isRequiredBy(bootRun)
     dockerCompose {
         stopContainers=true
     }
