@@ -1,7 +1,6 @@
 package com.arc_e_tect.blog.phonebook;
 
 import com.arc_e_tect.blog.phonebook.domain.Contact;
-import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -18,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.hypermedia.LinksSnippet;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -84,7 +84,7 @@ public class ApiContractValidator {
         this.mockMvc.perform(get("/index")
                 .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         indexLinks
                 ));
@@ -96,7 +96,7 @@ public class ApiContractValidator {
         this.mockMvc.perform(get("/contacts")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNoContent())
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())
                 ));
     }
@@ -112,7 +112,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("_embedded").ignored().optional(),
@@ -138,7 +138,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be retrieved.")),
@@ -161,7 +161,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Identifier of the Contact that is to be retrieved.")),
@@ -181,7 +181,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Identifier of the Contact that is to be retrieved.")),
@@ -205,7 +205,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("id").description("Unique id for the Contact. The id is unique within the context of the Arc-E-Tect phonebook.").type(JsonFieldType.NUMBER),
@@ -232,7 +232,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isConflict())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("timestamp").description("The time the at which the error occurred. The timestamp is the server time.").type(JsonFieldType.STRING),
@@ -257,7 +257,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be patched.")),
@@ -286,7 +286,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be patched.")),
@@ -315,7 +315,7 @@ public class ApiContractValidator {
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.parseMediaType("application/hal+json")))
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be patched.")),
@@ -340,7 +340,7 @@ public class ApiContractValidator {
         this.mockMvc.perform(delete("/contacts/{contact_name}", newContact.getName())
                 .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNoContent())
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be patched."))
@@ -352,7 +352,7 @@ public class ApiContractValidator {
         this.mockMvc.perform(delete("/contacts/{contact_name}", "John Doe")
                         .contentType(MediaType.parseMediaType("application/hal+json"))).andDo(print())
                 .andExpect(status().isNoContent())
-                .andDo(MockMvcRestDocumentationWrapper.document("{method-name}",
+                .andDo(MockMvcRestDocumentation.document("{method-name}",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("contact_name")
                                 .description("Name of the Contact that is to be deleted."))

@@ -81,8 +81,8 @@ public abstract class AbstractHttpClient {
                 .retrieve();
 
         ResponseEntity<JsonNode> response = spec
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
@@ -98,8 +98,8 @@ public abstract class AbstractHttpClient {
                 .uri(url)
                 .bodyValue(jsonDocument)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
@@ -111,8 +111,8 @@ public abstract class AbstractHttpClient {
                 .uri(url)
                 .bodyValue(jsonDocument)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
@@ -125,8 +125,8 @@ public abstract class AbstractHttpClient {
         ResponseEntity<JsonNode> response = getApiClient().delete()
                 .uri(url)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
