@@ -32,10 +32,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Set up JDK 17
+      - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 11
           distribution: 'adopt'
 
       - name: Expose git commit data
@@ -45,10 +45,6 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean
-
-      - name: Check dependencies for vulnerabilities
-        run: |
-          ./gradlew dependencyCheckAnalyze
 
       - name: Build with Gradle
         run: |
@@ -104,4 +100,51 @@ jobs:
         with:
           name: jacoco-report
           path: build/reports/jacoco
+
+  security-scan:
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          distribution: 'adopt'
+
+      - name: Expose git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+
+      - name: Prepare Gradle
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean
+
+      - name: Check dependencies for vulnerabilities
+        run: |
+          ./gradlew dependencyCheckAnalyze
+
+      - name: Push changes back to origin
+        run: |
+          git push origin --tags
+          git push origin --all --force
 
