@@ -3,6 +3,7 @@ package com.arc_e_tect.blog.phonebook.web.contacts;
 import com.arc_e_tect.blog.phonebook.domain.Contact;
 import com.arc_e_tect.blog.phonebook.resource.ContactResource;
 import com.arc_e_tect.blog.phonebook.service.ContactService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 

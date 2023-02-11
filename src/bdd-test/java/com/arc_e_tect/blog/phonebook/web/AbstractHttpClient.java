@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -46,7 +46,7 @@ public abstract class AbstractHttpClient {
         return stepData.getResponseString();
     }
 
-    public HttpStatus getHttpStatus() {
+    public HttpStatusCode getHttpStatus() {
         return stepData.getHttpStatus();
     }
 
@@ -79,8 +79,8 @@ public abstract class AbstractHttpClient {
         ResponseEntity<JsonNode> response = getApiClient().get()
                 .uri(url)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
