@@ -12,7 +12,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 public class StepData {
     private ResponseEntity<JsonNode> responseEntity;
     private HttpEntity<String> request;
-    private HttpStatus httpStatus;
+    private HttpStatusCode httpStatus;
     private String baseurl = "http://localhost";
 
     @Value("${server.port}")
