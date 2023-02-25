@@ -122,7 +122,7 @@ testSets {
 }
 
 dependencies {
-    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '_'
     prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java-no-dependencies', version: '_'
 }
 
