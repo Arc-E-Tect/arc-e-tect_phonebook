@@ -38,7 +38,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> retrieveAllContacts(String name) throws ContactNotFoundException {
         Optional<List<Contact>>  result = repo.findByName(name);
-        if (result.isEmpty()) {
+        if (result.get().isEmpty()) {
             return new ArrayList<>();
         }
 
