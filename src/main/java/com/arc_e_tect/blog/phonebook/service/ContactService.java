@@ -16,5 +16,7 @@ public interface ContactService {
 
     Contact updateContact(Long id, Contact patch);
 
+    void deleteContact(Long id);
+
     void deleteContactByName(String name);
 }

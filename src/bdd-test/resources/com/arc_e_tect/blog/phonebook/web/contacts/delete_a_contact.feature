@@ -1,4 +1,3 @@
-@ignore
 Feature: Delete a Contact from the phonebook
 
   This feature-file specifies the scenarios related to deleting a single contact from the Arc-E-Tect Phonebook.

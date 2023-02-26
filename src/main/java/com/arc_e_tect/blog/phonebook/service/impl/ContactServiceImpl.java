@@ -51,6 +51,11 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public void deleteContact(Long id) {
+        repo.deleteById(id);
+    }
+
+    @Override
     public void deleteContactByName(String name) {
         Optional<List<Contact>> result = repo.findByName(name);
 

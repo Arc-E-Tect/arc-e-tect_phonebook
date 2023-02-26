@@ -130,6 +130,16 @@ public class ContactSteps {
         httpClient.getAll();
     }
 
+    @When("the contact with name {string} is deleted")
+    public void the_contact_with_name_is_deleted(String name) {
+        httpClient.deleteContactByName(name);
+    }
+
+    @When("the contact with id {int} is deleted")
+    public void the_contact_with_id_is_deleted(int id) {
+        httpClient.deleteContactById(id);
+    }
+
     @Then("the response is an error indicating that the contact could not be found")
     public void the_response_is_an_error_indicating_that_the_contact_could_not_be_found() {
         assertEquals(HttpStatus.NOT_FOUND, httpClient.getHttpStatus());
@@ -182,4 +192,27 @@ public class ContactSteps {
         JsonNode contactsNode = rootNode.path("_embedded").path("contacts");
         assertEquals((int) expectedNumberOfContacts, contactsNode.size());
     }
+
+    @Then("the phonebook does not contain a/the contact with name {string}")
+    public void the_phonebook_does_not_contain_the_contact_with_name(String name) {
+        Bson query = eq("name", name);
+        try {
+            TestContact found = collection.find(query).first();
+            assertNull(found);
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
+    }
+
+    @Then("the phonebook does not contain a/the contact with id {long}")
+    public void the_phonebook_does_not_contain_a_contact_with_id(Long id) {
+        Bson query = eq("id", id);
+        try {
+            TestContact found = collection.find(query).first();
+            assertNull(found);
+        } catch (MongoException me) {
+            log.atWarning().log("Unable to find due to an error: %s", me);
+        }
+    }
+
 }
