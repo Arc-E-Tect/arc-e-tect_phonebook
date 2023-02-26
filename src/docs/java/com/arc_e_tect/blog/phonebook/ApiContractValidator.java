@@ -199,7 +199,7 @@ public class ApiContractValidator {
 
         String jsonDoc =
                 """
-                {"id":42, "name":"Peter Parker", "phone":"+1 (555) 748432"}
+                {"name":"Peter Parker", "phone":"+1 (555) 748432"}
                 """;
 
         this.mockMvc.perform(post("/contacts")
