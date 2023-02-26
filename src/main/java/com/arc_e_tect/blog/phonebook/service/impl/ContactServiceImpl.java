@@ -9,6 +9,7 @@ import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,20 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact getContactByName(String name) throws ContactNotFoundException {
-        Optional<Contact>  result = repo.findByName(name);
+    public Contact getContactById(Long id) throws ContactNotFoundException {
+        Optional<Contact>  result = repo.findById(id);
         if (result.isEmpty()) {
-            throw new ContactNotFoundException(name);
+            throw new ContactNotFoundException(id);
+        }
+
+        return result.get();
+    }
+
+    @Override
+    public List<Contact> retrieveAllContacts(String name) throws ContactNotFoundException {
+        Optional<List<Contact>>  result = repo.findByName(name);
+        if (result.isEmpty()) {
+            return new ArrayList<>();
         }
 
         return result.get();
@@ -41,18 +52,21 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void deleteContactByName(String name) {
-        Optional<Contact> result = repo.findByName(name);
+        Optional<List<Contact>> result = repo.findByName(name);
+
         if (result.isPresent()) {
-            Contact deletable = result.get();
-            repo.deleteById(deletable.getId());
+            List<Contact> deletables = result.get();
+            for(Contact deletable : deletables) {
+                repo.deleteById(deletable.getId());
+            }
         }
     }
 
     @Override
-    public Contact updateContactByName(String name, Contact patch) {
-        Optional<Contact> result = repo.findByName(name);
+    public Contact updateContact(Long id, Contact patch) {
+        Optional<Contact> result = repo.findById(id);
         if (result.isEmpty()) {
-            throw new ContactNotFoundException(name);
+            throw new ContactNotFoundException(id);
         }
 
         Contact contact = result.get();

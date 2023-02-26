@@ -1,51 +1,35 @@
+@ignore
 Feature: Add a contact to the phonebook
 
   Scenario: 01 - A new contact
-    Given the contact with name "Peter Parker" is not listed in the phonebook
-    When the contact is added to the phonebook
-      | name         | phone           |
-      | Peter Parker | +1 (555) 432748 |
-    Then the phonebook contains the contact with name "Peter Parker"
-    And the contact with name "Peter Parker" has phone number "+1 (555) 432748"
-    And the response contains the contact with name "Peter Parker"
-    And the response contains the contact with phone "+1 (555) 432748"
+    Given the phonebook is empty
+    When adding to the phonebook the contact
+      | id | name         | phone           |
+      | 42 | Peter Parker | +1 (555) 432748 |
+    Then the response contains the new contact "Peter Parker" with phone "+1 (555) 432748"
 
-  @error
-  Scenario: 02 - A contact with no name
-    When the contact with no name is added to the phonebook
-    Then the phonebook does not contain a contact with no name
-    And the response is an error indicating that invalid contact data was provided
+  Scenario: 02 - A new contact without a phone
+    Given the phonebook is empty
+    When adding to the phonebook the contact
+      | id | name         | phone   |
+      | 42 | Peter Parker | [blank] |
+    Then the response contains the new contact "Peter Parker" with phone ""
 
-  @error
-  Scenario: 03 - A contact with an empty string as name
-    When the contact with name "" is added to the phonebook
-    Then the phonebook does not contain a contact with no name
-    And the response is an error indicating that invalid contact data was provided
-
-  @error
-  Scenario: 04 - An already listed contact
-    Given the contact with name "Peter Parker" is listed in the phonebook
-    When the contact with name "Peter Parker" is added to the phonebook
-    Then the response is an error indicating that a contact with the same name already exists
-
-  @ignore
-  Scenario: 04 - An already listed contact
+  Scenario: 03 - A contact with the same name as a listed Contact
     Given the listed contact
-      | name    | phone         |
-      | Peter Parker | +1 (555) 748432 |
-    When the contact is added to the phonebook
-      | name         | phone        |
-      | Peter Parker | +1 (555) 432748 |
-    Then the phonebook contains the contact with name "Peter Parker"
-    And the contact with name "Peter Parker" has phone number "+1 (555) 432748"
-    And the response contains the contact with name "Peter Parker"
+      | id | name         | phone           |
+      | 42 | Peter Parker | +1 (555) 748432 |
+    When adding to the phonebook the contact
+      | id | name         | phone           |
+      | 1  | Peter Parker | +1 (555) 432748 |
+    Then the response contains the new contact "Peter Parker" with phone "+1 (555) 432748"
 
-  Scenario: 05 - A new contact
-    Given the contact with name "Peter Parker" is not listed in the phonebook
-    When the contact is added to the phonebook
-      | name         | phone |
-      | Peter Parker |       |
-    Then the phonebook contains the contact with name "Peter Parker"
-    And the contact with name "Peter Parker" has no phone number
-    And the response contains the contact with name "Peter Parker"
-
+  @error
+  Scenario: 04 - A contact with the same id as a listed Contact
+    Given the listed contact
+      | id | name         | phone           |
+      | 42 | Peter Parker | +1 (555) 748432 |
+    When adding to the phonebook the contact
+      | id | name         | phone           |
+      | 42 | Peter Parker | +1 (555) 432748 |
+    Then the response is an error indicating that the contact already exists

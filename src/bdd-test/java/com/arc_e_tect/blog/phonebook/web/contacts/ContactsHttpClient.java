@@ -57,7 +57,12 @@ public class ContactsHttpClient extends AbstractHttpClient {
     }
 
     public void getSingleByName(String name) throws IOException {
-        String url = String.format("%s/%s", apiEndpoint(), name);
+        String url = String.format("%s?contactName=%s", apiEndpoint(), name);
+        executeGet(url);
+    }
+
+    public void getSingleById(long id) throws IOException {
+        String url = String.format("%s/%d", apiEndpoint(), id);
         executeGet(url);
     }
 
@@ -71,15 +76,20 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executePost(apiEndpoint(), jsonDoc);
     }
 
-    public void patchContact(String name, ContactResource resource) throws JsonProcessingException {
-        String url = String.format("%s/%s", apiEndpoint(), name);
+    public void patchContact(long id, ContactResource resource) throws JsonProcessingException {
+        String url = String.format("%s/%d", apiEndpoint(), id);
         String jsonDocument = new ObjectMapper().writeValueAsString(resource);
 
         executePatch(url, jsonDocument);
     }
 
-    public void deleteContact(String contactName) {
-        String url = String.format("%s/%s", apiEndpoint(), contactName);
+    public void deleteContactByName(String contactName) {
+        String url = String.format("%s?contactName=%s", apiEndpoint(), contactName);
+        executeDelete(url);
+    }
+
+    public void deleteContactById(Integer contactId) {
+        String url = String.format("%s/%d", apiEndpoint(), contactId);
         executeDelete(url);
     }
 

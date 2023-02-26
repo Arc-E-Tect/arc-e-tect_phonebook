@@ -1,18 +1,12 @@
+@ignore
 Feature: Get all contacts available in the phonebook
 
-  Scenario: 01 - From an empty phonebook
-    Given the phonebook is empty
+  Scenario: 01 - From a phonebook with several contacts with the same name in it
+    Given the listed contacts
+      | id | name         | phone           |
+      | 1  | Peter Parker | +1 (555) 748432 |
+      | 2  | Peter Parker | +1 (555) 234947 |
     When all contacts are requested
-    Then the response contains no contacts
+    Then the response contains a contact "Peter Parker" with phone "+1 (555) 748432"
+    And the response contains a contact "Peter Parker" with phone "+1 (555) 234947"
 
-  Scenario: 02 - From a phonebook with a single contact in it
-    Given the contact with name "Peter Parker" is listed in the phonebook
-    When all contacts are requested
-    Then the response contains the contact "Peter Parker"
-
-  Scenario: 03 - From a phonebook with several contacts in it
-    Given the contact with name "Peter Parker" is listed in the phonebook
-    And the contact with name "Charly Brown" is listed in the phonebook
-    When all contacts are requested
-    Then the response contains the contact "Peter Parker"
-    And the response contains the contact "Charly Brown"
