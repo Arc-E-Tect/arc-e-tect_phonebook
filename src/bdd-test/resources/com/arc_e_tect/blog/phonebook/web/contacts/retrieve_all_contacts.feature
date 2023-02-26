@@ -1,6 +1,11 @@
 Feature: Get all contacts available in the phonebook
 
-  Scenario: 01 - From a phonebook with several contacts with the same name in it
+  Scenario: 01 - From an empty phonebook
+    Given the phonebook is empty
+    When all contacts are requested
+    Then 0 contacts are retrieved
+
+  Scenario: 02 - From a phonebook with several contacts with the same name in it
     Given the listed contacts
       | id | name         | phone           |
       | 1  | Peter Parker | +1 (555) 748432 |
