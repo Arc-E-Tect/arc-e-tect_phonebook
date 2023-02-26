@@ -9,6 +9,11 @@ Feature: Delete a Contact from the phonebook
     When the contact with name "Peter Parker" is deleted
     Then the phonebook does not contain a contact with name "Peter Parker"
 
+  Scenario: 02 - An unlisted contact
+    Given the phonebook does not contain a contact with name "Peter Parker"
+    When the contact with name "Peter Parker" is deleted
+    Then the phonebook does not contain a contact with name "Peter Parker"
+
   Scenario: 03 - Multiple listed contacts with the same name
     Given the listed contacts
       | id | name         |  | phone           |
