@@ -52,7 +52,20 @@ public class ContactSteps {
 
     public static String contactPostTemplate =
             """
-            {"id":%d,"name":"%s","phone":"%s","links":[]}
+            {"id":%d,"name":"%s","phone":"%s"}
+            """;
+    public static String contactPatchPhoneTemplate =
+            """
+            {"id":%d,"phone":"%s"};
+            """;
+
+    public static String contactPatchNameTemplate =
+            """
+            {"id":%d,"name":"%s"};
+            """;
+    public static String contactPatchNamePhoneTemplate =
+            """
+            {"id":%d,"name":"%s","phone":"%s"};
             """;
 
     private long contactId = 1;
@@ -170,6 +183,18 @@ public class ContactSteps {
         httpClient.postNewContact(contactResource.getId(),requestJson);
     }
 
+    @When("the phone number of contact {int} is changed to {string}")
+    public void the_phone_number_of_contact_is_changed_to(int id, String phone) throws JsonProcessingException {
+        String patchJson = String.format(contactPatchPhoneTemplate,id,phone);
+        httpClient.patchContact(id,patchJson);
+    }
+
+    @When("the name of contact {int} is changed to {string}")
+    public void the_name_of_contact_is_changed_to(Integer id, String name) throws JsonProcessingException {
+        String patchJson = String.format(contactPatchNameTemplate,id,name);
+        httpClient.patchContact(id,patchJson);
+    }
+
     @Then("the response is an error indicating that the contact could not be found")
     public void the_response_is_an_error_indicating_that_the_contact_could_not_be_found() {
         assertEquals(HttpStatus.NOT_FOUND, httpClient.getHttpStatus());
@@ -183,7 +208,7 @@ public class ContactSteps {
         assertEquals(id, contactId);
     }
 
-    @Then("the response contains the (new) contact {string} with phone {string}")
+    @Then("the response contains the (new )contact {string} with phone {string}")
     public void the_response_contains_the_contact_with_phone(String name, String phone) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode contactNode = objectMapper.readTree(httpClient.getBody());

@@ -220,20 +220,6 @@ public class ContactSteps {
         }
     }
 
-    @When("contact {int} is changed with data of contact {int}")
-    public void contact_is_changed_with_data_of_contact(int id, int otherId) throws JsonProcessingException {
-        Iterator<ContactResource> it = stepData.getContactList().iterator();
-        while(it.hasNext()) {
-            ContactResource resource = it.next();
-            if (resource.getId() == id) {
-                resource.setId(otherId);
-                MockServerExpectations.create_PatchContactUnprocessable(resource, id);
-                httpClient.patchContact(id,resource);
-                break;
-            }
-        }
-    }
-
     @Then("the response contains a contact {string} with phone {string}")
     public void the_response_contains_a_contact_with_phone(String name, String phone) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

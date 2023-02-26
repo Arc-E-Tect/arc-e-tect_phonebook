@@ -76,10 +76,8 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executePost(apiEndpoint(), jsonDoc);
     }
 
-    public void patchContact(long id, ContactResource resource) throws JsonProcessingException {
+    public void patchContact(long id, String jsonDocument) throws JsonProcessingException {
         String url = String.format("%s/%d", apiEndpoint(), id);
-        String jsonDocument = new ObjectMapper().writeValueAsString(resource);
-
         executePatch(url, jsonDocument);
     }
 
