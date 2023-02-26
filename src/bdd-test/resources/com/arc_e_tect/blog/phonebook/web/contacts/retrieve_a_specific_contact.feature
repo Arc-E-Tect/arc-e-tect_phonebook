@@ -9,7 +9,12 @@ Feature: Get a single contact from the phonebook
     When the contact with name "Peter Parker" is requested
     Then the response contains a contact "Peter Parker" with phone "+1 (555) 748432"
 
-  Scenario: 02 - Multiple Contacts with the same name
+  Scenario: 02 - A contact from an empty Phonebook
+    Given the phonebook is empty
+    When the contact with name "Peter Parker" is requested
+    Then 0 contacts are retrieved
+
+  Scenario: 03 - Multiple Contacts with the same name
     Given the listed contacts
       | id | name         | phone           |
       | 1  | Peter Parker | +1 (555) 748432 |
@@ -19,7 +24,7 @@ Feature: Get a single contact from the phonebook
     Then the response contains a contact "Peter Parker" with phone "+1 (555) 748432"
     And the response contains a contact "Peter Parker" with phone "+1 (555) 234847"
 
-  Scenario: 03 - A contact that is listed
+  Scenario: 04 - A contact that is listed
     Given the listed contact
       | id | name         | phone           |
       | 1  | Peter Parker | +1 (555) 748432 |
@@ -27,13 +32,13 @@ Feature: Get a single contact from the phonebook
     Then the response contains a single contact with id 1
 
   @error
-  Scenario: 04 - A contact from an empty phonebook
+  Scenario: 05 - A contact from an empty phonebook
     Given the phonebook is empty
     When the contact with id 1 is requested
     Then the response is an error indicating that the contact could not be found
 
   @error
-  Scenario: 05 - A contact that is not listed
+  Scenario: 06 - A contact that is not listed
     Given the contact with id 666 is not listed in the phonebook
     When the contact with id 666 is requested
     Then the response is an error indicating that the contact could not be found
