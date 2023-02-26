@@ -54,6 +54,10 @@ public class ContactSteps {
             """
             {"id":%d,"name":"%s","phone":"%s"}
             """;
+    public static String contactPostNameNullTemplate =
+            """
+            {"id":%d,"name":null,"phone":"%s"}
+            """;
     public static String contactPatchPhoneTemplate =
             """
             {"id":%d,"phone":"%s"};
@@ -177,8 +181,14 @@ public class ContactSteps {
             contactResource.setId(++contactId);
         }
 
-        String requestJson = String.format(contactPostTemplate,
-                contactResource.getId(), contactResource.getName(), contactResource.getPhone());
+        String requestJson;
+        if (name != null) {
+            requestJson = String.format(contactPostTemplate,
+                    contactResource.getId(), contactResource.getName(), contactResource.getPhone());
+        } else {
+            requestJson = String.format(contactPostNameNullTemplate,
+                    contactResource.getId(), contactResource.getPhone());
+        }
 
         httpClient.postNewContact(contactResource.getId(),requestJson);
     }
@@ -273,6 +283,11 @@ public class ContactSteps {
     @Then("the response is an error indicating that the contact already exists")
     public void the_response_is_an_error_indicating_that_the_contact_already_exists() {
         assertEquals(HttpStatus.CONFLICT, httpClient.getHttpStatus());
+    }
+
+    @Then("the response is an error indicating that the contact details are invalid")
+    public void the_response_is_an_error_indicating_that_the_contact_details_are_invalid() {
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, httpClient.getHttpStatus());
     }
 
 }
