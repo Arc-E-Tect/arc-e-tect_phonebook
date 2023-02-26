@@ -95,7 +95,7 @@ public class ContactSteps {
     }
 
     @When("all contacts are requested")
-    public void the_api_consumer_requests() throws IOException {
+    public void all_contacts_are_requested() throws IOException {
         MockServerExpectations.create_GetContacts(stepData.getContactList());
         httpClient.getAll();
     }
