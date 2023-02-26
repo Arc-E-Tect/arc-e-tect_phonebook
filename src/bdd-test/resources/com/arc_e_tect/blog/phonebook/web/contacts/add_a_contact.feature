@@ -32,3 +32,19 @@ Feature: Add a contact to the phonebook
       | id | name         | phone           |
       | 42 | Peter Parker | +1 (555) 432748 |
     Then the response is an error indicating that the contact already exists
+
+  @error
+  Scenario: 05 - A contact without an empty name is added
+    Given the phonebook is empty
+    When adding to the phonebook the contact
+      | id | name    | phone           |
+      | 42 | [blank] | +1 (555) 432748 |
+    Then the response is an error indicating that the contact details are invalid
+
+  @error
+  Scenario: 06 - A contact without a name is added
+    Given the phonebook is empty
+    When adding to the phonebook the contact
+      | id | name | phone           |
+      | 42 |      | +1 (555) 432748 |
+    Then the response is an error indicating that the contact details are invalid
