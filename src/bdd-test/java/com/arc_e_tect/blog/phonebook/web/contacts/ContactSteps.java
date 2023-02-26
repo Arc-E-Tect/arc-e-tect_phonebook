@@ -20,7 +20,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.flogger.Flogger;
-import org.bson.BsonValue;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -50,6 +49,11 @@ public class ContactSteps {
     MongoDatabase mongoDatabase;
     CodecRegistry pojoCodecRegistry;
     MongoCollection<TestContact> collection;
+
+    public static String contactPostTemplate =
+            """
+            {"id":%d,"name":"%s","phone":"%s","links":[]}
+            """;
 
     private long contactId = 1;
     private TestContact contact;
@@ -100,7 +104,6 @@ public class ContactSteps {
                 testContact.setId(++contactId);
             }
             InsertOneResult result = collection.insertOne(testContact);
-            BsonValue instertedID = result.getInsertedId();
         }
     }
 
@@ -140,6 +143,33 @@ public class ContactSteps {
         httpClient.deleteContactById(id);
     }
 
+    @When("adding to the phonebook the contact")
+    public void adding_to_the_phonebook_the_contact(io.cucumber.datatable.DataTable dataTable) {
+        int contactId=0;
+        List<Map<String, String>> signUpForms = dataTable.asMaps(String.class, String.class);
+
+        Iterator<Map<String, String>> it = signUpForms.iterator();
+        Map<String,String> item = it.next();
+
+        String name = item.get("name");
+        String phone = item.get("phone");
+        ContactResource contactResource = new ContactResource();
+        contactResource.setName(name);
+        contactResource.setPhone(phone);
+
+        String id = item.get("id");
+        if (id != null) {
+            contactResource.setId(Long.parseLong(id));
+        } else {
+            contactResource.setId(++contactId);
+        }
+
+        String requestJson = String.format(contactPostTemplate,
+                contactResource.getId(), contactResource.getName(), contactResource.getPhone());
+
+        httpClient.postNewContact(contactResource.getId(),requestJson);
+    }
+
     @Then("the response is an error indicating that the contact could not be found")
     public void the_response_is_an_error_indicating_that_the_contact_could_not_be_found() {
         assertEquals(HttpStatus.NOT_FOUND, httpClient.getHttpStatus());
@@ -153,7 +183,7 @@ public class ContactSteps {
         assertEquals(id, contactId);
     }
 
-    @Then("the response contains the contact {string} with phone {string}")
+    @Then("the response contains the (new) contact {string} with phone {string}")
     public void the_response_contains_the_contact_with_phone(String name, String phone) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode contactNode = objectMapper.readTree(httpClient.getBody());
@@ -213,6 +243,11 @@ public class ContactSteps {
         } catch (MongoException me) {
             log.atWarning().log("Unable to find due to an error: %s", me);
         }
+    }
+
+    @Then("the response is an error indicating that the contact already exists")
+    public void the_response_is_an_error_indicating_that_the_contact_already_exists() {
+        assertEquals(HttpStatus.CONFLICT, httpClient.getHttpStatus());
     }
 
 }

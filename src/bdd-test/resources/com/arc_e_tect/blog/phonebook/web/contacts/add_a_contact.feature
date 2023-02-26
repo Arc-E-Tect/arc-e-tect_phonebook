@@ -1,4 +1,3 @@
-@ignore
 Feature: Add a contact to the phonebook
 
   Scenario: 01 - A new contact
