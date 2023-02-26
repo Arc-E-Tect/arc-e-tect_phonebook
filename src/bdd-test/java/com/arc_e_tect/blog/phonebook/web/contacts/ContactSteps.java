@@ -125,6 +125,11 @@ public class ContactSteps {
         httpClient.getSingleByName(name);
     }
 
+    @When("all contacts are requested")
+    public void all_contacts_are_requested() throws IOException {
+        httpClient.getAll();
+    }
+
     @Then("the response is an error indicating that the contact could not be found")
     public void the_response_is_an_error_indicating_that_the_contact_could_not_be_found() {
         assertEquals(HttpStatus.NOT_FOUND, httpClient.getHttpStatus());
@@ -168,5 +173,13 @@ public class ContactSteps {
             }
         }
         assertTrue(found);
+    }
+
+    @Then("{int} contacts are retrieved")
+    public void contacts_are_retrieved(Integer expectedNumberOfContacts) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(httpClient.getBody());
+        JsonNode contactsNode = rootNode.path("_embedded").path("contacts");
+        assertEquals((int) expectedNumberOfContacts, contactsNode.size());
     }
 }

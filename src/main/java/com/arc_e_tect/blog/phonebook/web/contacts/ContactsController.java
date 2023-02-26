@@ -33,7 +33,7 @@ public class ContactsController {
 
     @GetMapping(produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
     public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response,
-                                                           @RequestParam String contactName) {
+                                                           @RequestParam(required = false) String contactName) {
         List<Contact> contactList = null;
         if (contactName == null || "".equals(contactName)) {
             contactList = contactService.retrieveAllContacts();
