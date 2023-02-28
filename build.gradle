@@ -38,6 +38,7 @@ plugins {
     // Knowing what licenses the dependencies of your application have and fail the build when you violate a compliance
     // rule during development time saves a lot of time and money from lawsuits
     id "com.cmgapps.licenses"
+    // https://github.com/unbroken-dome/gradle-testsets-plugin
     id 'org.unbroken-dome.test-sets'
 
     // Running MongoDB in a Docker container simplifies development and therefore speeds it up
@@ -116,6 +117,9 @@ testSets {
     docGen {
         dirName = 'docs'
     }
+}
+
+testSets {
     prototyping {
         dirName = 'proto'
     }
@@ -128,7 +132,6 @@ configurations {
 }
 
 dependencies {
-    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '_'
     prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java-no-dependencies', version: '_'
 }
 
