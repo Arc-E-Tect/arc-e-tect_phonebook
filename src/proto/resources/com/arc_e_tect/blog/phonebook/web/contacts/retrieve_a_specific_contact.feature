@@ -29,14 +29,12 @@ Feature: Get a single contact from the phonebook
     When the contact with id 1 is requested
     Then the response contains a single contact with id 1
 
-  @error
   @prototyping
   Scenario: 04 - A contact from an empty phonebook
     Given the phonebook is empty
     When the contact with id 1 is requested
     Then the response is an error indicating that the contact could not be found
 
-  @error
   @prototyping
   Scenario: 05 - A contact that is not listed
     Given the contact with id 666 is not listed in the phonebook

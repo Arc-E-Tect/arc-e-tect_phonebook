@@ -26,7 +26,7 @@ Feature: Add a contact to the phonebook
       | 1  | Peter Parker | +1 (555) 432748 |
     Then the response contains the new contact "Peter Parker" with phone "+1 (555) 432748"
 
-  @error @prototyping
+  @prototyping
   Scenario: 04 - A contact with the same id as a listed Contact
     Given the listed contact
       | id | name         | phone           |
