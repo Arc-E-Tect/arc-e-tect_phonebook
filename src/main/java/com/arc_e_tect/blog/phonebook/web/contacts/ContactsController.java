@@ -32,14 +32,8 @@ public class ContactsController {
     }
 
     @GetMapping(produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response,
-                                                           @RequestParam(required = false) String contactName) {
-        List<Contact> contactList = null;
-        if (contactName == null || "".equals(contactName)) {
-            contactList = contactService.retrieveAllContacts();
-        } else {
-            contactList = contactService.retrieveAllContacts(contactName);
-        }
+    public CollectionModel<ContactResource> getAllContacts(HttpServletResponse response) {
+        List<Contact> contactList = contactService.retrieveAllContacts();
 
         if (contactList.size() == 0) {
             response.setStatus(204);
@@ -51,9 +45,9 @@ public class ContactsController {
         return result;
     }
 
-    @GetMapping(value="/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ContactResource> getSingleContactById(@PathVariable Long id, HttpServletResponse response) {
-        Contact contact = contactService.getContactById(id);
+    @GetMapping(value="/{name}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ContactResource> getSingleContactByName(@PathVariable String name, HttpServletResponse response) {
+        Contact contact = contactService.getContactByName(name);
 
         ContactResource result = resourceAssembler.toModel(contact);
 
@@ -68,7 +62,7 @@ public class ContactsController {
         }
 
         try {
-            contactService.getContactById(newResource.getId());
+            contactService.getContactByName(newResource.getName());
             response.setStatus(HttpStatus.CONFLICT.value());
             throw new DuplicateContactException(newResource.getName());
         } catch (ContactNotFoundException cnfe) {
@@ -84,22 +78,16 @@ public class ContactsController {
         return resourceAssembler.toModel(contact);
     }
 
-    @DeleteMapping(value = "/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public void deleteContact(@PathVariable Long id, HttpServletResponse response) {
-        contactService.deleteContact(id);
+    @DeleteMapping(value = "/{name}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public void deleteContact(@PathVariable String name, HttpServletResponse response) {
+        contactService.deleteContactByName(name);
         response.setStatus(HttpStatus.NO_CONTENT.value());
     }
 
-    @DeleteMapping(produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public void deleteContactByName(@RequestParam String contactName, HttpServletResponse response) {
-        contactService.deleteContactByName(contactName);
-        response.setStatus(HttpStatus.NO_CONTENT.value());
-    }
-
-    @PatchMapping(value = "/{id}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
-    public ContactResource patchContact(@PathVariable Long id, @RequestBody ContactResource newResource, HttpServletResponse response) {
+    @PatchMapping(value = "/{name}", produces = {"application/hal+json", MediaType.APPLICATION_JSON_VALUE})
+    public ContactResource patchContact(@PathVariable String name, @RequestBody ContactResource newResource, HttpServletResponse response) {
         Contact contact = new Contact(newResource.getId(), newResource.getName(), newResource.getPhone());
-        contact = contactService.updateContact(id, contact);
+        contact = contactService.updateContactByName(name, contact);
         response.setStatus(HttpStatus.OK.value());
 
         return resourceAssembler.toModel(contact);

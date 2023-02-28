@@ -25,7 +25,7 @@ public class ContactsResourceAssembler extends RepresentationModelAssemblerSuppo
 
         BeanUtils.copyProperties(contact, result);
 
-        result.add(linkTo(methodOn(ContactsController.class).getAllContacts(null,null)).withRel(LINK_COLLECTION_CONTACTS));
+        result.add(linkTo(methodOn(ContactsController.class).getAllContacts(null)).withRel(LINK_COLLECTION_CONTACTS));
 
         return result;
     }
@@ -34,7 +34,7 @@ public class ContactsResourceAssembler extends RepresentationModelAssemblerSuppo
     public CollectionModel<ContactResource> toCollectionModel(Iterable<? extends Contact> contacts) {
         CollectionModel<ContactResource> ContactResources = super.toCollectionModel(contacts);
 
-        ContactResources.add(linkTo(methodOn(ContactsController.class).getAllContacts(null,null)).withSelfRel());
+        ContactResources.add(linkTo(methodOn(ContactsController.class).getAllContacts(null)).withSelfRel());
 
         return ContactResources;
     }
