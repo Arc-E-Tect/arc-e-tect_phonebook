@@ -79,10 +79,10 @@ public class MockServerExpectations {
             {
                 "_embedded": {
                     "contacts": [%s]
-                }, 
+                },
                 "_links": {
                     "self": {
-                        "href": "http://localhost:9090/contacts{?contactName}", 
+                        "href": "http://localhost:9090/contacts{?contactName}",
                         "templated": true
                     }
                 }
@@ -91,7 +91,20 @@ public class MockServerExpectations {
 
     public static String contactTemplate =
             """
-            { "id": %d, "name": "%s", "phone": "%s", "_links": { "self": { "href": "http://localhost:9090/contacts/%d" }, "contacts": { "href": "http://localhost:9090/contacts{?contactName}", "templated": true } } }
+            {
+                "id": %d,
+                "name": "%s",
+                "phone": "%s",
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:9090/contacts/%d"
+                    },
+                    "contacts": {
+                        "href": "http://localhost:9090/contacts{?contactName}",
+                        "templated": true
+                    }
+                }
+            }
             """;
 
     public static String contactPostTemplate =
@@ -229,21 +242,20 @@ public class MockServerExpectations {
                 .respond(response().withStatusCode(404));
     }
 
-    public static void create_DeleteContactByName(String name) {
-        String serviceUrl = "contacts";
-
-        String encodedName = name.replace(" ", "%20");
-        new MockServerClient("localhost",9091).when(request().withMethod("DELETE")
-                        .withPath(String.format("/%s",serviceUrl))
-                        .withQueryStringParameter("contactName", name))
-                .respond(response().withStatusCode(HttpStatus.NO_CONTENT.value()));
-    }
-
     public static void create_DeleteContactById(int id) {
         String serviceUrl = "contacts";
 
         new MockServerClient("localhost",9091).when(request().withMethod("DELETE")
                         .withPath(String.format("/%s/%d",serviceUrl,id)))
+                .respond(response().withStatusCode(HttpStatus.NO_CONTENT.value()));
+    }
+
+    public static void create_DeleteContactByName(String name) {
+        String serviceUrl = "contacts";
+
+        new MockServerClient("localhost",9091).when(request().withMethod("DELETE")
+                        .withPath(String.format("/%s",serviceUrl))
+                        .withQueryStringParameter("contactName", name))
                 .respond(response().withStatusCode(HttpStatus.NO_CONTENT.value()));
     }
 }

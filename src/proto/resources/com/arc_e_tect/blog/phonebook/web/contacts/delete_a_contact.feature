@@ -11,6 +11,15 @@ Feature: Delete a Contact from the phonebook
     Then the phonebook does not contain a contact with name "Peter Parker"
 
   @prototyping
+  Scenario: 02 - Multiple listed contacts with the same name
+    Given the listed contacts
+      | id | name         |  | phone           |
+      | 1  | Peter Parker |  | +1 (555) 748432 |
+      | 2  | Peter Parker |  | +1 (555) 234947 |
+    When the contact with id 2 is deleted
+    Then the phonebook does not contain a contact with id 2
+
+  @prototyping
   Scenario: 03 - Multiple listed contacts with the same name
     Given the listed contacts
       | id | name         |  | phone           |
@@ -18,13 +27,4 @@ Feature: Delete a Contact from the phonebook
       | 2  | Peter Parker |  | +1 (555) 234947 |
     When the contact with name "Peter Parker" is deleted
     Then the phonebook does not contain a contact with name "Peter Parker"
-
-  @prototyping
-  Scenario: 04 - Multiple listed contacts with the same name
-    Given the listed contacts
-      | id | name         |  | phone           |
-      | 1  | Peter Parker |  | +1 (555) 748432 |
-      | 2  | Peter Parker |  | +1 (555) 234947 |
-    When the contact with id 2 is deleted
-    Then the phonebook does not contain a contact with id 2
 

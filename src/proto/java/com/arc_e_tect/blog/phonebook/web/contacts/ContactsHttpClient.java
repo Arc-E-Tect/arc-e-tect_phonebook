@@ -83,13 +83,13 @@ public class ContactsHttpClient extends AbstractHttpClient {
         executePatch(url, jsonDocument);
     }
 
-    public void deleteContactByName(String contactName) {
-        String url = String.format("%s?contactName=%s", apiEndpoint(), contactName);
+    public void deleteContactById(Integer contactId) {
+        String url = String.format("%s/%d", apiEndpoint(), contactId);
         executeDelete(url);
     }
 
-    public void deleteContactById(Integer contactId) {
-        String url = String.format("%s/%d", apiEndpoint(), contactId);
+    public void deleteContactByName(String contactName) {
+        String url = String.format("%s?contactName=%s", apiEndpoint(), contactName);
         executeDelete(url);
     }
 
