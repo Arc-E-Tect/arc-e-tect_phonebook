@@ -90,7 +90,7 @@ dependencies {
         exclude group: "junit"
     }
 
-    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '_'
 
     compileOnly 'org.projectlombok:lombok:_'
     annotationProcessor 'org.projectlombok:lombok:_'
@@ -118,6 +118,12 @@ testSets {
     }
     prototyping {
         dirName = 'proto'
+    }
+}
+
+configurations {
+    prototypingImplementation {
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
     }
 }
 
