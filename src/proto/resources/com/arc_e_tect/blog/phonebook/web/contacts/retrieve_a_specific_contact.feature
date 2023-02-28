@@ -50,6 +50,6 @@ Feature: Get a single contact from the phonebook
   @prototyping
   Scenario: 07 - A contact that is not listed
     Given the contact with name "John Doe" is not listed in the phonebook
-    When the contact with name "John Smith" is requested
+    When the contact with name "John Doe" is requested
     Then the response is an error indicating that the contact could not be found
 
