@@ -12,9 +12,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("com/arc_e_tect/blog/phonebook")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty," +
-        "json:build/reports/prototyping/Cucumber.json," +
-        "junit:build/reports/prototyping/Cucumber.xml," +
         "html:build/reports/prototyping/Cucumber.html")
-@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "not @ignore and not @wip")
+@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@prototyping and not @ignore and not @wip")
 public class RunApiCucumberPrototypeTest {
 }

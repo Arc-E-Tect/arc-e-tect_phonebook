@@ -1,5 +1,6 @@
 Feature: Get all contacts available in the phonebook
 
+  @prototyping
   Scenario: 01 - From a phonebook with several contacts with the same name in it
     Given the listed contacts
       | id | name         | phone           |
