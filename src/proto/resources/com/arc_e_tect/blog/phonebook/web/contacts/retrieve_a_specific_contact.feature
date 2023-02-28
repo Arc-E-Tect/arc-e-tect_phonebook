@@ -36,8 +36,20 @@ Feature: Get a single contact from the phonebook
     Then the response is an error indicating that the contact could not be found
 
   @prototyping
-  Scenario: 05 - A contact that is not listed
+  Scenario: 05 - A contact from an empty phonebook
+    Given the phonebook is empty
+    When the contact with name "John Doe" is requested
+    Then the response is an error indicating that the contact could not be found
+
+  @prototyping
+  Scenario: 06 - A contact that is not listed
     Given the contact with id 666 is not listed in the phonebook
     When the contact with id 666 is requested
+    Then the response is an error indicating that the contact could not be found
+
+  @prototyping
+  Scenario: 07 - A contact that is not listed
+    Given the contact with name "John Doe" is not listed in the phonebook
+    When the contact with name "John Smith" is requested
     Then the response is an error indicating that the contact could not be found
 

@@ -208,6 +208,13 @@ public class MockServerExpectations {
                 .respond(response().withStatusCode(404));
     }
 
+    public static void create_ContactNotFound(String verb, String name) {
+        String serviceUrl = "contacts";
+        new MockServerClient("localhost",9091).when(request().withMethod(verb)
+                        .withPath(String.format("/%s?contactName=%s",serviceUrl,name)))
+                .respond(response().withStatusCode(404));
+    }
+
     public static void create_DeleteContactByName(String name) {
         String serviceUrl = "contacts";
 

@@ -89,6 +89,17 @@ public class ContactSteps {
         }
     }
 
+    @Given("the contact with name {string} is not listed in the phonebook")
+    public void the_contact_with_name_is_not_listed_in_the_phonebook(String name) {
+        Iterator<ContactResource> it = stepData.getContactList().iterator();
+        while (it.hasNext()) {
+            ContactResource resource = it.next();
+            if (resource.getName().equalsIgnoreCase(name)) {
+                it.remove();
+            }
+        }
+    }
+
     @Given("the phonebook is empty")
     public void the_listed_contacts() {
         stepData.setContactList(new ArrayList<>());
@@ -102,7 +113,24 @@ public class ContactSteps {
 
     @When("the contact with name {string} is requested")
     public void the_contact_with_name_is_requested(String name) throws IOException {
-        MockServerExpectations.create_GetContacts(name, stepData.getContactList());
+        if (stepData.getContactList().isEmpty()) {
+            MockServerExpectations.create_ContactNotFound("GET", name);
+        } else {
+            boolean found = false;
+            Iterator<ContactResource> it = stepData.getContactList().iterator();
+            while(it.hasNext()) {
+                ContactResource resource = it.next();
+                if (resource.getName().equalsIgnoreCase(name)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                MockServerExpectations.create_GetContacts(name, stepData.getContactList());
+            } else {
+                MockServerExpectations.create_ContactNotFound("GET", name);
+            }
+        }
         httpClient.getSingleByName(name);
     }
 
