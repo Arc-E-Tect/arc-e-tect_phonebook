@@ -21,8 +21,8 @@ Feature: Add a contact to the phonebook
     And the response is an error indicating that invalid contact data was provided
 
   Scenario: 04 - An already listed contact
-    Given the contact with name "Peter Parker" is listed in the phonebook
-    When the contact with name "Peter Parker" is added to the phonebook
+    Given the contact with name "John Smith" is listed in the phonebook
+    When the contact with name "John Smith" is added to the phonebook
     Then the response is an error indicating that a contact with the same name already exists
 
   @ignore

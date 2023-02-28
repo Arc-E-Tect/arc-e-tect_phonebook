@@ -3,9 +3,9 @@ Feature: Get a single contact from the phonebook
   This feature-file specifies the scenarios related to retrieving a single contact from the Arc-E-Tect Phonebook.
 
   Scenario: 01 - A contact that is listed
-    Given the contact with name "Peter Parker" is listed in the phonebook
-    When the contact with name "Peter Parker" is requested
-    Then the response contains the contact with name "Peter Parker"
+    Given the contact with name "John Smith" is listed in the phonebook
+    When the contact with name "John Smith" is requested
+    Then the response contains the contact with name "John Smith"
 
   Scenario: 02 - A contact from an empty phonebook
     Given the phonebook is empty
