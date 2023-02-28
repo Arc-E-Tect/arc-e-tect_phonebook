@@ -13,7 +13,19 @@ import static org.mockserver.model.HttpResponse.response;
 @Flogger
 public class MockServerExpectations {
     public static void create_GetRootInfo() {
-        String jsonDoc = "{\"_links\":{\"self\":{\"href\":\"http://localhost:9091\"},\"contacts\":{\"href\":\"http://localhost:9091/contacts\"}}}";
+        String jsonDoc =
+            """
+            {
+                "_links":{
+                    "self": {
+                        "href":"http://localhost:9091"
+                    },
+                    "contacts": {
+                        "href":"http://localhost:9091/contacts"
+                    }
+                }
+            }
+            """;
         String serviceUrl = "";
 
         new MockServerClient("localhost",9091).when(request().withMethod("GET")
@@ -24,7 +36,19 @@ public class MockServerExpectations {
     }
 
     public static void create_GetIndexInfo() {
-        String jsonDoc = "{\"_links\":{\"self\":{\"href\":\"http://localhost:9091\"},\"contacts\":{\"href\":\"http://localhost:9091/contacts\"}}}";
+        String jsonDoc =
+            """
+            {
+                "_links": {
+                    "self": {
+                        "href":"http://localhost:9091"
+                    },
+                    "contacts": {
+                        "href":"http://localhost:9091/contacts"
+                    }
+                }
+            }
+            """;
         String serviceUrl = "index";
 
         new MockServerClient("localhost",9091).when(request().withMethod("GET")
@@ -35,7 +59,6 @@ public class MockServerExpectations {
     }
 
     public static void remove_GetRootInfo() {
-        String jsonDoc = "{\"_links\":{\"self\":{\"href\":\"http://localhost:9091\"},\"contacts\":{\"href\":\"http://localhost:9091/contacts\"}}}";
         String serviceUrl = "";
 
         new MockServerClient("localhost",9091).clear(request()
@@ -44,7 +67,6 @@ public class MockServerExpectations {
     }
 
     public static void remove_GetIndexInfo() {
-        String jsonDoc = "{\"_links\":{\"self\":{\"href\":\"http://localhost:9091\"},\"contacts\":{\"href\":\"http://localhost:9091/contacts\"}}}";
         String serviceUrl = "index";;
 
         new MockServerClient("localhost",9091).clear(request()
@@ -54,7 +76,17 @@ public class MockServerExpectations {
 
     public static String contactListTemplate =
             """
-            { "_embedded": {"contacts": [%s]}, "_links": {"self": {"href": "http://localhost:9090/contacts{?contactName}", "templated": true}}}
+            {
+                "_embedded": {
+                    "contacts": [%s]
+                }, 
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:9090/contacts{?contactName}", 
+                        "templated": true
+                    }
+                }
+            }
             """;
 
     public static String contactTemplate =
@@ -64,11 +96,13 @@ public class MockServerExpectations {
 
     public static String contactPostTemplate =
             """
-            {"id":%d,"name":"%s","phone":"%s","links":[]}
+            {
+                "id":%d,
+                "name":"%s",
+                "phone":"%s",
+                "links":[]
+            }
             """;
-    public static String contactPatchPhoneTemplate ="{\"id\":%d,\"phone\":\"%s\",\"links\":[]}";
-    public static String contactPatchNameTemplate = "{\"id\":%d,\"name\":\"%s\",\"links\":[]}";
-    public static String contactPatchNamePhoneTemplate = "{\"id\":%d,\"name\":\"%s\",\"phone\":\"%s\",\"links\":[]}";
 
     public static void create_GetContacts(List<ContactResource> contactList) {
         String contacts = "";
@@ -107,45 +141,26 @@ public class MockServerExpectations {
 
     public static void create_PatchPhone(ContactResource contactResource) {
         String serviceUrl = "contacts";
-        String requestJson = String.format(contactPatchPhoneTemplate,
-                contactResource.getId(), contactResource.getPhone());
         String responseJson = String.format(contactTemplate,
                 contactResource.getId(), contactResource.getName(), contactResource.getPhone(),contactResource.getId());
 
         new MockServerClient("localhost",9091).when(request().withMethod("PATCH")
-                        .withPath(String.format("/%s/%d",serviceUrl, contactResource.getId()))
-                        .withBody(requestJson))
+                        .withPath(String.format("/%s/%d",serviceUrl, contactResource.getId())))
                 .respond(response().withStatusCode(200)
                         .withHeader("Content-Type", "application/hal+json")
                         .withBody(responseJson));
-
-
     }
 
     public static void create_PatchName(ContactResource contactResource) {
         String serviceUrl = "contacts";
-        String requestJson = String.format(contactPatchNameTemplate,
-                contactResource.getId(), contactResource.getName());
         String responseJson = String.format(contactTemplate,
                 contactResource.getId(), contactResource.getName(), contactResource.getPhone(),contactResource.getId());
 
         new MockServerClient("localhost",9091).when(request().withMethod("PATCH")
-                        .withPath(String.format("/%s/%d",serviceUrl, contactResource.getId()))
-                        .withBody(requestJson))
+                        .withPath(String.format("/%s/%d",serviceUrl, contactResource.getId())))
                 .respond(response().withStatusCode(200)
                         .withHeader("Content-Type", "application/hal+json")
                         .withBody(responseJson));
-    }
-
-    public static void create_PatchContactUnprocessable(ContactResource contactResource, int origId) {
-        String serviceUrl = "contacts";
-        String requestJson = String.format(contactPatchNamePhoneTemplate,
-                contactResource.getId(), contactResource.getName(), contactResource.getPhone());
-
-        new MockServerClient("localhost",9091).when(request().withMethod("PATCH")
-                        .withPath(String.format("/%s/%d",serviceUrl, origId))
-                        .withBody(requestJson))
-                .respond(response().withStatusCode(422));
     }
 
     public static void create_PostContactConflict(ContactResource contactResource) {
@@ -176,7 +191,6 @@ public class MockServerExpectations {
 
         String serviceUrl = "contacts";
 
-        String encodedName = name.replace(" ", "%20");
         new MockServerClient("localhost",9091).when(request().withMethod("GET")
                         .withPath(String.format("/%s",serviceUrl))
                         .withQueryStringParameter("contactName", name))
