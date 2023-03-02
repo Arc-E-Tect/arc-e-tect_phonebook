@@ -25,7 +25,7 @@ class ContactAdvisoryHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DuplicateContactException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public final ResponseEntity<ErrorDetails> duplicateContactHandler(DuplicateContactException ex, WebRequest request) {
+    public final ResponseEntity<ErrorDetails> duplicateNamespaceHandler(DuplicateContactException ex, WebRequest request) {
         ErrorDetails error = new ErrorDetails(new Date(),HttpStatus.CONFLICT, "Contact already exists", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
