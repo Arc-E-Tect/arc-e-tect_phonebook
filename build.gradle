@@ -96,7 +96,7 @@ test {
     useJUnitPlatform()
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
@@ -138,7 +138,7 @@ jacocoTestCoverageVerification {
     dependsOn test, bddTest, docGen
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
@@ -245,7 +245,7 @@ gradleLint {
     rules  = ['archaic-wrapper']
 }
 
-tasks.all { task ->
+tasks.configureEach { task ->
     if (task.name == 'openapi3') {
         task.dependsOn docGen
     }
