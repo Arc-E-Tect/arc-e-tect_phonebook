@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath  group: "org.owasp", name:"dependency-check-gradle", version:"_"
+        classpath  libs.dependency.check.gradle
     }
 
     apply from: 'gradle/jacoco.gradle'
@@ -79,26 +79,17 @@ processResources {
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: "_"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "_"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: "_"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "_"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: "_"
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "_"
+    implementation libs.bundles.spring.boot
+    implementation libs.bundles.spring.restdocs
 
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: "_"
-    testImplementation (group: 'org.springframework.boot',  name: 'spring-boot-starter-test',   version: "_") {
-        exclude group: "junit"
-    }
-
-    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '_'
+    compileOnly libs.jakarta.servlet.api
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
-    implementation group: "com.google.flogger", name: "flogger-system-backend", version: "_"
+    implementation libs.flogger.system.backend
 
-    compileOnly group: "org.mongodb", name: "mongodb-driver-sync", version: "_"
+    compileOnly libs.mongodb.driver.sync
 }
 
 test {
@@ -132,7 +123,7 @@ configurations {
 }
 
 dependencies {
-    prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java-no-dependencies', version: '_'
+    prototypingImplementation libs.mockserver.client.java.no.dependencies
 }
 
 bddTest.dependsOn test
@@ -211,7 +202,7 @@ springBoot {
 //
 // RestDoc API Spec
 dependencies {
-    testImplementation group: 'com.epages', name: 'restdocs-api-spec-mockmvc', version: "_"
+    testImplementation libs.restdocs.api.spec.mockmvc
 }
 
 openapi3 {

@@ -5,8 +5,8 @@
 // See: https://creativecommons.org/licenses/by-sa/4.0/
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:_"))
-    testImplementation("org.junit.platform:junit-platform-suite")
+    testImplementation (platform("org.junit:junit-bom:_"))
+    testImplementation libs.junit.platform.suite
 }
 
 test {
