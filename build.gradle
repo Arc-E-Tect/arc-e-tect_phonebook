@@ -93,8 +93,8 @@ dependencies {
 
     compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '_'
 
-    compileOnly 'org.projectlombok:lombok:_'
-    annotationProcessor 'org.projectlombok:lombok:_'
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "_"
 
