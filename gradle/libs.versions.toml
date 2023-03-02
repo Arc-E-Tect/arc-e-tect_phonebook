@@ -48,17 +48,12 @@ dependency-check-gradle = "org.owasp:dependency-check-gradle:_"
 lombok = "org.projectlombok:lombok:_"
 
 junit-bom = "org.junit:junit-bom:_"
-
 junit-platform-suite = { module = "org.junit.platform:junit-platform-suite" }
 
 cucumber-bom = "io.cucumber:cucumber-bom:_"
-
 cucumber-java = { module = "io.cucumber:cucumber-java" }
-
 cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine" }
-
 cucumber-spring = "io.cucumber:cucumber-spring:_"
-
 cucumber-reporting = "net.masterthought:cucumber-reporting:_"
 
 restdocs-api-spec-mockmvc = "com.epages:restdocs-api-spec-mockmvc:_"
