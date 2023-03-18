@@ -5,8 +5,8 @@
 // See: https://creativecommons.org/licenses/by-sa/4.0/
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:_"))
-    testImplementation("org.junit.platform:junit-platform-suite")
+    testImplementation (platform("org.junit:junit-bom:_"))
+    testImplementation libs.junit.platform.suite
 }
 
 test {
@@ -14,7 +14,5 @@ test {
 }
 
 task testReport(type: TestReport) {
-    destinationDir = file("$buildDir/reports/allTests")
-    // Include the results from the `test` task in all subprojects
-    reportOn subprojects*.test
+    destinationDirectory = file("$buildDir/reports/allTests")
 }

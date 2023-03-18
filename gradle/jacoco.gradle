@@ -13,7 +13,7 @@ apply plugin: 'jacoco'
 //
 // JaCoCo
 dependencies {
-    implementation "org.jacoco:org.jacoco.agent:_:runtime"
+    implementation libs.org.jacoco.agent
 }
 
 jacoco {
