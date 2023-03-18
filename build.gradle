@@ -250,3 +250,5 @@ tasks.configureEach { task ->
         task.dependsOn docGen
     }
 }
+
+check.finalizedBy refreshVersions
