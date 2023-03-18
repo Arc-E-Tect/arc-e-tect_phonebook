@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -46,8 +46,8 @@ public abstract class AbstractHttpClient {
         return stepData.getResponseString();
     }
 
-    public HttpStatus getHttpStatus() {
-        return stepData.getHttpStatus();
+    public HttpStatusCode getHttpStatus() {
+        return stepData.getHttpStatusCode();
     }
 
     public RepresentationModel getBodyAsResource(RepresentationModel representationModel) {
@@ -79,8 +79,8 @@ public abstract class AbstractHttpClient {
         ResponseEntity<JsonNode> response = getApiClient().get()
                 .uri(url)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
@@ -96,8 +96,8 @@ public abstract class AbstractHttpClient {
                 .uri(url)
                 .bodyValue(jsonDocument)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
@@ -109,8 +109,8 @@ public abstract class AbstractHttpClient {
                 .uri(url)
                 .bodyValue(jsonDocument)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
@@ -123,21 +123,21 @@ public abstract class AbstractHttpClient {
         ResponseEntity<JsonNode> response = getApiClient().delete()
                 .uri(url)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.empty())
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.empty())
                 .toEntity(JsonNode.class)
                 .block();
 
         stepData.setResponseEntity(response);
 
         log.atInfo().log("\t responseEntity received: %s", stepData.getResponseEntity().toString());
-        log.atInfo().log("\t HTTP Status is : %s", stepData.getHttpStatus());
+        log.atInfo().log("\t HTTP Status is : %s", stepData.getHttpStatusCode());
         log.atInfo().log("\t StepData: %s", stepData);
 
         log.atInfo().log("Delete data :");
         log.atInfo().log("\t url        :%s", url);
         log.atInfo().log("\t response   :%s", stepData.getResponseString());
-        log.atInfo().log("\t httpStatus :%s", stepData.getHttpStatus());
+        log.atInfo().log("\t httpStatus :%s", stepData.getHttpStatusCode());
         log.atInfo().log("\t headers    :%s", (stepData.getResponseHeaders() != null ? stepData.getResponseHeaders() : "NO HEADERS"));
         log.atInfo().log(" ===> Done executing the Delete on URL: %s, received body: %s", url, stepData.getResponseString());
     }

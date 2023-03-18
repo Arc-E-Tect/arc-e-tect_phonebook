@@ -6,13 +6,13 @@ Feature: Get all contacts available in the phonebook
     Then the response contains no contacts
 
   Scenario: 02 - From a phonebook with a single contact in it
-    Given the contact with name "Peter Parker" is listed in the phonebook
+    Given the contact with name "John Smith" is listed in the phonebook
     When all contacts are requested
-    Then the response contains the contact "Peter Parker"
+    Then the response contains the contact "John Smith"
 
   Scenario: 03 - From a phonebook with several contacts in it
-    Given the contact with name "Peter Parker" is listed in the phonebook
-    And the contact with name "Charly Brown" is listed in the phonebook
+    Given the contact with name "John Smith" is listed in the phonebook
+    And the contact with name "Jane Brown" is listed in the phonebook
     When all contacts are requested
-    Then the response contains the contact "Peter Parker"
-    And the response contains the contact "Charly Brown"
+    Then the response contains the contact "John Smith"
+    And the response contains the contact "Jane Brown"

@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  mockserver_container:
+    image: mockserver/mockserver:latest
+    container_name: arc_e_tect_phonebook_mockserver
+    command: -logLevel DEBUG
+    ports:
+      - 9091:1080
+    environment:
+      MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+    volumes:
+      - type: bind
+        source: ./src/proto/resources/config
+        target: /config

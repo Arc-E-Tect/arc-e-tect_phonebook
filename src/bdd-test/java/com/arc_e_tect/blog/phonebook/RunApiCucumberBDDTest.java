@@ -16,5 +16,5 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
         "junit:build/reports/bdd-test/Cucumber.xml," +
         "html:build/reports/bdd-test/Cucumber.html")
 @ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "not @ignore and not @wip")
-public class RunApiCucumberTest {
+public class RunApiCucumberBDDTest {
 }

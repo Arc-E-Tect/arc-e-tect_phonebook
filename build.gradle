@@ -38,6 +38,7 @@ plugins {
     // Knowing what licenses the dependencies of your application have and fail the build when you violate a compliance
     // rule during development time saves a lot of time and money from lawsuits
     id "com.cmgapps.licenses"
+    // https://github.com/unbroken-dome/gradle-testsets-plugin
     id 'org.unbroken-dome.test-sets'
 
     // Running MongoDB in a Docker container simplifies development and therefore speeds it up
@@ -90,8 +91,10 @@ dependencies {
         exclude group: "junit"
     }
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '_'
+
+    compileOnly 'org.projectlombok:lombok:_'
+    annotationProcessor 'org.projectlombok:lombok:_'
 
     implementation group: "com.google.flogger", name: "flogger-system-backend", version: "_"
 
@@ -114,6 +117,22 @@ testSets {
     docGen {
         dirName = 'docs'
     }
+}
+
+testSets {
+    prototyping {
+        dirName = 'proto'
+    }
+}
+
+configurations {
+    prototypingImplementation {
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+}
+
+dependencies {
+    prototypingImplementation group: 'org.mock-server', name: 'mockserver-client-java-no-dependencies', version: '_'
 }
 
 bddTest.dependsOn test
@@ -215,8 +234,20 @@ postman {
 dockerCompose.isRequiredBy(bddTest)
 dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
+if (System.getProperty("prototyping").equals('true')) {
+    println "Setting up for prototyping"
+    println "Arc-E-Tect Phonebook will be mocked by Mock-Server"
+    dockerCompose.isRequiredBy(prototyping)
+    dockerCompose {
+        stopContainers=true
+        useComposeFiles=['docker-compose.yml','docker-compose-mockserver.yml']
+    }
+} else {
+    dockerCompose {
+        stopContainers=true
+    }
+}
 
-dockerCompose.stopContainers=true
 
 gradleLint {
     autoLintAfterFailure="false"
