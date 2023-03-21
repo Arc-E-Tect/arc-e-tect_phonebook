@@ -14,6 +14,3 @@ After cloning the repository make sure you have Gradle 7.6+ installed as well as
 Update to the latest Gradle release using:
 `.\gradlew wrapper --gradle-version 7.5.1 --distribution-type bin`
 
-# Source Code
-
-![Visualization of the codebase](./diagram.svg)
