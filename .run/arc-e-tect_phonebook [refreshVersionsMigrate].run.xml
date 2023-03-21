@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="phonebook [clean build asciidoctor openapi3 postman]" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="arc-e-tect_phonebook [refreshVersionsMigrate]" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,14 +10,10 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="clean" />
-          <option value="build" />
-          <option value="asciidoctor" />
-          <option value="openapi3" />
-          <option value="postman" />
+          <option value="refreshVersionsMigrate" />
         </list>
       </option>
-      <option name="vmOptions" value="" />
+      <option name="vmOptions" />
     </ExternalSystemSettings>
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
@@ -29,11 +25,11 @@
         <option name="IS_IGNORE_MISSING_FILES" value="false" />
         <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
         <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
         </ENTRIES>
       </extension>
     </EXTENSION>
-    <DebugAllEnabled>true</DebugAllEnabled>
+    <DebugAllEnabled>false</DebugAllEnabled>
     <method v="2" />
   </configuration>
 </component>
