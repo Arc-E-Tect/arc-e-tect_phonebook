@@ -13,7 +13,7 @@ cucumberReports {
     outputDir = file("$projectDir/build/reports/tests")
     buildId = "${semver.infoVersion}"
     reports = files(
-            "$buildDir/reports/bdd-test/Cucumber.json"
+            "$buildDir/reports/bddTest/Cucumber.json"
     )
     trends = file("$projectDir/trends.json")
     trendsLimit = 128
@@ -21,4 +21,4 @@ cucumberReports {
     testTasksFinalizedByReport=false
 }
 
-//generateCucumberReports.mustRunAfter bddTest
+generateCucumberReports.mustRunAfter bddTest
