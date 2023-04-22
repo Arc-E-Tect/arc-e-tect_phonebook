@@ -39,7 +39,7 @@ plugins {
     // rule during development time saves a lot of time and money from lawsuits
     id "com.cmgapps.licenses"
     // https://github.com/unbroken-dome/gradle-testsets-plugin
-    id 'org.unbroken-dome.test-sets'
+//    id 'org.unbroken-dome.test-sets'
 
     // Running MongoDB in a Docker container simplifies development and therefore speeds it up
     id 'com.avast.gradle.docker-compose'
@@ -101,41 +101,67 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-testSets {
-    bddTest {
-        dirName = 'bdd-test'
-    }
-    docGen {
-        dirName = 'docs'
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
+
+        bddTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
     }
 }
 
-testSets {
-    prototyping {
-        dirName = 'proto'
-    }
+tasks.named('check') {
+    dependsOn(testing.suites.bddTest)
 }
 
-configurations {
-    prototypingImplementation {
-        exclude group: 'ch.qos.logback', module: 'logback-classic'
-    }
-}
-
-dependencies {
-    prototypingImplementation libs.mockserver.client.java.no.dependencies
-}
-
-bddTest.dependsOn test
-docGen.mustRunAfter bddTest
-check.dependsOn bddTest, docGen
+//testSets {
+//    bddTest {
+//        dirName = 'bdd-test'
+//    }
+//    docGen {
+//        dirName = 'docs'
+//    }
+//}
+//
+//testSets {
+//    prototyping {
+//        dirName = 'proto'
+//    }
+//}
+//
+//configurations {
+//    prototypingImplementation {
+//        exclude group: 'ch.qos.logback', module: 'logback-classic'
+//    }
+//}
+//
+//dependencies {
+//    prototypingImplementation libs.mockserver.client.java.no.dependencies
+//}
+//
+//bddTest.dependsOn test
+//docGen.mustRunAfter bddTest
+//check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn test, bddTest, docGen
+    dependsOn test//, bddTest, docGen
 }
 
 jacocoTestCoverageVerification {
-    dependsOn test, bddTest, docGen
+    dependsOn test//, bddTest, docGen
 }
 
 tasks.withType(Test).configureEach {
@@ -222,8 +248,8 @@ postman {
 // ------------------------------------------------------------
 // Docker
 
-dockerCompose.isRequiredBy(bddTest)
-dockerCompose.isRequiredBy(docGen)
+//dockerCompose.isRequiredBy(bddTest)
+//dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
 if (System.getProperty("prototyping").equals('true')) {
     println "Setting up for prototyping"
@@ -245,10 +271,10 @@ gradleLint {
     rules  = ['archaic-wrapper']
 }
 
-tasks.configureEach { task ->
-    if (task.name == 'openapi3') {
-        task.dependsOn docGen
-    }
-}
+//tasks.configureEach { task ->
+//    if (task.name == 'openapi3') {
+//        task.dependsOn docGen
+//    }
+//}
 
 check.finalizedBy refreshVersions

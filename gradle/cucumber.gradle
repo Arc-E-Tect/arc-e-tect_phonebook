@@ -21,4 +21,4 @@ cucumberReports {
     testTasksFinalizedByReport=false
 }
 
-generateCucumberReports.mustRunAfter bddTest
+//generateCucumberReports.mustRunAfter bddTest
