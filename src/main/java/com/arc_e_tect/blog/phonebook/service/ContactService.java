@@ -9,11 +9,14 @@ public interface ContactService {
 
     Contact saveContact(Contact contact);
 
-    Contact getContactByName(String name) throws ContactNotFoundException;
+    Contact getContactById(Long id) throws ContactNotFoundException;
 
     List<Contact> retrieveAllContacts();
+    List<Contact> retrieveAllContacts(String contactName);
 
-    Contact updateContactByName(String name, Contact patch);
+    Contact updateContact(Long id, Contact patch);
+
+    void deleteContact(Long id);
 
     void deleteContactByName(String name);
 }
