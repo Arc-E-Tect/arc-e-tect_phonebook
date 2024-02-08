@@ -30,7 +30,7 @@ asciidoctor {
             "date": new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
             "stylesheet": "themes/riak.css"
     inputs.dir snippetsDir
-//    dependsOn docGen
+    dependsOn docGenTest
     logDocuments true
     outputDir "build/docs"
     baseDirFollowsSourceDir()
