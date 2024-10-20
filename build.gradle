@@ -87,6 +87,9 @@ dependencies {
     implementation libs.flogger.system.backend
 
     compileOnly libs.mongodb.driver.sync
+
+    implementation group: 'org.mock-server', name: 'mockserver-client-java', version: '5.15.0'
+    implementation group: 'org.mock-server', name: 'mockserver-client', version: '3.2'
 }
 
 dependencies {
@@ -288,7 +291,7 @@ dockerCompose.isRequiredBy(docGenTest)
 if (System.getProperty("prototyping").equals('true')) {
     println "Setting up for prototyping"
     println "Arc-E-Tect Phonebook will be mocked by Mock-Server"
-    dockerCompose.isRequiredBy(prototyping)
+    dockerCompose.isRequiredBy(prototypingTest)
     dockerCompose {
         stopContainers=true
         useComposeFiles=['docker-compose.yml','docker-compose-mockserver.yml']
