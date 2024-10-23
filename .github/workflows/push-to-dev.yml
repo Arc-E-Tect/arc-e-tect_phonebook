@@ -17,6 +17,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      NVD_APIKEY_CPM: ${{ secrets.NVD_APIKEY_CPM }}
+
     steps:
       - uses: actions/checkout@v4
         with:
