@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="arc-e-tect_phonebook [prototyping]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
+  <configuration default="false" name="phonebook [prototypingTest]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="prototyping" />
+          <option value="prototypingTest" />
         </list>
       </option>
       <option name="vmOptions" value="" />
@@ -30,6 +30,7 @@
       </extension>
     </EXTENSION>
     <DebugAllEnabled>true</DebugAllEnabled>
+    <RunAsTest>false</RunAsTest>
     <method v="2" />
   </configuration>
 </component>
