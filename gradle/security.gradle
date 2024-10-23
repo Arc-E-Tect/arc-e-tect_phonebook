@@ -1,12 +1,19 @@
 // See: https://github.com/jeremylong/dependency-check-gradle
 
 dependencyCheck {
+    nvd.apiKey = System.getenv('NVD_APIKEY_CPM')
+    nvd.delay = 16000
+
     failOnError = true
+
+    format="ALL"
+    suppressionFile = "suppression.xml"
+
     analyzers {
+        assemblyEnabled = false
         nodeAudit {
             yarnEnabled = false
         }
-        assemblyEnabled = false
     }
 }
 
