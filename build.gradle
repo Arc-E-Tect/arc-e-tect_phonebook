@@ -38,8 +38,6 @@ plugins {
     // Knowing what licenses the dependencies of your application have and fail the build when you violate a compliance
     // rule during development time saves a lot of time and money from lawsuits
     id "com.cmgapps.licenses"
-    // https://github.com/unbroken-dome/gradle-testsets-plugin
-    id 'org.unbroken-dome.test-sets'
 
     // Running MongoDB in a Docker container simplifies development and therefore speeds it up
     id 'com.avast.gradle.docker-compose'
@@ -65,7 +63,6 @@ apply from: 'gradle/semver.gradle'
 // -----------------------------------------------------------
 //
 // Property generation and substitution
-//ext['junit-jupiter.version'] = '$version.junit' // Also change jUnitVersion
 def repositoryDir = rootProject.buildDir.path + File.separator + "repository"
 mkdir repositoryDir
 ext['repositoryDir'] = new File(repositoryDir).toURI()
@@ -90,10 +87,18 @@ dependencies {
     implementation libs.flogger.system.backend
 
     compileOnly libs.mongodb.driver.sync
+
+    implementation group: 'org.mock-server', name: 'mockserver-client-java', version: '5.15.0'
+    implementation group: 'org.mock-server', name: 'mockserver-client', version: '3.2'
+}
+
+dependencies {
+    testImplementation (platform("org.junit:junit-bom:_"))
+    testImplementation libs.junit.platform.suite
 }
 
 test {
-    useJUnitPlatform()
+    systemProperties System.getProperties()
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -101,45 +106,103 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-testSets {
-    bddTest {
-        dirName = 'bdd-test'
-    }
-    docGen {
-        dirName = 'docs'
-    }
-}
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
 
-testSets {
-    prototyping {
-        dirName = 'proto'
+        bddTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+            }
+
+            sources {
+                java {
+                    srcDirs = ['src/bddTest/java']
+                }
+                resources {
+                    srcDirs = ['src/bddTest/resources']
+                }
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
+
+        docGenTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+            }
+
+            sources {
+                java {
+                    srcDirs = ['src/docs/java']
+                }
+                resources {
+                    srcDirs = ['src/docs/resources']
+                }
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
+
+        prototypingTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+            }
+
+            sources {
+                java {
+                    srcDirs = ['src/proto/java']
+                }
+                resources {
+                    srcDirs = ['src/proto/resources']
+                }
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
     }
 }
 
 configurations {
-    prototypingImplementation {
-        exclude group: 'ch.qos.logback', module: 'logback-classic'
-    }
+    bddTestImplementation.extendsFrom testImplementation
+    docGenTestImplementation.extendsFrom testImplementation
+    prototypingTestImplementation.extendsFrom testImplementation
 }
 
-dependencies {
-    prototypingImplementation libs.mockserver.client.java.no.dependencies
+tasks.named('check') {
+    dependsOn(testing.suites.bddTest)
+    dependsOn(testing.suites.docGenTest)
 }
-
-bddTest.dependsOn test
-docGen.mustRunAfter bddTest
-check.dependsOn bddTest, docGen
 
 jacocoTestReport {
-    dependsOn test, bddTest, docGen
+    dependsOn test, bddTest, docGenTest
 }
 
 jacocoTestCoverageVerification {
-    dependsOn test, bddTest, docGen
+    dependsOn test, bddTest, docGenTest
 }
 
 tasks.withType(Test).configureEach {
-    useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
     }
@@ -222,13 +285,13 @@ postman {
 // ------------------------------------------------------------
 // Docker
 
-dockerCompose.isRequiredBy(bddTest)
-dockerCompose.isRequiredBy(docGen)
 dockerCompose.isRequiredBy(bootRun)
+dockerCompose.isRequiredBy(bddTest)
+dockerCompose.isRequiredBy(docGenTest)
 if (System.getProperty("prototyping").equals('true')) {
     println "Setting up for prototyping"
     println "Arc-E-Tect Phonebook will be mocked by Mock-Server"
-    dockerCompose.isRequiredBy(prototyping)
+    dockerCompose.isRequiredBy(prototypingTest)
     dockerCompose {
         stopContainers=true
         useComposeFiles=['docker-compose.yml','docker-compose-mockserver.yml']
@@ -239,16 +302,10 @@ if (System.getProperty("prototyping").equals('true')) {
     }
 }
 
-
 gradleLint {
     autoLintAfterFailure="false"
     rules  = ['archaic-wrapper']
 }
 
-tasks.configureEach { task ->
-    if (task.name == 'openapi3') {
-        task.dependsOn docGen
-    }
-}
-
 check.finalizedBy refreshVersions
+

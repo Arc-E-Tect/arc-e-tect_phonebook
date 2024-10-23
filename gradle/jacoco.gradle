@@ -26,8 +26,8 @@ jacocoTestReport {
     reports {
         xml.required = false
         csv.required = true
-        html.destination file("${buildDir}/reports/jacoco/Html")
-        csv.destination file("${buildDir}/reports/jacoco/jacoco.csv")
+        reports.html.outputLocation = file("${buildDir}/reports/jacoco/Html")
+        reports.csv.outputLocation = file("${buildDir}/reports/jacoco/jacoco.csv")
     }
 
     afterEvaluate {

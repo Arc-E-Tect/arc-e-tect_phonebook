@@ -1,20 +1,16 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="phonebook [clean build asciidoctor openapi3 postman]" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="phonebook [prototypingTest]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="" />
+      <option name="scriptParameters" value="-Dprototyping=true" />
       <option name="taskDescriptions">
         <list />
       </option>
       <option name="taskNames">
         <list>
-          <option value="clean" />
-          <option value="build" />
-          <option value="asciidoctor" />
-          <option value="openapi3" />
-          <option value="postman" />
+          <option value="prototypingTest" />
         </list>
       </option>
       <option name="vmOptions" value="" />
@@ -29,11 +25,12 @@
         <option name="IS_IGNORE_MISSING_FILES" value="false" />
         <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
         <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
         </ENTRIES>
       </extension>
     </EXTENSION>
     <DebugAllEnabled>true</DebugAllEnabled>
+    <RunAsTest>false</RunAsTest>
     <method v="2" />
   </configuration>
 </component>

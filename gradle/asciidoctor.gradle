@@ -19,7 +19,6 @@ test {
 }
 
 asciidoctor {
-    inProcess = JAVA_EXEC
     forkOptions {
         jvmArgs("--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens", "java.base/java.io=ALL-UNNAMED")
     }
@@ -30,10 +29,10 @@ asciidoctor {
             "date": new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
             "stylesheet": "themes/riak.css"
     inputs.dir snippetsDir
-    dependsOn docGen
+    dependsOn docGenTest
     logDocuments true
     outputDir "build/docs"
     baseDirFollowsSourceDir()
 }
 
-build.dependsOn asciidoctor
+asciidoctor.dependsOn test

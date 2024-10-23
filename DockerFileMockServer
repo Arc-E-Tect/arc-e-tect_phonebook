@@ -1,0 +1,4 @@
+FROM mockserver/mockserver:latest
+COPY src/proto/resources/config/initializerJson.json /config/initializerJson.json
+COPY src/proto/resources/config/mockserver.properties /config/mockserver.properties
+COPY src/proto/resources/config/application.properties /config/application.properties
