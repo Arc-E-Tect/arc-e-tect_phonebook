@@ -60,13 +60,13 @@ jobs:
           ./gradlew printVersion
 
       - name: Upload bootJar
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Arc-E-Tect_Phonebook-Microservice
           path: build/libs
 
       - name: Upload Documentation
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: API-documentation
           path: |
@@ -74,7 +74,7 @@ jobs:
             build/api-spec
 
       - name: Upload Test Reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: build/reports/tests
@@ -96,7 +96,7 @@ jobs:
           echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
 
       - name: Upload Jacoco coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: build/reports/jacoco
