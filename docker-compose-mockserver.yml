@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   mockserver_container:
     image: mockserver/mockserver:latest
