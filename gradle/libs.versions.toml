@@ -39,7 +39,12 @@ nebula-lint = { id = "nebula.lint", version = "_" }
 [versions]
 
 spring-boot = "3.3.5"
+##       ⬆ = "3.3.6"
+##       ⬆ = "3.3.7"
+##       ⬆ = "3.4.0"
+##       ⬆ = "3.4.1"
 spring-restdocs = "3.0.2"
+##           ⬆ = "3.0.3"
 
 [libraries]
 
