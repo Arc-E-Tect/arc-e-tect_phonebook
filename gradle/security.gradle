@@ -2,12 +2,10 @@
 
 dependencyCheck {
     failOnError = true
-    analyzers {
-        nodeAudit {
-            yarnEnabled = false
-        }
-        assemblyEnabled = false
-    }
+    analyzers.nodeAudit.yarnEnabled = false
+    analyzers.assemblyEnabled = false
+    nvd.apiKey = System.getenv('NVD_APIKEY_SEDR')
+    nvd.delay = 16000
 }
 
 dependencyCheckAnalyze.mustRunAfter build
